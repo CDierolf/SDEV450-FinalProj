@@ -6,6 +6,7 @@
 
 package sdev_450_ticketmanager;
 
+import Classes.Database.ExampleDatabaseClass;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,6 +37,7 @@ public class SDEV_450_TicketManager extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+
     }
 
 }
