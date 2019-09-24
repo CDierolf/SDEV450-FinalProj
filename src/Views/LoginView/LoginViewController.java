@@ -5,6 +5,8 @@
  */
 package Views.LoginView;
 
+import Classes.APIs.TicketMaster.TicketMasterEvent;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -46,22 +48,22 @@ public class LoginViewController implements Initializable {
                 BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
                 
                 String output;
-                System.out.println("output is-----------------");
+                JSONObject json = null;
                 
+                // Read the output into a json object for safe keeping.
                 while ((output = br.readLine()) != null)
                 {
-                    System.out.println(output);
-                     JSONObject json = new JSONObject(output);
-                     String name = json.getString("events");
-                     
-                     //System.out.println(name);
-//                     String postcodeForamted = json.getString("postcode");
-//                     double lat = json.getJSONObject("geo").getDouble("lat");
-//                     double lng = json.getJSONObject("geo").getDouble("lng");
-// 
-//                     System.out.println("lat: " + lat);
-//                     System.out.println("lng: " + lng);
+                    json = new JSONObject(output);
                 }
+                // convert the json object to a string
+                output = json.toString();
+                
+                // Deserialize the json string into a Java object.
+                System.out.println(output);
+                Gson gson = new Gson();
+                TicketMasterEvent tme = gson.fromJson(output, TicketMasterEvent.class);
+                System.out.println("stuff");
+
             }
         }
         catch (IOException e) {
