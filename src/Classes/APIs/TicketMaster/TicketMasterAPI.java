@@ -62,8 +62,10 @@ public class TicketMasterAPI {
     }
 
     private HttpURLConnection createTicketMasterAPIConnection() throws MalformedURLException, ProtocolException, IOException {
-
-        String webService = "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=baseball&dmaId=324&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
+        
+        // TODO Create string formatter to add the classificationName for the users 
+        // entered event category with parameters of classificationName and apikey
+        String webService = "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&&dmaId=324&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
         URL apiURL = new URL(webService);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
         connection.setRequestMethod("GET");

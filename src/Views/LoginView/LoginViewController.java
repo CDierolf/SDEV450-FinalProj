@@ -14,14 +14,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 public class LoginViewController implements Initializable {
-    
-    @FXML
-    private Label label;
+  
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
-        label.setText("Hello World!");
     }
     
     @Override
