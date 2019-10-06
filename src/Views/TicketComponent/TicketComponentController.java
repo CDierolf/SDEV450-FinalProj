@@ -7,15 +7,32 @@ package Views.TicketComponent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
  *
- * @author pis7ftw
- */
+ * @author Christopher Dierolf
+ * */
 public class TicketComponentController implements Initializable {
 
+    @FXML
+    private Label eventLabel;
+    @FXML
+    private Label dateTimeLabel;
+    @FXML
+    private Label pricePerTicketLabel;
+    @FXML
+    private Button purchaseTicketsButton;
+    @FXML
+    private ImageView eventImageView;
+    @FXML
+    private Image eventImage;
     /**
      * Initializes the controller class.
      */

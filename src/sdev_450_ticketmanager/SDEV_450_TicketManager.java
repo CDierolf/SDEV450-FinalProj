@@ -6,7 +6,7 @@
 
 package sdev_450_ticketmanager;
 
-import Classes.Database.ExampleDatabaseClass;
+import Views.SeatMaps.Venue1.Venue1;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,14 +21,18 @@ import javafx.stage.Stage;
  * @Description: Entry point for the application. Loads the LoginView
  */
 public class SDEV_450_TicketManager extends Application {
-
+    Venue1 ven1 = new Venue1();
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/LoginView/LoginView.fxml"));
-        
-        Scene scene = new Scene(root);
+//        Parent root = FXMLLoader.load(getClass().getResource("/Views/LoginView/LoginView.fxml"));
+//        Scene scene = new Scene(ven1);
+//        stage.setScene(scene);
+//        stage.show();
 
+        Scene scene = new Scene(ven1, 1050, 600);
+        stage.setTitle("BST and AVL Trees");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
