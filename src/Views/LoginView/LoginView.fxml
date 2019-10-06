@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="root" stylesheets="@../CSS/LoginView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="root" stylesheets="@../CSS/LoginView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.LoginView.LoginViewController">
    <children>
-      <Text id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Amateur" />
+      <Text id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Amateur">
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin></Text>
       <HBox alignment="CENTER" prefHeight="94.0" prefWidth="600.0" spacing="20.0">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="127.0" prefWidth="221.0" spacing="20.0">
                <children>
-                  <TextField promptText="Username" />
-                  <TextField promptText="Password" />
+                  <TextField fx:id="userNameText" promptText="Username" />
+                  <PasswordField fx:id="passwordText" promptText="Password" />
                </children>
             </VBox>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
       <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0" spacing="40.0">
          <children>
-            <Button id="shiny-orange" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Login" />
-            <Button id="shiny-orange" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Exit" />
+            <Button id="shiny-orange" fx:id="loginButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Login" />
+            <Button id="shiny-orange" fx:id="exitButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Exit" />
          </children>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
       </HBox>
       <HBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" styleClass="createAccountText" stylesheets="@../CSS/LoginView.css">
          <children>
-            <Button id="dark-blue" mnemonicParsing="false" prefHeight="15.0" prefWidth="140.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Create an Account" />
+            <Button id="dark-blue" fx:id="createAccountButton" mnemonicParsing="false" prefHeight="15.0" prefWidth="140.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Create an Account" />
          </children>
       </HBox>
    </children>

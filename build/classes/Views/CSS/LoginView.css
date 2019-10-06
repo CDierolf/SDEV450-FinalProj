@@ -22,7 +22,7 @@ and open the template in the editor.
 
 .createAccountTextButton {
     -fx-background-color: transparent;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #fffff;
     -fx-font: 12px 'Arial'
 }
 #shiny-orange {

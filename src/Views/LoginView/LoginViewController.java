@@ -11,10 +11,22 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class LoginViewController implements Initializable {
   
+    @FXML
+    private Button loginButton; 
+    @FXML
+    private Button exitButton;
+    @FXML
+    private Button createAccountButton;
+    @FXML
+    private TextField userNameText;
+    @FXML
+    private PasswordField passwordText;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
