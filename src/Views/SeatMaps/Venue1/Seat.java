@@ -24,6 +24,7 @@ public class Seat extends Circle {
     // Instance variables
     private final int seatNumber; // Final ivar - set in constructor
     private final int rowNumber; // Final ivar - set in constructor
+    private final char section;
     private boolean isAvailable;
     
     // Getter methods
@@ -41,9 +42,10 @@ public class Seat extends Circle {
     }
     
     // Constructor
-    public Seat(int seatNumber, int rowNumber, boolean isAvailable) {
+    public Seat(int seatNumber, int rowNumber, char section, boolean isAvailable) {
         this.seatNumber = seatNumber;
         this.rowNumber = rowNumber;
+        this.section = section;
         this.isAvailable = isAvailable;
         // Create circle on initialization
         this.setSeatImage();
@@ -55,7 +57,8 @@ public class Seat extends Circle {
     EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            System.out.println("Seat Number: " + seatNumber + ". Row Number: " + rowNumber);
+            System.out.println("Seat Number: " + seatNumber + ". Row Number: " + rowNumber + ""
+                    + " Section: " + section);
             isAvailable = !isAvailable;
             updateImage();
         }
