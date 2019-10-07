@@ -21,6 +21,7 @@ public class Venue1 extends VBox {
     VBox rows = new VBox();
     private final int MAX_NUM_SEATS = 30;
     private final int MIN_NUM_SEATS = 12;
+    private final int MAX_NUM_ROWS = 15;
 
     public Venue1() {
         this.setStyle("-fx-background-color: #FFFFFF");
@@ -29,22 +30,22 @@ public class Venue1 extends VBox {
 
     }
     
-    private int randNumGenerator(int maxNumSeats) {
+    private int randNumGenerator(int min, int max) {
         Random rand = new Random();
-        return rand.nextInt(((MAX_NUM_SEATS - maxNumSeats)- MIN_NUM_SEATS) + MIN_NUM_SEATS);
+        return rand.nextInt(((max - min) + 8) + min);
     }
 
     private void createRows() {
         int numRows = 0;
-        for (int i = 0; i < 10; i++) {
+        double spacing = 10.0;
+        for (int i = 0; i < MAX_NUM_ROWS; i++) {
             HBox seats = new HBox();
             seats.setAlignment(Pos.CENTER);
             numRows++;
-            seats.setSpacing(10);
-            for (int j = 0; j < randNumGenerator(numRows); j++) {
-                Circle seat = new Circle();
-                seat.setFill(Color.DODGERBLUE);
-                seat.setRadius(12);
+            seats.setSpacing(spacing -= 0.2);
+            
+            for (int j = 0; j < MAX_NUM_SEATS - i; j++) {
+                Seat seat = new Seat(i + 1, j + 1, true);
                 seats.getChildren().add(seat);
             }
             this.getChildren().add(seats);
