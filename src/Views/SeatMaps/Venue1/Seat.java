@@ -1,8 +1,10 @@
 package Views.SeatMaps.Venue1;
 
 //Imports
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 
 /** 
  * @Course: SDEV 350 ~ Java Programming II
@@ -13,12 +15,15 @@ import javafx.scene.shape.Circle;
  */
 
 //Begin Subclass Seat
-public class Seat {
+public class Seat extends Circle {
+    
+    private final int CIRCLE_RADIUS = 12;
+    private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
+    private final Color COLOR_UNAVAILABLE = Color.RED;
     
     // Instance variables
     private final int seatNumber; // Final ivar - set in constructor
     private final int rowNumber; // Final ivar - set in constructor
-    private Circle seatImage;
     private boolean isAvailable;
     
     // Getter methods
@@ -40,15 +45,25 @@ public class Seat {
         this.seatNumber = seatNumber;
         this.rowNumber = rowNumber;
         this.isAvailable = isAvailable;
-        
         // Create circle on initialization
-        this.createSeatImage();
+        this.setSeatImage();
+        // Register with Event Handler
+        addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
     
+    // Mouse Click Event Handler
+    EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            System.out.println("Seat Number: " + seatNumber + ". Row Number: " + rowNumber);
+            isAvailable = !isAvailable;
+            updateImage();
+        }
+    };
+    
     // Create circle representation of seat for Venue view
-    private void createSeatImage() {
-        Circle seatImg = new Circle();
-        this.seatImage = seatImg;
+    private void setSeatImage() {
+        setRadius(CIRCLE_RADIUS);
         // Color seat image based on availability
         updateImage();
     }
@@ -56,9 +71,9 @@ public class Seat {
     // Update circle image color based on availability
     private void updateImage() {
         if (isAvailable) {
-            seatImage.setFill(Color.DODGERBLUE);
+            setFill(COLOR_AVAILABLE);
         } else {
-            seatImage.setFill(Color.RED);
+            setFill(COLOR_UNAVAILABLE);
         }
     }
     
