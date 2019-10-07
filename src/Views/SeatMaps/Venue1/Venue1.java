@@ -51,7 +51,7 @@ public class Venue1 extends BorderPane {
             seats.setSpacing(spacing -= 0.2);
             
             for (int j = 0; j < MAX_NUM_SEATS - i; j++) {
-                Seat seat = new Seat(i + 1, j + 1, true);
+                Seat seat = new Seat(i + 1, j + 1, 'G', true);
                 seats.getChildren().add(seat);
             }
             rows.getChildren().add(seats);
@@ -81,7 +81,7 @@ public class Venue1 extends BorderPane {
         for (int i = 0; i < 3; i++) {
             HBox h = new HBox();
             for (int j = 0; j < 15; j++) {
-                Seat seat = new Seat(i+1, j+1, true);
+                Seat seat = new Seat(i+1, j+1, 'M', true);
                 h.getChildren().add(seat);
             }
             v.getChildren().add(h);
