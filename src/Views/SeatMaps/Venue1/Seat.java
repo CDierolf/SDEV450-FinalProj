@@ -31,7 +31,7 @@ public class Seat {
         return rowNumber;
     }
 
-    public boolean isIsAvailable() {
+    public boolean getIsAvailable() {
         return isAvailable;
     }
     
