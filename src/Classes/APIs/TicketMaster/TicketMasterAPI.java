@@ -29,7 +29,7 @@ import org.json.JSONObject;
 public class TicketMasterAPI {
 
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
-    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/attractions.json?";
+    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/event.json?";
     private final int HARDCODED_REGION = 90017;
     
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber) {
