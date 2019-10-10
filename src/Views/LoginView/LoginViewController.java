@@ -6,8 +6,11 @@
 package Views.LoginView;
 
 import Classes.APIs.TicketMaster.TicketMasterAPI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,7 +40,9 @@ public class LoginViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //TODO
         TicketMasterAPI tma = new TicketMasterAPI();
-        tma.getTicketMasterJSONEventData("music");
+
+            tma.getTicketMasterJSONEventData("Taylor Swift", "2");
+
     }    
     
 }
