@@ -501,7 +501,7 @@ public class DatabaseInterface implements Debug {
                 logger.info(message);
             }else{
                 // level = error
-                logger.error(message);
+                //logger.error(message);
             }
         } else { // log debugging messages to output
             System.out.println(message);
