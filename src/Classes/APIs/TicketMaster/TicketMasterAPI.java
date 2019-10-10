@@ -31,8 +31,21 @@ public class TicketMasterAPI {
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
     private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/attractions.json?";
     private final int HARDCODED_REGION = 90017;
+    
+    public TicketMasterEvent findEvents(String eventKeyword, String pageNumber) {
+        TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber);
+        
+        if (event == null) {
+            System.out.println("NOPE");
+            // No events were found :(
+            return null;
+        } else {
+            return event;
+        }
+    }
+    
 
-    public void getTicketMasterJSONEventData(String eventKeyword, String pageNumber) {
+    private TicketMasterEvent getTicketMasterJSONEventData(String eventKeyword, String pageNumber) {
 
         HttpURLConnection connection;
         JSONObject ticketMasterJsonObject = null;
@@ -47,26 +60,30 @@ public class TicketMasterAPI {
                 ticketMasterJsonObject = parseTicketMasterJSONStreamIntoObject(ticketMasterJsonStream);
                 ticketMasterJsonString = ticketMasterJsonObject.toString();
                 ticketMasterEvent = deserializeTicketMasterJsonIntoEventObject(ticketMasterJsonString);
-        
-
+                
+                return ticketMasterEvent; // Everything we alright.
+                
             } else {
                 // TODO Throw error
                 // Unable to connect to api
                 System.out.println("Unable to connect to api.");
-
                 System.out.println(connection.getResponseCode());
+                
+                return null;
             }
         } catch (IOException e) {
             System.out.println(e);
+            return null;
         } catch (JSONException ex) {
             Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
     private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber) throws ProtocolException, IOException {
 
         String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword=Butthole+Surfers&locale=*";
-
+        //TODO ENCODE URL WITH API AND SEARCH PARAMETER AND PAGE NUMBER
        // https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=Green+Bay+Packers&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm
         URL apiURL = new URL(webService);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
@@ -103,17 +120,7 @@ public class TicketMasterAPI {
 
         Gson ticketMasterGsonObject = new Gson();
         TicketMasterEvent tme = ticketMasterGsonObject.fromJson(ticketMasterJsonString, TicketMasterEvent.class);
-        
-        List<Events> events = new ArrayList<>();
-        events = tme.getEmbeddedEvents().getEvents();
-//        System.out.println(events.get(0).getImageUrl());
-//        System.out.println(events.get(1).getImageUrl());'
-        System.out.println(events.size());
-        for (Events e : events) {
-            System.out.println(e.getName());
-            System.out.println(e.getPrice());
-            System.out.println(e.getImageUrl());
-        }
+
         return tme;
     }
 

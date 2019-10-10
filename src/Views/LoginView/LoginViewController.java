@@ -6,11 +6,12 @@
 package Views.LoginView;
 
 import Classes.APIs.TicketMaster.TicketMasterAPI;
-import java.net.URISyntaxException;
+import Classes.APIs.TicketMaster.TicketMasterEvent;
+import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,8 +41,22 @@ public class LoginViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //TODO
         TicketMasterAPI tma = new TicketMasterAPI();
+        TicketMasterEvent tmeObject = new TicketMasterEvent();
+        tmeObject = tma.findEvents("Butthole+Surfers", "3");
+        
+        List<Events> events = new ArrayList<>();
+        events = tmeObject.getEmbeddedEvents().getEvents();
+        
+        for (Events e : events) {
+            System.out.printf("Event name: %s\n", e.getName());
+            System.out.printf("Event start date: %s\n", e.getDates().getEventStartData().getEventLocalDate());
+            System.out.printf("Event start time: %s\n", e.getDates().getEventStartData().getEventLocalTime());
+            System.out.printf("Event price: $%f\n", e.getPrice());
+            System.out.printf("Event image url: %s\n", e.getImageUrl());
+            
+        }
 
-            tma.getTicketMasterJSONEventData("Taylor Swift", "2");
+//            tma.findEvents("Taylor Swift", "2");
 
     }    
     
