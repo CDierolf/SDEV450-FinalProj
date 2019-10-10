@@ -29,33 +29,38 @@ public class TicketMasterEvent {
         }
 
         public class Events {
-
-            public String name;
-            public String url;
-            public List<Images> images;
-            public Dates dates;
-            public List<PriceRanges> priceRanges;
-
-            public String getEventName() {
+            private String name;
+            private String imageUrl;
+            private double price;
+            private List<Images> images;
+            private List<PriceRanges> prices;
+            private Dates dates;
+            
+            public double getPrice() {
+                if (prices == null) {
+                    this.price = 18.00;
+                }
+                
+                return this.price;
+            }
+            
+            public String getName() {
                 return this.name;
             }
-
-            public String getEventUrl() {
-                return this.url;
+            public Dates getDates() {
+                return this.dates;
             }
-
-            public List<Images> getEventImages() {
-                return this.images;
+            
+            public String getImageUrl() {
+                // Get the smallest available event image from 
+                // the API's image list.
+                return images.get(9).getImageUrl();
             }
+            
 
             public Dates getEventDates() {
                 return this.dates;
             }
-
-            public List<PriceRanges> getPriceRange() {
-                return this.priceRanges;
-            }
-
             public class Images {
 
                 private String url;
@@ -95,12 +100,11 @@ public class TicketMasterEvent {
 
                 }
             }
-
+            
             public class PriceRanges {
-
-                public double max;
+                private String max;
                 
-                public double getEventPrice() {
+                public String getPrice() {
                     return this.max;
                 }
             }

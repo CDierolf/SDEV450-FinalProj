@@ -1,6 +1,7 @@
 package Classes.APIs.TicketMaster;
 
-import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Attractions;
+
+import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Views.LoginView.LoginViewController;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -45,9 +46,8 @@ public class TicketMasterAPI {
                 ticketMasterJsonStream = getTicketMasterJSONStream(connection);
                 ticketMasterJsonObject = parseTicketMasterJSONStreamIntoObject(ticketMasterJsonStream);
                 ticketMasterJsonString = ticketMasterJsonObject.toString();
-                System.out.println(ticketMasterJsonString);
                 ticketMasterEvent = deserializeTicketMasterJsonIntoEventObject(ticketMasterJsonString);
-                System.out.println(ticketMasterEvent);
+        
 
             } else {
                 // TODO Throw error
@@ -65,9 +65,8 @@ public class TicketMasterAPI {
 
     private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber) throws ProtocolException, IOException {
 
-        String webService = "https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=Evanescence&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
-        
-        System.out.println(webService);
+        String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword=Butthole+Surfers&locale=*";
+
        // https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=Green+Bay+Packers&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm
         URL apiURL = new URL(webService);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
@@ -101,11 +100,20 @@ public class TicketMasterAPI {
     }
 
     private TicketMasterEvent deserializeTicketMasterJsonIntoEventObject(String ticketMasterJsonString) {
-        List<Attractions> events = new ArrayList<>();
+
         Gson ticketMasterGsonObject = new Gson();
         TicketMasterEvent tme = ticketMasterGsonObject.fromJson(ticketMasterJsonString, TicketMasterEvent.class);
-
-
+        
+        List<Events> events = new ArrayList<>();
+        events = tme.getEmbeddedEvents().getEvents();
+//        System.out.println(events.get(0).getImageUrl());
+//        System.out.println(events.get(1).getImageUrl());'
+        System.out.println(events.size());
+        for (Events e : events) {
+            System.out.println(e.getName());
+            System.out.println(e.getPrice());
+            System.out.println(e.getImageUrl());
+        }
         return tme;
     }
 
