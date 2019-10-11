@@ -5,8 +5,13 @@
  */
 package Views.TicketComponent;
 
+import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -38,7 +43,33 @@ public class TicketComponentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // TODO obtain event
+        // pass into getEvent()
     }    
+    
+    private void getEvent(Events event) {
+        this.eventLabel.setText(event.getName());
+        this.dateTimeLabel.setText(getEventDateTimeDetails(event));
+        this.pricePerTicketLabel.setText(Double.toString(event.getPrice()));
+        try {
+            getImage(event);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TicketComponentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private String getEventDateTimeDetails(Events event) {
+        String date = event.getEventDates().getEventStartData().getEventLocalDate();
+        String time = event.getEventDates().getEventStartData().getEventLocalTime();
+        
+        return date + " " + time;
+        
+    }
+    
+    private void getImage(Events event) throws FileNotFoundException {
+        eventImage = new Image(new FileInputStream(event.getImageUrl()));
+        this.eventImageView = new ImageView(eventImage);
+    }
+
     
 }
