@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.sql.*;
-
 import java.text.SimpleDateFormat;
 import org.apache.commons.dbcp2.BasicDataSource;
 //Begin Subclass DatabaseInterface
@@ -70,7 +69,7 @@ public class DatabaseInterface implements Debug {
         InputStream input = null;
 
         try {
-            input =  getClass().getClassLoader().getResourceAsStream("TicketManager.properties");
+            input =  getClass().getClassLoader().getResourceAsStream("resources/TicketManager.properties");
             // load a properties file
             prop.load(input);
             // get the property value and print it out

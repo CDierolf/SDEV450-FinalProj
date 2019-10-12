@@ -1,6 +1,7 @@
-package Views.SeatMaps.Venue1;
+package Views.SeatMaps.Venue;
 
 //Imports
+import Views.SeatMaps.Venue.Venue.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
