@@ -46,10 +46,10 @@ public class DashboardViewController implements Initializable {
         // Then load the views into the AdminDashboardView.
         for (int i = 1; i <= 9; i++) {
             
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/Views/DashboardViews/AdminDashboardView/BaseDataView.fxml"));
-            AnchorPane pane = loader.load();
-            pane.setId("LifeFlight" + i);
+//            FXMLLoader loader = new FXMLLoader();
+//            loader.setLocation(getClass().getResource("/Views/DashboardViews/AdminDashboardView/BaseDataView.fxml"));
+//            AnchorPane pane = loader.load();
+//            pane.setId("LifeFlight" + i);
             
 //            BaseDataViewController controller = loader.getController();
 //            controller.initData("LifeFlight " + i, "W201919620342342343", "W22342340192818219",

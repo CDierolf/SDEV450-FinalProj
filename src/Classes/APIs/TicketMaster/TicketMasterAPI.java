@@ -12,6 +12,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
@@ -32,15 +33,16 @@ public class TicketMasterAPI {
     private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/event.json?";
     private final int HARDCODED_REGION = 90017;
     
+    
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber);
         
         if (event == null) {
-            System.out.println("NOPE");
+            System.out.println("No events found.");
             // No events were found :(
             return null;
         } else {
-            return event;
+            return (event);
         }
     }
     
