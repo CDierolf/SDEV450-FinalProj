@@ -258,7 +258,7 @@ public class DatabaseInterface implements Debug {
         try {
             System.out.println(title);
             while (rs.next()) {
-                System.out.println(rs.getString("factsid") + " : " + rs.getString("siteadd"));
+                //System.out.println(rs.getString("factsid") + " : " + rs.getString("siteadd"));
             }
         } catch (Exception e) {
             JDBCError("displayRow", "", true, e.getMessage());

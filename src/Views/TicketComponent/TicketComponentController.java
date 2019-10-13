@@ -47,10 +47,10 @@ public class TicketComponentController implements Initializable {
         // pass into getEvent()
     }    
     
-    private void getEvent(Events event) {
+    public void getEvent(Events event) {
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
-        this.pricePerTicketLabel.setText(Double.toString(event.getPrice()));
+        this.pricePerTicketLabel.setText("$" + Double.toString(event.getPrice()));
         try {
             getImage(event);
         } catch (FileNotFoundException ex) {
@@ -67,8 +67,8 @@ public class TicketComponentController implements Initializable {
     }
     
     private void getImage(Events event) throws FileNotFoundException {
-        eventImage = new Image(new FileInputStream(event.getImageUrl()));
-        this.eventImageView = new ImageView(eventImage);
+        eventImage = new Image(event.getImageUrl());
+        this.eventImageView.setImage(eventImage);
     }
 
     
