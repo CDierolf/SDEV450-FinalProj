@@ -48,7 +48,7 @@
          </children>
       </VBox>
       <Separator prefWidth="200.0" />
-      <Button id="shiny-orange" fx:id="purchaseTicketsButton" mnemonicParsing="false" text="Purchase Tickets">
+      <Button id="shiny-orange" fx:id="purchaseTicketsButton" mnemonicParsing="false" onMouseClicked="#purchaseTickets" text="Purchase Tickets">
          <VBox.margin>
             <Insets top="9.0" />
          </VBox.margin>
