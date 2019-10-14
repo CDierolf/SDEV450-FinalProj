@@ -54,18 +54,7 @@ public class DashboardViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//
-//            try {
-//                try {
-//                    loadEvents();
-//                } catch (IOException ex) {
-//                    Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            } catch (ExecutionException ex) {
-//                Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+        // Not implemented.
     }
 
     private Image downloadImage(Events event) throws InterruptedException, ExecutionException {
