@@ -19,6 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -48,6 +49,7 @@ public class DashboardViewController implements Initializable {
     private Button searchButton;
 
     List<Events> events = new ArrayList<>();
+    List<Image> eventImages = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -57,66 +59,77 @@ public class DashboardViewController implements Initializable {
         // Not implemented.
     }
 
-    private Image downloadImage(Events event) throws InterruptedException, ExecutionException {
-        Image image;
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future future = executorService.submit(() -> {
-            Image image1;
-            image1 = new Image(event.getImageUrl());
-            return image1;
-        });
-
-        image = (Image) future.get();
-        executorService.shutdown();
-        return image;
-    }
-
-    public void loadEvents(String eventKeyword, String pageNumber) {
+//    private Image downloadImage(Events event) throws InterruptedException, ExecutionException {
+//        Image image;
+//        ExecutorService executorService = Executors.newSingleThreadExecutor();
+//        Future future = executorService.submit(() -> {
+//            Image image1;
+//            image1 = new Image(event.getImageUrl());
+//            return image1;
+//        });
+//
+//        image = (Image) future.get();
+//        executorService.shutdown();
+//        return image;
+//    }
+    private void loadEvents(String eventKeyword, String pageNumber) throws IOException {
 
         TicketMasterAPI tma = new TicketMasterAPI();
 
         events = tma.findEvents(eventKeyword, pageNumber).getEmbeddedEvents().getEvents();
 
-        for (int i = 0; i < events.size(); i++) {
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/Views/TicketComponent/TicketComponent.fxml"));
-                VBox pane = loader.load();
-                pane.setId(Integer.toString(i));
-                TicketComponentController tcCtrl = loader.getController();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < events.size(); i++) {
 
-                try {
-                    tcCtrl.getEvent(events.get(i));
-                } catch (ExecutionException ex) {
-                    Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    try {
+                        
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/Views/TicketComponent/TicketComponent.fxml"));
+                        VBox pane = loader.load();
+                        pane.setId(Integer.toString(i));
+                        TicketComponentController tcCtrl = loader.getController();
+                        
+                        try {
+                            tcCtrl.getEvent(events.get(i));
+                        } catch (ExecutionException | InterruptedException ex) {
+                            Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                        // Sort the Views
+                        switch (i % 4) {
+                            case 0:
+                                leftVBox.getChildren().add(pane);
+                                leftVBox.setSpacing(10);
+                                break;
+                            case 1:
+                                centerVBox.getChildren().add(pane);
+                                centerVBox.setSpacing(10);
+                                break;
+                            case 2:
+                                rightVBox.getChildren().add(pane);
+                                rightVBox.setSpacing(10);
+                                break;
+                            case 3:
+                                rightMostVBox.getChildren().add(pane);
+                                rightMostVBox.setSpacing(10);
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                    } catch (IOException ex) {
+                        Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
-
-                // Sort the Views
-                if (i % 4 == 0) {
-                    leftVBox.getChildren().add(pane);
-                    leftVBox.setSpacing(10);
-                } else if (i % 4 == 1) {
-                    centerVBox.getChildren().add(pane);
-                    centerVBox.setSpacing(10);
-                } else if (i % 4 == 2) {
-                    rightVBox.getChildren().add(pane);
-                    rightVBox.setSpacing(10);
-                } else if (i % 4 == 3) {
-                    rightMostVBox.getChildren().add(pane);
-                    rightMostVBox.setSpacing(10);
-                }
-
-            } catch (IOException ex) {
-                Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        }
+        });
 
     }
 
-    public void getEvents() {
+    public void getEvents() throws IOException {
         clearEvents();
         loadEvents(this.searchTextField.getText(), "1");
     }
