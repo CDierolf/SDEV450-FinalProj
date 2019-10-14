@@ -9,11 +9,7 @@ import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -69,30 +65,22 @@ public class TicketComponentController implements Initializable {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
         
+        if (time == null) {
+            time = "TBD";
+        }
+        
         return date + " " + time;
     }
     
     
 
-    private void getImage(Events event) throws FileNotFoundException, InterruptedException, ExecutionException {
-//        downloadImage(event);
-//        eventImage = new Image(event.getImageUrl());
-        eventImageView.setImage(downloadImage(event));
+    private void getImage(Events event) throws FileNotFoundException{
+        
+        //eventImage = new Image(event.getImageUrl());
+        eventImageView.setImage(event.getEventImage());
     }
     
-    private Image downloadImage(Events event) throws InterruptedException, ExecutionException {
-        Image image;
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future future  =  executorService.submit(() -> {
-            Image image1;
-            image1 = new Image(event.getImageUrl());
-            return image1;
-        });
-        
-        image =  (Image)future.get();
-        executorService.shutdown();
-        return image;
-    }
+
     
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() {
