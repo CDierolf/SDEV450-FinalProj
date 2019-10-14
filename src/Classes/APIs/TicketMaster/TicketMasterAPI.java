@@ -83,8 +83,8 @@ public class TicketMasterAPI {
     }
 
     private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber) throws ProtocolException, IOException {
-
-        String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword=Metallica&locale=*";
+        
+        String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&locale=*";
         //TODO ENCODE URL WITH API AND SEARCH PARAMETER AND PAGE NUMBER
        // https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=Green+Bay+Packers&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm
         URL apiURL = new URL(webService);

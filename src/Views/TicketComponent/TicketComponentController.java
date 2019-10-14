@@ -6,10 +6,14 @@
 package Views.TicketComponent;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -38,17 +42,17 @@ public class TicketComponentController implements Initializable {
     private ImageView eventImageView;
     @FXML
     private Image eventImage;
+    
     private Events event; // Event stored for UI interaction
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO obtain event
-        // pass into getEvent()
+
     }    
     
-    public void getEvent(Events event) {
+    public void getEvent(Events event) throws ExecutionException, InterruptedException {
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
         this.pricePerTicketLabel.setText("$" + Double.toString(event.getPrice()));
@@ -68,11 +72,28 @@ public class TicketComponentController implements Initializable {
         return date + " " + time;
     }
     
-    private void getImage(Events event) throws FileNotFoundException {
-        eventImage = new Image(event.getImageUrl());
-        this.eventImageView.setImage(eventImage);
-    }
+    
 
+    private void getImage(Events event) throws FileNotFoundException, InterruptedException, ExecutionException {
+//        downloadImage(event);
+//        eventImage = new Image(event.getImageUrl());
+        eventImageView.setImage(downloadImage(event));
+    }
+    
+    private Image downloadImage(Events event) throws InterruptedException, ExecutionException {
+        Image image;
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future future  =  executorService.submit(() -> {
+            Image image1;
+            image1 = new Image(event.getImageUrl());
+            return image1;
+        });
+        
+        image =  (Image)future.get();
+        executorService.shutdown();
+        return image;
+    }
+    
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();

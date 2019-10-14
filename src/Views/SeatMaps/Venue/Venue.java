@@ -88,9 +88,9 @@ public class Venue extends BorderPane implements Debug  {
             row = rs.getString("row");
             if(row.equals(lastrow)) {
                 
-            
-                System.out.println("Row" + rs.getString("row") +
-                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
+//            
+//                System.out.println("Row" + rs.getString("row") +
+//                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
 
                 seats.setAlignment(Pos.CENTER);
 
@@ -99,8 +99,8 @@ public class Venue extends BorderPane implements Debug  {
                 seats.getChildren().add(seat);
                 //lastrow = row;
             }else{
-                System.out.println("NewRow" + rs.getString("row") +
-                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
+//                System.out.println("NewRow" + rs.getString("row") +
+//                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
 
                 rows.getChildren().add(seats);
                 lastrow = row;
