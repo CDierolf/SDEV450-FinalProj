@@ -38,6 +38,7 @@ public class TicketComponentController implements Initializable {
     private ImageView eventImageView;
     @FXML
     private Image eventImage;
+    private Events event; // Event stored for UI interaction
     /**
      * Initializes the controller class.
      */
@@ -56,6 +57,8 @@ public class TicketComponentController implements Initializable {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TicketComponentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // Set event variable
+        this.event = event;
     }
     
     private String getEventDateTimeDetails(Events event) {
@@ -63,7 +66,6 @@ public class TicketComponentController implements Initializable {
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
         
         return date + " " + time;
-        
     }
     
     private void getImage(Events event) throws FileNotFoundException {
@@ -71,5 +73,10 @@ public class TicketComponentController implements Initializable {
         this.eventImageView.setImage(eventImage);
     }
 
-    
+    // Event handler for "Puchase Tickets" button
+    public void purchaseTickets() {
+        String date = event.getEventDates().getEventStartData().getEventLocalDate();
+        String time = event.getEventDates().getEventStartData().getEventLocalTime();
+        System.out.println(event.getName() + " " + date + time);
+    }
 }
