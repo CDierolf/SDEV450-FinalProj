@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -10,16 +15,16 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="253.0" prefWidth="600.0">
          <children>
             <VBox alignment="CENTER_RIGHT" prefHeight="186.0" prefWidth="283.0" spacing="15.0">
                <children>
-                  <Label text="Desired Username:" />
-                  <Label text="Password:" />
-                  <Label text="Retype Password:" />
-                  <Label text="E-Mail:" />
+                  <Label text="Desired Username:" textAlignment="RIGHT" />
+                  <Label text="Password:" textAlignment="RIGHT" />
+                  <Label text="Retype Password:" textAlignment="RIGHT" />
+                  <Label text="E-Mail:" textAlignment="RIGHT" />
                </children>
                <HBox.margin>
                   <Insets right="15.0" />

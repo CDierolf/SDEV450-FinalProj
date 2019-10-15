@@ -16,8 +16,9 @@ import org.json.JSONObject;
 //Begin Subclass Event
 public class Event {
     long eventID;
+    int venueID;
     String eventname;
-    java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(); //ph
+    //java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(); //ph
     java.util.Date startDate = new java.util.Date();
     //maybe add time here
     java.util.Date dateTBA = new java.util.Date();
