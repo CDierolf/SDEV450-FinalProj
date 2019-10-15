@@ -20,6 +20,11 @@
     -fx-font: 30px 'Arial'
 }
 
+.eventLabels {
+    -fx-text-fill: #000000;
+    -fx-font: 15px 'Arial'
+}
+
 .createAccountTextButton {
     -fx-background-color: transparent;
     -fx-text-fill: #ffffff;
