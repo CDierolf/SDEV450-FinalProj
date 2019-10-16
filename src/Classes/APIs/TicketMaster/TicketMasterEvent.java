@@ -32,11 +32,13 @@ public class TicketMasterEvent {
         public class Events {
             private String name;
             private String imageUrl;
+            private String id;
             private double price;
             private List<Images> images;
             private Image eventImage;
             private List<PriceRanges> prices;
             private Dates dates;
+            
             
             public double getPrice() {
                 if (prices == null) {
@@ -44,6 +46,10 @@ public class TicketMasterEvent {
                 }
                 
                 return this.price;
+            }
+            
+            public String getEventID() {
+                return this.id;
             }
             
             public String getName() {

@@ -50,7 +50,9 @@ public class TicketComponentController implements Initializable {
 
     }    
     
+
     public void getEvent(Events event, DashboardViewController dvc) throws ExecutionException, InterruptedException {
+
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
         this.pricePerTicketLabel.setText("$" + Double.toString(event.getPrice()));
