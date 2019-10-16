@@ -52,6 +52,12 @@ public class DashboardViewController implements Initializable {
     private TextField searchTextField;
     @FXML
     private Button searchButton;
+    @FXML
+    private Button previousPageButton;
+    @FXML
+    private Button nextPageButton;
+    @FXML
+    private Label pageLabel;
     
     // Venue FXML Objects
     @FXML
@@ -68,6 +74,8 @@ public class DashboardViewController implements Initializable {
 
     List<Events> events = new ArrayList<>();
     List<Image> eventImages = new ArrayList<>();
+    private int currentPage = 1;
+    private String currentKeyword = "";
 
     /**
      * Initializes the controller class.
@@ -93,7 +101,8 @@ public class DashboardViewController implements Initializable {
     private void loadEvents(String eventKeyword, String pageNumber) throws IOException {
         
         unloadVenue(); // Unload venue view if shown
-        
+        // Save the current keyword for pagination
+        this.currentKeyword = this.searchTextField.getText();
         TicketMasterAPI tma = new TicketMasterAPI();
 
         events = tma.findEvents(eventKeyword, pageNumber).getEmbeddedEvents().getEvents();
@@ -151,6 +160,23 @@ public class DashboardViewController implements Initializable {
     public void getEvents() throws IOException {
         clearEvents();
         loadEvents(this.searchTextField.getText(), "1");
+    }
+    
+    public void gotoNextPage() {
+        this.currentPage++;
+        // Call API with currentKeyword and currentPage
+        // Check if return is null; 
+        // If null sout="no events left to see"
+        // else, advance the page and show events.
+    }
+    
+    public void gotoPreviousPage() {
+        if (currentPage == 1) {
+            // Can't go back any farther
+            System.out.println("Unable to go back anymore.");
+        } else {
+            this.currentPage--;
+        }
     }
 
     private void clearEvents() {

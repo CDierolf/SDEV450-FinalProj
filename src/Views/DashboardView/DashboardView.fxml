@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="825.0" prefWidth="1461.0" styleClass="mainFxmlClass" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.DashboardView.DashboardViewController">
+<AnchorPane id="AnchorPane" prefHeight="831.0" prefWidth="1461.0" styleClass="mainFxmlClass" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.DashboardView.DashboardViewController">
     <children>
         <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="816.0" prefWidth="271.0" spacing="10.0" styleClass="sizeMenu" stylesheets="@../CSS/DashboardViewCSS.css">
             <children>
@@ -57,7 +57,7 @@
                 </HBox>
                 <Pane prefHeight="726.0" prefWidth="1180.0">
                     <children>
-                        <ScrollPane prefHeight="723.0" prefWidth="1180.0">
+                        <ScrollPane prefHeight="701.0" prefWidth="1180.0">
                             <content>
                                 <AnchorPane prefHeight="707.0" prefWidth="1178.0">
                                     <children>
@@ -120,6 +120,13 @@
                         </Pane>
                     </children>
                 </Pane>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" text="&lt;&lt;" />
+                  <Label text="Page" />
+                  <Button mnemonicParsing="false" text="&gt;&gt;" />
+               </children>
+            </HBox>
             </children>
         </VBox>
     </children>
