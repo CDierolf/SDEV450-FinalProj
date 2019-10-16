@@ -6,6 +6,7 @@
 package Views.TicketComponent;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Views.DashboardView.DashboardViewController;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,6 +41,7 @@ public class TicketComponentController implements Initializable {
     private Image eventImage;
     
     private Events event; // Event stored for UI interaction
+    private DashboardViewController dvc; // To update Dashboard view
     /**
      * Initializes the controller class.
      */
@@ -48,8 +50,9 @@ public class TicketComponentController implements Initializable {
 
     }    
     
-    public void getEvent(Events event) throws ExecutionException, InterruptedException {
-        System.out.println(event.getEventID());
+
+    public void getEvent(Events event, DashboardViewController dvc) throws ExecutionException, InterruptedException {
+
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
         this.pricePerTicketLabel.setText("$" + Double.toString(event.getPrice()));
@@ -58,8 +61,10 @@ public class TicketComponentController implements Initializable {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TicketComponentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // Set event variable
+        
+        // Set event and dashboard variables
         this.event = event;
+        this.dvc = dvc;
     }
     
     private String getEventDateTimeDetails(Events event) {
@@ -81,12 +86,11 @@ public class TicketComponentController implements Initializable {
         eventImageView.setImage(event.getEventImage());
     }
     
-
-    
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
         System.out.println(event.getName() + " " + date + time);
+        dvc.loadVenue(event);
     }
 }

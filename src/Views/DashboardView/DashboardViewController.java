@@ -7,6 +7,7 @@ package Views.DashboardView;
 
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Views.SeatMaps.Venue.Venue;
 import Views.TicketComponent.TicketComponentController;
 import java.io.IOException;
 import java.net.URL;
@@ -24,8 +25,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -35,6 +39,7 @@ import javafx.scene.layout.VBox;
  */
 public class DashboardViewController implements Initializable {
 
+    // Dashboard UI Objects
     @FXML
     private VBox leftVBox;
     @FXML
@@ -47,6 +52,19 @@ public class DashboardViewController implements Initializable {
     private TextField searchTextField;
     @FXML
     private Button searchButton;
+    
+    // Venue FXML Objects
+    @FXML
+    private Pane venuePane;
+    @FXML
+    private HBox venueHBox;
+    @FXML
+    private Label lblEventName;
+    @FXML
+    private Label lblEventDate;
+    @FXML
+    private Label lblEventTime;
+    private boolean isVenueLoaded;
 
     List<Events> events = new ArrayList<>();
     List<Image> eventImages = new ArrayList<>();
@@ -73,7 +91,9 @@ public class DashboardViewController implements Initializable {
 //        return image;
 //    }
     private void loadEvents(String eventKeyword, String pageNumber) throws IOException {
-
+        
+        unloadVenue(); // Unload venue view if shown
+        
         TicketMasterAPI tma = new TicketMasterAPI();
 
         events = tma.findEvents(eventKeyword, pageNumber).getEmbeddedEvents().getEvents();
@@ -92,7 +112,7 @@ public class DashboardViewController implements Initializable {
                         TicketComponentController tcCtrl = loader.getController();
                         
                         try {
-                            tcCtrl.getEvent(events.get(i));
+                            tcCtrl.getEvent(events.get(i), DashboardViewController.this);
                         } catch (ExecutionException | InterruptedException ex) {
                             Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -126,7 +146,6 @@ public class DashboardViewController implements Initializable {
                 }
             }
         });
-
     }
 
     public void getEvents() throws IOException {
@@ -140,5 +159,32 @@ public class DashboardViewController implements Initializable {
         centerVBox.getChildren().clear();
         rightVBox.getChildren().clear();
         rightMostVBox.getChildren().clear();
+    }
+    
+    public void loadVenue(Events event) {
+        System.out.println("Running loadEvent() method.");
+        
+        // Clear ticket components from view
+        clearEvents();
+        
+        // Load venue pane
+        lblEventName.setText(event.getName());
+        lblEventDate.setText(event.getEventDates().getEventStartData().getEventLocalDate());
+        lblEventTime.setText(event.getEventDates().getEventStartData().getEventLocalTime());
+        Venue ven = new Venue(1);
+        venueHBox.getChildren().add(ven);
+        venuePane.setVisible(true);
+        isVenueLoaded = true;
+    }
+    
+    private void unloadVenue() {
+        venuePane.setVisible(false); // Hide venue pane
+        if (isVenueLoaded) {
+            venueHBox.getChildren().remove(venueHBox.getChildren().size()-1); // Remove venue
+            isVenueLoaded = false;
+        }
+        lblEventName.setText("");
+        lblEventDate.setText("");
+        lblEventTime.setText("");
     }
 }
