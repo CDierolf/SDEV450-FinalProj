@@ -49,6 +49,7 @@ public class TicketComponentController implements Initializable {
     }    
     
     public void getEvent(Events event) throws ExecutionException, InterruptedException {
+        System.out.println(event.getEventID());
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
         this.pricePerTicketLabel.setText("$" + Double.toString(event.getPrice()));
