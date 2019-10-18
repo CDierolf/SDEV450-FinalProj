@@ -24,9 +24,7 @@ import javafx.scene.shape.Rectangle;
 //Begin Subclass Venu1
 public class Venue extends BorderPane implements Debug  {
 
-    private final int MAX_NUM_SEATS = 30;
-    private final int MIN_NUM_SEATS = 12;
-    private final int MAX_NUM_ROWS = 12;
+   
 
     public Venue(int venueId) {
         try {
