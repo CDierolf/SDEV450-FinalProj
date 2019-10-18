@@ -98,9 +98,7 @@ public class TicketComponentController implements Initializable {
         t.start();
     }
 
-    public void butthole() {
-        System.out.println("butthole");
-    }
+
 
     public void getImage(Events event) throws FileNotFoundException {
         eventImageView.setImage(event.getEventImage());

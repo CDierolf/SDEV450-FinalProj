@@ -137,9 +137,6 @@ public class DashboardViewController implements Initializable {
         thread.start();
     }
 
-    public void butthole() {
-        System.out.println("butthole");
-    }
 
     private void loadEventComponents() throws FileNotFoundException {
 
