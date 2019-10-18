@@ -27,7 +27,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import java.io.FileNotFoundException;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 
 /**
  * FXML Controller class
@@ -111,26 +110,19 @@ public class DashboardViewController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Runnable run = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            loadEventComponents();
-                        } catch (FileNotFoundException ex) {
-                            Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                };
-                Platform.runLater(run);
-            }
-
+        
+        // Run the loadEventComponents() method
+        // in a separate background thread
+        Thread thread = new Thread(() -> {
+            Runnable run = () -> {
+                try {
+                    loadEventComponents();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(DashboardViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            };
+            Platform.runLater(run);
         });
 
         thread.setDaemon(true);
@@ -138,6 +130,8 @@ public class DashboardViewController implements Initializable {
     }
 
 
+    // Load all data into the ticketcomponent controllers
+    // Get the images (runs concurrently from loadEvents()
     private void loadEventComponents() throws FileNotFoundException {
 
         for (int i = 0; i < eventComponents.size(); i++) {
@@ -149,6 +143,7 @@ public class DashboardViewController implements Initializable {
 
     }
 
+    // Display the components to the screen.
     private void displayEventComponents(VBox pane, int i) {
         switch (i % 4) {
             case 0:

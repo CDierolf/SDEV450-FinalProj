@@ -74,23 +74,19 @@ public class TicketComponentController implements Initializable {
         return date + " " + time;
     }
 
+    // Load images in the background and display when available.
     public void loadImage() {
         final Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                // call getImages asynchronously
                 getImage(event);
-
                 return null;
             }
-
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                Void result = task.getValue();
-            }
-
+        task.setOnSucceeded((WorkerStateEvent event1) -> {
+            Void result = task.getValue();
         });
 
         Thread t = new Thread(task);
