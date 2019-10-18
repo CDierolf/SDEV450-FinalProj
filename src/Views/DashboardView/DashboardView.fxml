@@ -32,7 +32,7 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </StackPane>
-                <Button id="shiny-orange" mnemonicParsing="false" prefHeight="27.0" prefWidth="274.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
+                <Button id="shiny-orange" fx:id="find" mnemonicParsing="false" onAction="#butthole" prefHeight="27.0" prefWidth="274.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
                 <Button id="shiny-orange" mnemonicParsing="false" prefHeight="27.0" prefWidth="276.0" text="View Purchased Events" />
                 <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0">
                     <children>
