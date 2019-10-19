@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -12,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="831.0" prefWidth="1461.0" styleClass="mainFxmlClass" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.DashboardView.DashboardViewController">
+<AnchorPane id="AnchorPane" prefHeight="831.0" prefWidth="1461.0" styleClass="mainFxmlClass" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.DashboardView.DashboardViewController">
     <children>
         <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="816.0" prefWidth="271.0" spacing="10.0" styleClass="sizeMenu" stylesheets="@../CSS/DashboardViewCSS.css">
             <children>
@@ -51,8 +56,8 @@
             <children>
                 <HBox prefHeight="97.0" prefWidth="895.0">
                     <children>
-                        <TextField fx:id="searchTextField" prefHeight="27.0" prefWidth="282.0" />
-                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Button" />
+                        <TextField fx:id="searchTextField" onAction="#getEvents" prefHeight="27.0" prefWidth="282.0" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Search" />
                     </children>
                 </HBox>
                 <Pane prefHeight="726.0" prefWidth="1180.0">
