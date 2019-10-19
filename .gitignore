@@ -1,4 +1,4 @@
-/dist/
-/nbproject/
-/build/
-nbproject/
+/dist/*
+/nbproject/*
+/build/*
+nbproject/*
