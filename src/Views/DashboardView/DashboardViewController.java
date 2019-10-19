@@ -169,6 +169,7 @@ public class DashboardViewController implements Initializable {
 
     public void getEvents() throws IOException, Exception {
         clearEvents();
+        this.currentPage = 0;
         loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage));
     }
 
