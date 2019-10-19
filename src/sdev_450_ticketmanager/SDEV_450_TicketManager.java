@@ -21,19 +21,12 @@ import javafx.stage.Stage;
  * @Description: Entry point for the application. Loads the LoginView
  */
 public class SDEV_450_TicketManager extends Application {
-    Venue ven = new Venue(1);
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Views/DashboardView/DashboardView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
-//        Scene scene = new Scene(ven1, 1050, 600);
-//        stage.setTitle("BST and AVL Trees");
-//        stage.setScene(scene);
-//        stage.setResizable(false);
-//        stage.show();
     }
 
     /**
