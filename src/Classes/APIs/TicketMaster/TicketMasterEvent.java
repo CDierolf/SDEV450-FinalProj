@@ -2,6 +2,7 @@ package Classes.APIs.TicketMaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.image.Image;
 
 /**
  * @Course: SDEV 350 ~ Java Programming II
@@ -31,10 +32,13 @@ public class TicketMasterEvent {
         public class Events {
             private String name;
             private String imageUrl;
+            private String id;
             private double price;
             private List<Images> images;
+            private Image eventImage;
             private List<PriceRanges> prices;
             private Dates dates;
+            
             
             public double getPrice() {
                 if (prices == null) {
@@ -44,6 +48,10 @@ public class TicketMasterEvent {
                 return this.price;
             }
             
+            public String getEventID() {
+                return this.id;
+            }
+            
             public String getName() {
                 return this.name;
             }
@@ -51,6 +59,10 @@ public class TicketMasterEvent {
                 return this.dates;
             }
             
+            public Image getEventImage() {
+                eventImage = new Image(getImageUrl());
+                return eventImage;
+            }
             public String getImageUrl() {
                 // Get the smallest available event image from 
                 // the API's image list.
@@ -62,10 +74,10 @@ public class TicketMasterEvent {
                 return this.dates;
             }
             public class Images {
-
                 private String url;
                 private int width;
                 private int height;
+             
                 
                 public String getImageUrl() {
                     return this.url;

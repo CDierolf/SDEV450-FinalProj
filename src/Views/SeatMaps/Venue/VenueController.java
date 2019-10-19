@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Views.SeatMaps.Venue1;
+package Views.SeatMaps.Venue;
 
+import Views.SeatMaps.Venue.Venue.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -14,7 +15,7 @@ import javafx.fxml.Initializable;
  *
  * @author pis7ftw
  */
-public class Venue1Controller implements Initializable {
+public class VenueController implements Initializable {
 
     /**
      * Initializes the controller class.
