@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" fx:id="eventViewPane" prefHeight="813.0" prefWidth="1190.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.FindEventsView.FindEventsViewController">
+   <children>
+      <HBox layoutX="10.0" prefHeight="100.0" prefWidth="1180.0">
+         <children>
+            <TextField fx:id="searchTextField" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Search" />
+         </children>
+      </HBox>
+      <Pane layoutX="10.0" layoutY="105.0" prefHeight="631.0" prefWidth="1180.0">
+         <children>
+            <ScrollPane prefHeight="631.0" prefWidth="1180.0">
+               <content>
+                  <AnchorPane prefHeight="582.0" prefWidth="1178.0">
+                     <children>
+                        <VBox fx:id="leftVBox" prefHeight="169.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="20.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox fx:id="centerVBox" layoutX="296.0" prefHeight="200.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="20.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox fx:id="rightVBox" layoutX="586.0" prefHeight="200.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="20.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox fx:id="rightMostVBox" layoutX="879.0" prefHeight="200.0" prefWidth="100.0">
+                           <padding>
+                              <Insets bottom="20.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="744.0" prefHeight="68.0" prefWidth="1173.0">
+         <children>
+            <Button fx:id="previousPageButton" mnemonicParsing="false" text="&lt;&lt;" />
+            <Label fx:id="pageLabel" text="Label" />
+            <Button fx:id="nextPageButton" mnemonicParsing="false" onAction="#gotoNextPage" text="&gt;&gt;" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

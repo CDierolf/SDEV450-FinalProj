@@ -28,6 +28,10 @@ public class TicketMasterEvent {
         public List<Events> getEvents() {
             return events;
         }
+        
+        public int getNumberOfEvents() {
+            return this.events.size();
+        }
 
         public class Events {
             private String name;

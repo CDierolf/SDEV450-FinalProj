@@ -1,7 +1,6 @@
 package Views.SeatMaps.Venue;
 
 //Imports
-import Views.SeatMaps.Venue.Venue.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
@@ -18,7 +17,7 @@ import javafx.scene.paint.Color;
 //Begin Subclass Seat
 public class Seat extends Circle {
     
-    private final int CIRCLE_RADIUS = 12;
+    private final int CIRCLE_RADIUS = 6;
     private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
     private final Color COLOR_UNAVAILABLE = Color.RED;
     
