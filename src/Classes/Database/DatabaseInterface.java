@@ -36,8 +36,8 @@ public class DatabaseInterface implements Debug {
     private Connection connection;
     private Statement stmt;
     private ResultSet rs;
-    private boolean debug = false; // for debug mode
-    private boolean logToFile = true; // for debugging, log to file or screen
+    private boolean debug = true; // for debug mode
+    private boolean logToFile = false; // for debugging, log to file or screen
     
     /**
      *

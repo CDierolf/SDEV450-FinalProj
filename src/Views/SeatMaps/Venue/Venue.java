@@ -56,10 +56,10 @@ public class Venue extends BorderPane implements Debug  {
             Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
             ResultSet rs = dao.getVenue(event);
             /* display seats for debugging*/
-            while (rs.next()) {
+            /*while (rs.next()) {
                 System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat") + 
                         ", Section:" +  rs.getString("section") + "SOLD? " + rs.getInt("sold"));
-            }
+            }*/
             
             //setTop(createRows(14,27)); // hard coded rows/seats
             setTop(createRows(rs));
@@ -106,10 +106,11 @@ public class Venue extends BorderPane implements Debug  {
         String lastrow = rs.getString("row");
         int i=0;int j=0;
         HBox seats = new HBox();
+        Boolean available = (rs.getInt("sold")!=1);
         do { 
             row = rs.getString("row");
-            if(row.equals(lastrow)) {
-                
+            available = (rs.getInt("sold")!=1);
+            if(row.equals(lastrow)) {                
 //            
 //                System.out.println("Row" + rs.getString("row") +
 //                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
@@ -117,7 +118,7 @@ public class Venue extends BorderPane implements Debug  {
                 seats.setAlignment(Pos.CENTER);
 
                 seats.setSpacing(spacing);            
-                Seat seat = new Seat(i++, j, 'G', true);
+                Seat seat = new Seat(i++, j, 'G', available);
                 seats.getChildren().add(seat);
                 //lastrow = row;
             }else{
