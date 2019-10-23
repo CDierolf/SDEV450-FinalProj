@@ -37,6 +37,9 @@ public class TicketMasterAPI {
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber);
         
+        System.out.println("NUMBER OF EVENTS: " + event.getEmbeddedEvents().getNumberOfEvents());
+        
+        System.out.println(event);
         if (event == null) {
             System.out.println("No events found.");
             // No events were found :(
@@ -62,7 +65,6 @@ public class TicketMasterAPI {
                 ticketMasterJsonObject = parseTicketMasterJSONStreamIntoObject(ticketMasterJsonStream);
                 ticketMasterJsonString = ticketMasterJsonObject.toString();
                 ticketMasterEvent = deserializeTicketMasterJsonIntoEventObject(ticketMasterJsonString);
-                
                 return ticketMasterEvent; // Everything we alright.
                 
             } else {

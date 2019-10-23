@@ -7,18 +7,21 @@ package Views.TicketComponent;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Views.DashboardView.DashboardViewController;
+import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -49,10 +52,12 @@ public class TicketComponentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
 
     }
-
-    public void getEvent(Events event, DashboardViewController dvc) {
+    
+    // 
+    public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
 
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
@@ -90,21 +95,27 @@ public class TicketComponentController implements Initializable {
         });
 
         Thread t = new Thread(task);
-        t.setDaemon(true); // thread will not prevent application shutdown
+        t.setDaemon(true); 
         t.start();
     }
-
-
 
     public void getImage(Events event) throws FileNotFoundException {
         eventImageView.setImage(event.getEventImage());
     }
 
     // Event handler for "Puchase Tickets" button
-    public void purchaseTickets() {
-        String date = event.getEventDates().getEventStartData().getEventLocalDate();
-        String time = event.getEventDates().getEventStartData().getEventLocalTime();
-        System.out.println(event.getName() + " " + date + time);
-        dvc.loadVenue(event);
+    public void purchaseTickets() throws IOException {
+//        
+//        String date = event.getEventDates().getEventStartData().getEventLocalDate();
+//        String time = event.getEventDates().getEventStartData().getEventLocalTime();
+//        System.out.println(event.getName() + " " + date + time);
+//        System.out.println(event);
+//        
+        // Load the SeatSelectionView
+        dvc.loadSeatSelectionView(event);
+        // Hide the FindEventsView
+        dvc.toggleEventViewVisiblity(false);
+
+
     }
 }
