@@ -42,7 +42,7 @@ public class Venue extends BorderPane implements Debug  {
             setTop(createRows(rs));
             setBottom(addStage());
             setCenter(moshPit());
-            
+            dao.close(); // close connection, statement, resultset
         } catch (SQLException ex) {
             Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,7 +65,7 @@ public class Venue extends BorderPane implements Debug  {
             setTop(createRows(rs));
             setBottom(addStage());
             //setCenter(moshPit()); // mosh pit was hard coded, will have to set it up in DB if we want to sell tickets
-            
+            dao.close(); // close connection, statement, resultset
         } catch (SQLException ex) {
             Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,38 +101,41 @@ public class Venue extends BorderPane implements Debug  {
         rows.setSpacing(5);
         rows.setAlignment(Pos.CENTER);
         double spacing = 10.0;
-        rs.next(); // get first row
-        String row = rs.getString("row");
-        String lastrow = rs.getString("row");
+        //rs.next(); // get first row
+        String row = "";
+        String lastrow = "";
         int i=0;int j=0;
         HBox seats = new HBox();
-        Boolean available = (rs.getInt("sold")!=1);
-        do { 
+        
+        while (rs.next()) { 
+            Boolean available = (rs.getInt("sold")!=1);
+            //if (lastrow == "") lastrow = rs.getString("row");// first iteration, set lastrow
             row = rs.getString("row");
             available = (rs.getInt("sold")!=1);
-            if(row.equals(lastrow)) {                
-//            
-//                System.out.println("Row" + rs.getString("row") +
-//                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
-
-                seats.setAlignment(Pos.CENTER);
-
-                seats.setSpacing(spacing);            
-                Seat seat = new Seat(i++, j, 'G', available);
-                seats.getChildren().add(seat);
-                //lastrow = row;
-            }else{
-//                System.out.println("NewRow" + rs.getString("row") +
-//                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
-
+            if(!row.equals(lastrow)) {   
                 rows.getChildren().add(seats);
                 lastrow = row;
                 j++;
                 i=0;
                 seats = new HBox();
             }
-        }while (rs.next());
-        
+//            
+//                System.out.println("Row" + rs.getString("row") +
+//                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
+
+            seats.setAlignment(Pos.CENTER);
+
+            seats.setSpacing(spacing);            
+            Seat seat = new Seat(rs.getInt("seat"), 
+                    rs.getInt("row"), 
+                    'G', 
+                    available);
+            i++;
+            seats.getChildren().add(seat);
+            //lastrow = row;
+
+        } 
+        rows.getChildren().add(seats);// add first row
         return rows;
         
     }

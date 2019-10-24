@@ -43,7 +43,7 @@ public class VenueDAO extends DatabaseInterface  {
         setDebug(this.getDebug());
         venueValues.add(Integer.toString(venueid));
         dataTypes.add("int");
-        ResultSet rs = callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+        ResultSet rs = callableStatementRs(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         //Date desEndDateField = null;// initialize for value coming from DB
         //Views.SeatMaps.Venue.Venue theVenue = new Views.SeatMaps.Venue.Venue(venueid);
@@ -78,7 +78,7 @@ public class VenueDAO extends DatabaseInterface  {
         } 
        
         Q1 = "{ call usp_getSeatsForEvent(?) }";   
-        ResultSet rs = callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+        ResultSet rs = callableStatementRs(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         //Date desEndDateField = null;// initialize for value coming from DB
         //Views.SeatMaps.Venue.Venue theVenue = new Views.SeatMaps.Venue.Venue(venueid);
@@ -125,17 +125,21 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
-        String Q1 = "{ call [usp_EventsInsert](?,?,?,?,?,?,?,?) }";
-        ResultSet rs = callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+        String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
+        callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
+        
+        close();//close connection, statement, resultset
+        return;
         // generate some sample sales
-        venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
+        /*venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
         dataTypes = new ArrayList<String>(); 
         venueValues.add(event.getEventID());
         dataTypes.add("string");
         Q1 = "{ call [usp_EventsGenerateDummySales](?) }";
         rs = callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));
+        close();//close connection, statement, resultset*/
     }
 
         
