@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -15,7 +10,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.CreateAccountView.CreateAccountViewController">
+
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="253.0" prefWidth="600.0">
          <children>
@@ -51,7 +47,7 @@
             <Insets top="275.0" />
          </StackPane.margin>
          <children>
-            <Button id="dark-blue" mnemonicParsing="false" styleClass="createAccountTextButton" stylesheets="@../CSS/LoginView.css" text="Create Account">
+            <Button id="dark-blue" fx:id="createAccountButton" mnemonicParsing="false" onAction="#createNewUserAccount" styleClass="createAccountTextButton" stylesheets="@../CSS/LoginView.css" text="Create Account">
                <HBox.margin>
                   <Insets right="40.0" />
                </HBox.margin>

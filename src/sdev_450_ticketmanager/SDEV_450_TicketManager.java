@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 public class SDEV_450_TicketManager extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/DashboardView/DashboardView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Views/LoginView/LoginView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

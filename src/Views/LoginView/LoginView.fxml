@@ -29,8 +29,8 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0" spacing="40.0">
          <children>
-            <Button id="shiny-orange" fx:id="loginButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Login" />
-            <Button id="shiny-orange" fx:id="exitButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Exit" />
+            <Button id="shiny-orange" fx:id="loginButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#openDashboard" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Login" />
+            <Button id="shiny-orange" fx:id="exitButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeApp" prefHeight="38.0" prefWidth="87.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Exit" />
          </children>
          <VBox.margin>
             <Insets bottom="30.0" />
@@ -38,7 +38,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" styleClass="createAccountText" stylesheets="@../CSS/LoginView.css">
          <children>
-            <Button id="dark-blue" fx:id="createAccountButton" mnemonicParsing="false" prefHeight="15.0" prefWidth="140.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Create an Account" />
+            <Button id="dark-blue" fx:id="createAccountButton" mnemonicParsing="false" onAction="#openCreateAccountView" prefHeight="15.0" prefWidth="140.0" styleClass="ctrlButton" stylesheets="@../CSS/LoginView.css" text="Create an Account" />
          </children>
       </HBox>
    </children>
