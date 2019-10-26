@@ -5,24 +5,24 @@
  */
 package Views.LoginView;
 
-import Classes.APIs.TicketMaster.TicketMasterAPI;
-import Classes.APIs.TicketMaster.TicketMasterEvent;
-import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoginViewController implements Initializable {
-  
+
     @FXML
-    private Button loginButton; 
+    private Button loginButton;
     @FXML
     private Button exitButton;
     @FXML
@@ -31,33 +31,49 @@ public class LoginViewController implements Initializable {
     private TextField userNameText;
     @FXML
     private PasswordField passwordText;
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-    }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //TODO
-        TicketMasterAPI tma = new TicketMasterAPI();
-        TicketMasterEvent tmeObject = new TicketMasterEvent();
-        tmeObject = tma.findEvents("Butthole+Surfers", "3");
-        
-        List<Events> events = new ArrayList<>();
-        events = tmeObject.getEmbeddedEvents().getEvents();
-        
-        for (Events e : events) {
-            System.out.printf("Event name: %s\n", e.getName());
-            System.out.printf("Event start date: %s\n", e.getDates().getEventStartData().getEventLocalDate());
-            System.out.printf("Event start time: %s\n", e.getDates().getEventStartData().getEventLocalTime());
-            System.out.printf("Event price: $%f\n", e.getPrice());
-            System.out.printf("Event image url: %s\n", e.getImageUrl());
-            
+
+    }
+
+    public void openCreateAccountView() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/Views/CreateAccountView/CreateAccountView.fxml"));
+            /* 
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+             */
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.setTitle("Create New Account");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
         }
+    }
 
-//            tma.findEvents("Taylor Swift", "2");
+    public void openDashboard() throws IOException {
+        // TODO 
+        // Authenticate User
+        // If Authenticated, display Dashbaord close LoginView
+        // If Not Authenticated, display error
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Views/DashboardView/DashboardView.fxml"));
 
-    }    
-    
+        Scene scene = new Scene(fxmlLoader.load(), 1461, 831);
+        Stage stage = new Stage();
+        stage.setTitle("Welcome ***USERNAME***");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void closeApp() throws IOException {
+       
+        Platform.exit();
+        System.exit(0);
+
+    }
+
 }

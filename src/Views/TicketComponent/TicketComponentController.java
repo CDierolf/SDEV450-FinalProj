@@ -15,13 +15,11 @@ import java.util.ResourceBundle;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -105,12 +103,14 @@ public class TicketComponentController implements Initializable {
 
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() throws IOException {
-//        
-//        String date = event.getEventDates().getEventStartData().getEventLocalDate();
-//        String time = event.getEventDates().getEventStartData().getEventLocalTime();
-//        System.out.println(event.getName() + " " + date + time);
-//        System.out.println(event);
-//        
+        
+        //        
+        //        String date = event.getEventDates().getEventStartData().getEventLocalDate();
+        //        String time = event.getEventDates().getEventStartData().getEventLocalTime();
+        //        System.out.println(event.getName() + " " + date + time);
+        //        System.out.println(event);
+        //
+        
         // Load the SeatSelectionView
         dvc.loadSeatSelectionView(event);
         // Hide the FindEventsView

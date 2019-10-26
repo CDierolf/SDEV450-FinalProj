@@ -7,11 +7,13 @@ package Views.CreateAccountView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -19,6 +21,7 @@ import javafx.scene.control.TextField;
  * @author pis7ftw
  */
 public class CreateAccountViewController implements Initializable {
+
     @FXML
     private Button createAccountButton;
     @FXML
@@ -29,12 +32,35 @@ public class CreateAccountViewController implements Initializable {
     private PasswordField retypePasswordText;
     @FXML
     private TextField emailText;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
+
+    public boolean validateAccountInput() {
+        // TODO Validate input
+        // Create new validation class in classes/utilities
+        // validate email with regex
+
+        return true;
+
+    }
     
+    public void createNewUserAccount() {
+        if (validateAccountInput()) {
+            handleCloseButtonAction();
+        } else {
+            // DISPLAY ERROR
+        }
+    }
+
+    private void handleCloseButtonAction() {
+        Stage stage = (Stage) createAccountButton.getScene().getWindow();
+        stage.close();
+    }
+
 }
