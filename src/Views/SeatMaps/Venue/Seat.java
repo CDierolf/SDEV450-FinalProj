@@ -82,7 +82,8 @@ public class Seat extends Circle {
         updateImage();
     }
     
-    // Update circle image color based on availability
+    // Update circle image color based on availability.
+    //
      private void updateImage() {
 
         if (isAvailable) {
