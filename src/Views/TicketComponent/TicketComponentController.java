@@ -53,8 +53,7 @@ public class TicketComponentController implements Initializable {
         
 
     }
-    
-    // 
+     
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
 
         this.eventLabel.setText(event.getName());

@@ -14,7 +14,7 @@
    <children>
       <HBox layoutX="10.0" prefHeight="100.0" prefWidth="1180.0">
          <children>
-            <TextField fx:id="searchTextField" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
+            <TextField fx:id="searchTextField" onAction="#getEvents" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
             <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Search" />
          </children>
       </HBox>

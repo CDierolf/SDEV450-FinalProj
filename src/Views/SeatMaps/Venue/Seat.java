@@ -4,6 +4,7 @@ package Views.SeatMaps.Venue;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 
 /** 
@@ -27,6 +28,8 @@ public class Seat extends Circle {
     private final char section;
     private boolean isAvailable;
     
+    private final Tooltip tt = new Tooltip("Select this seat");
+    
     // Getter methods
     // No setters should be required as set in constructor
     public int getSeatNumber() {
@@ -47,6 +50,7 @@ public class Seat extends Circle {
         this.rowNumber = rowNumber;
         this.section = section;
         this.isAvailable = isAvailable;
+        Tooltip.install(this, tt);
         // Create circle on initialization
         this.setSeatImage();
         // Register with Event Handler
@@ -72,11 +76,13 @@ public class Seat extends Circle {
     }
     
     // Update circle image color based on availability
-    private void updateImage() {
+     private void updateImage() {
         if (isAvailable) {
             setFill(COLOR_AVAILABLE);
+            tt.setText("Select this seat");
         } else {
             setFill(COLOR_UNAVAILABLE);
+            tt.setText("Unavailable");
         }
     }
     

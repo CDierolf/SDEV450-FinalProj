@@ -12,12 +12,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class LoginViewController implements Initializable {
 
@@ -34,7 +34,7 @@ public class LoginViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
     }
 
     public void openCreateAccountView() {
@@ -66,6 +66,7 @@ public class LoginViewController implements Initializable {
         Stage stage = new Stage();
         stage.setTitle("Welcome ***USERNAME***");
         stage.setScene(scene);
+        //stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
     }
 

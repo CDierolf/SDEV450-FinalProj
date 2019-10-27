@@ -28,67 +28,75 @@ public class TicketMasterEvent {
         public List<Events> getEvents() {
             return events;
         }
-        
+
         public int getNumberOfEvents() {
             return this.events.size();
         }
 
         public class Events {
+
             private String name;
             private String imageUrl;
             private String id;
-            private double price;
+            private double price = 18.00;
             private List<Images> images;
             private Image eventImage;
-            private List<PriceRanges> prices;
+            private List<PriceRanges> priceRanges;
             private Dates dates;
-            
-            
+
             public double getPrice() {
-                if (prices == null) {
-                    this.price = 18.00;
-                }
-                
-                return this.price;
+//                if (priceRanges == null) {
+//                    this.price = 18.00;
+//                }
+                return 18.00;
             }
-            
+//            public List<PriceRanges> retrievePrice() {
+//
+//
+//                return this.priceRanges;
+//            }
+
             public String getEventID() {
                 return this.id;
             }
-            
+
             public String getName() {
                 return this.name;
             }
+
             public Dates getDates() {
                 return this.dates;
             }
-            
+
             public Image getEventImage() {
                 eventImage = new Image(getImageUrl());
                 return eventImage;
             }
+
             public String getImageUrl() {
                 // Get the smallest available event image from 
                 // the API's image list.
                 return images.get(9).getImageUrl();
             }
-            
 
             public Dates getEventDates() {
                 return this.dates;
             }
+
             public class Images {
+
                 private String url;
                 private int width;
                 private int height;
-             
-                
+
                 public String getImageUrl() {
                     return this.url;
                 }
+
                 public int getImageWidth() {
                     return this.width;
                 }
+
                 public int getImageHeight() {
                     return this.height;
                 }
@@ -97,7 +105,7 @@ public class TicketMasterEvent {
             public class Dates {
 
                 public Start start;
-                
+
                 public Start getEventStartData() {
                     return this.start;
                 }
@@ -106,21 +114,22 @@ public class TicketMasterEvent {
 
                     public String localDate;
                     public String localTime;
-                    
+
                     public String getEventLocalDate() {
                         return this.localDate;
                     }
+
                     public String getEventLocalTime() {
                         return this.localTime;
                     }
-
                 }
             }
-            
+
             public class PriceRanges {
-                private String max;
-                
-                public String getPrice() {
+
+                private double max;
+
+                public double getPrice() {
                     return this.max;
                 }
             }
