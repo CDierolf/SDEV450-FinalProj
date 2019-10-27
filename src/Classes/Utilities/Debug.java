@@ -41,26 +41,18 @@ public interface Debug {
      */
     public void setLogToFile(boolean logToFile);
   
-    /**
-     *
-     * @param message
-     */
-    public void logDebug(String message);
-    
-    /**
-     *
-     * @param message
-     * @param level
-     */
-    public void logDebug(String message, String level);
-    
-    /**
-     * 
-     * @param message
-     * @param level
-     * @param robust 
-     */
-    public void logDebug(String message, String level, boolean robust);
+    default String myToString(String[] theArray) {
+        String result = "[";
+        for (int i = 0; i < theArray.length; i++) {
+           if (i > 0) {
+              result = result + ",";
+           }
+           String item = theArray[i];
+           result = result + item;
+        }
+        result = result + "]";
+        return result;
+     }
     
     /**
      *
@@ -73,6 +65,52 @@ public interface Debug {
      * @return
      */
     public boolean getDebug();
+       /**
+     * 
+     * @param message
+     * @param level 
+     */
+
+    default void logDebug(String message, String level) {
+        this.logDebug(message, level, true);
+    }
     
-    public String myToString(String[] theArray);
+    /**
+     * 
+     * @param message 
+     */
+
+    default void logDebug(String message) {
+        this.logDebug(message, "info");
+    }
+            /**
+     * 
+     * @param message
+     * @param level
+     * @param robust 
+     */
+
+    default void logDebug(String message, String level, boolean robust) {
+        String callingMethod = Thread.currentThread().getStackTrace()[3].getMethodName();
+        String lineNumber = Integer.toString(Thread.currentThread().getStackTrace()[3].getLineNumber());
+        if (level.length() == 0) {
+            level = "info";
+        }
+        
+        if(robust) {
+            message = message  + " From:" + callingMethod + " linenumber:" + lineNumber; 
+        }
+        if (getLogToFile()) {
+            // log to file
+            if("info".equalsIgnoreCase(level)) {
+                logger.info(message);
+            }else{
+                // level = error
+                //logger.error(message);
+            }
+        } else { // log debugging messages to output
+            System.out.println(message);
+        }
+    }
+
 } //End Subclass Debug

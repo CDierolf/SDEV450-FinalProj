@@ -36,8 +36,8 @@ public class DatabaseInterface implements Debug {
     private Connection connection;
     private Statement stmt;
     private ResultSet rs;
-    private boolean debug = false; // for debug mode
-    private boolean logToFile = true; // for debugging, log to file or screen
+    private boolean debug = true; // for debug mode
+    private boolean logToFile = false; // for debugging, log to file or screen
     
     /**
      *
@@ -144,16 +144,23 @@ public class DatabaseInterface implements Debug {
             ps = con.prepareStatement(query);
 
             for (int i = 0; i < args.length; i++) {
-                if ("int".equalsIgnoreCase(datatypes[i])) {
+                 if ("int".equalsIgnoreCase(datatypes[i])) {
                     ps.setInt(i+1, Integer.parseInt(args[i]));
+                } else if ("bit".equalsIgnoreCase(datatypes[i])) {
+                    ps.setBoolean(i+1, Boolean.parseBoolean(args[i]) );
+                } else if ("money".equalsIgnoreCase(datatypes[i])) {
+                    ps.setDouble(i+1, Double.parseDouble(args[i]) );
                 } else if ("string".equalsIgnoreCase(datatypes[i])) {
                     ps.setString(i+1, args[i]);
                 } else if ("date".equalsIgnoreCase(datatypes[i])) {
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d");
                     ps.setDate(i+1, java.sql.Date.valueOf(args[i]));
-                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {
+                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
                     
-                   
+                    ps.setDate(i+1, Date.valueOf(args[i]));
+                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
                     java.util.Date result;                    
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
                     result = d.parse (args[i]);
@@ -173,43 +180,52 @@ public class DatabaseInterface implements Debug {
 
     }
    /**
-     * execute a prepared statement
+     * execute a callable statement
      *
      * @param query
      * @param args
      * @param datatypes (int or string or date, etc)
+     * @return resultset
      */
-    public ResultSet callableStatement(String query, String[] args,
+    public ResultSet callableStatementRs(String query, String[] args,
             String[] datatypes) {
         Connection con = null;
-        CallableStatement ps = null;
+        CallableStatement cs = null;
 
         try {
             con = connectionPool.getConnection();
             con.setAutoCommit(false);
 
-            ps = con.prepareCall(query);
+            cs = con.prepareCall(query);
 
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
-                    ps.setInt(i+1, Integer.parseInt(args[i]));
+                    cs.setInt(i+1, Integer.parseInt(args[i]));
+                } else if ("bit".equalsIgnoreCase(datatypes[i])) {
+                    cs.setBoolean(i+1, Boolean.parseBoolean(args[i]) );
+                } else if ("money".equalsIgnoreCase(datatypes[i])) {
+                    cs.setDouble(i+1, Double.parseDouble(args[i]) );
                 } else if ("string".equalsIgnoreCase(datatypes[i])) {
-                    ps.setString(i+1, args[i]);
+                    cs.setString(i+1, args[i]);
                 } else if ("date".equalsIgnoreCase(datatypes[i])) {
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d");
-                    ps.setDate(i+1, java.sql.Date.valueOf(args[i]));
-                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {
+                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
                     
-                   
+                    cs.setDate(i+1, Date.valueOf(args[i]));
+                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
                     java.util.Date result;                    
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
                     result = d.parse (args[i]);
                     java.sql.Date sqlDate = new java.sql.Date(result.getTime());
                     
-                    ps.setDate(i+1, sqlDate);
+                    cs.setDate(i+1, sqlDate);
                 } // other data types
             }
-            rs = ps.executeQuery();
+            rs = cs.executeQuery();
+           
             return rs;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -219,7 +235,117 @@ public class DatabaseInterface implements Debug {
         return rs;
     }
 
+       /**
+     * execute a callable statement
+     *
+     * @param query
+     * @param args
+     * @param datatypes (int or string or date, etc)
+     * @return nothing
+     */
+    public void callableStatement(String query, String[] args,
+            String[] datatypes) {
+        Connection con = null;
+        CallableStatement cs = null;
 
+        try {
+            con = connectionPool.getConnection();
+            con.setAutoCommit(false);
+
+            cs = con.prepareCall(query);
+
+            for (int i = 0; i < args.length; i++) {
+                if ("int".equalsIgnoreCase(datatypes[i])) {
+                    cs.setInt(i+1, Integer.parseInt(args[i]));
+                } else if ("bit".equalsIgnoreCase(datatypes[i])) {
+                    cs.setBoolean(i+1, Boolean.parseBoolean(args[i]) );
+                } else if ("money".equalsIgnoreCase(datatypes[i])) {
+                    cs.setDouble(i+1, Double.parseDouble(args[i]) );
+                } else if ("string".equalsIgnoreCase(datatypes[i])) {
+                    cs.setString(i+1, args[i]);
+                } else if ("date".equalsIgnoreCase(datatypes[i])) {
+                    SimpleDateFormat d = new SimpleDateFormat("y-M-d");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {
+                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
+                    
+                    cs.setDate(i+1, Date.valueOf(args[i]));
+                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
+                    java.util.Date result;                    
+                    SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
+                    result = d.parse (args[i]);
+                    java.sql.Date sqlDate = new java.sql.Date(result.getTime());
+                    
+                    cs.setDate(i+1, sqlDate);
+                } // other data types
+            }
+            cs.executeQuery();
+           
+            return;
+        } catch (Exception e) {
+            //String module, String query, Boolean exit, String error
+            e.printStackTrace();
+            JDBCError("callableStatement", query, true, e.getMessage()  + "Args:" + myToString(args) + "Datatypes:" + myToString(datatypes));
+        }
+        return;
+    }
+   /**
+     * execute a callable statement that returns an integer
+     * for getting counts, etc
+     * @param query
+     * @param args
+     * @param datatypes (int or string or date, etc)
+     */
+    public int callableStatementReturnInt(String query, String[] args,
+            String[] datatypes) {
+        Connection con = null;
+        CallableStatement cs = null;
+        int returnValue = 0;
+        try {
+            con = connectionPool.getConnection();
+            con.setAutoCommit(false);
+
+            cs = con.prepareCall(query);
+            
+            for (int i = 0; i < args.length; i++) {
+                if ("int".equalsIgnoreCase(datatypes[i])) {
+                    cs.setInt(i+1, Integer.parseInt(args[i]));
+                } else if ("bit".equalsIgnoreCase(datatypes[i])) {
+                    cs.setBoolean(i+1, Boolean.parseBoolean(args[i]) );
+                } else if ("money".equalsIgnoreCase(datatypes[i])) {
+                    cs.setDouble(i+1, Double.parseDouble(args[i]) );
+                } else if ("string".equalsIgnoreCase(datatypes[i])) {
+                    cs.setString(i+1, args[i]);
+                } else if ("date".equalsIgnoreCase(datatypes[i])) {
+                    SimpleDateFormat d = new SimpleDateFormat("y-M-d");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {
+                    SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
+                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
+                    java.util.Date result;                    
+                    SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
+                    result = d.parse (args[i]);
+                    java.sql.Date sqlDate = new java.sql.Date(result.getTime());
+                    
+                    cs.setDate(i+1, sqlDate);
+                } // other data types
+            }
+            cs.registerOutParameter(args.length+1, java.sql.Types.INTEGER);
+            
+            //CallableStatement proc = con.prepareCall(query);
+            //proc.registerOutParameter(1, Types.INTEGER);
+            cs.execute();
+            returnValue = cs.getInt(args.length+1);
+            close();
+        } catch (Exception e) {
+            //String module, String query, Boolean exit, String error
+            e.printStackTrace();
+            JDBCError("callableStatement", query, true, e.getMessage()  + "Args:" + myToString(args) + "Datatypes:" + myToString(datatypes));
+        }
+        return returnValue;
+    }
 
     /**
      *
@@ -457,56 +583,7 @@ public class DatabaseInterface implements Debug {
 
     } // end JDBCError
 
-  
-
-    /**
-     * 
-     * @param message
-     * @param level 
-     */
-
-    public void logDebug(String message, String level) {
-        this.logDebug(message, level, true);
-    }
-    
-    /**
-     * 
-     * @param message 
-     */
-    @Override
-    public void logDebug(String message) {
-        this.logDebug(message, "info");
-    }
-            /**
-     * 
-     * @param message
-     * @param level
-     * @param robust 
-     */
-    @Override
-    public void logDebug(String message, String level, boolean robust) {
-        String callingMethod = Thread.currentThread().getStackTrace()[3].getMethodName();
-        String lineNumber = Integer.toString(Thread.currentThread().getStackTrace()[3].getLineNumber());
-        if (level.length() == 0) {
-            level = "info";
-        }
-        
-        if(robust) {
-            message = message  + " From:" + callingMethod + " linenumber:" + lineNumber; 
-        }
-        if (getLogToFile()) {
-            // log to file
-            if("info".equalsIgnoreCase(level)) {
-                logger.info(message);
-            }else{
-                // level = error
-                //logger.error(message);
-            }
-        } else { // log debugging messages to output
-            System.out.println(message);
-        }
-    }
-    
+ 
     
     /**
      * 
@@ -543,24 +620,6 @@ public class DatabaseInterface implements Debug {
         return debug;
     }
 
-    /**
-     *
-     * @param theArray
-     * @return
-     */
-    @Override
-     public String myToString(String[] theArray) {
-        String result = "[";
-        for (int i = 0; i < theArray.length; i++) {
-           if (i > 0) {
-              result = result + ",";
-           }
-           String item = theArray[i];
-           result = result + item;
-        }
-        result = result + "]";
-        return result;
-     }
 
 
 

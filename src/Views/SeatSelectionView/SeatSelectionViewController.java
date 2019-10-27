@@ -69,7 +69,7 @@ public class SeatSelectionViewController implements Initializable {
         System.out.println(event.getEventDates().getEventStartData().getEventLocalDate());
         System.out.println(event.getEventDates().getEventStartData().getEventLocalTime());
 
-        Venue ven = new Venue(1);
+        Venue ven = new Venue(event);
         venuePane.getChildren().add(ven);
         venuePane.setVisible(true);
         //isVenueLoaded = true;

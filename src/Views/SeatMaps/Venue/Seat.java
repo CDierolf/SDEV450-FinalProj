@@ -21,12 +21,14 @@ public class Seat extends Circle {
     private final int CIRCLE_RADIUS = 6;
     private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
     private final Color COLOR_UNAVAILABLE = Color.RED;
+    private final Color COLOR_SELECTED = Color.LIME;
     
     // Instance variables
     private final int seatNumber; // Final ivar - set in constructor
     private final int rowNumber; // Final ivar - set in constructor
     private final char section;
     private boolean isAvailable;
+    private boolean isSelected;
     
     private final Tooltip tt = new Tooltip("Select this seat");
     
@@ -63,10 +65,15 @@ public class Seat extends Circle {
         public void handle(MouseEvent e) {
             System.out.println("Seat Number: " + seatNumber + ". Row Number: " + rowNumber + ""
                     + " Section: " + section);
-            isAvailable = !isAvailable;
+            //isAvailable = !isAvailable;
+            if (isAvailable) {
+                isSelected = !isSelected;
+            } else {
+                System.out.println("Seat not available.");
+            }
             updateImage();
         }
-    };
+    };  
     
     // Create circle representation of seat for Venue view
     private void setSeatImage() {
@@ -77,12 +84,18 @@ public class Seat extends Circle {
     
     // Update circle image color based on availability
      private void updateImage() {
+
         if (isAvailable) {
             setFill(COLOR_AVAILABLE);
             tt.setText("Select this seat");
-        } else {
+        }
+        if (isSelected) {
+            setFill(COLOR_SELECTED);
+            tt.setText("Selected");
+        }
+        if (!isAvailable) {
             setFill(COLOR_UNAVAILABLE);
-            tt.setText("Unavailable");
+            tt.setText("Seat unavailable");
         }
     }
     
