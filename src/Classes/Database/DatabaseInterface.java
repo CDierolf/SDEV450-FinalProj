@@ -144,16 +144,23 @@ public class DatabaseInterface implements Debug {
             ps = con.prepareStatement(query);
 
             for (int i = 0; i < args.length; i++) {
-                if ("int".equalsIgnoreCase(datatypes[i])) {
+                 if ("int".equalsIgnoreCase(datatypes[i])) {
                     ps.setInt(i+1, Integer.parseInt(args[i]));
+                } else if ("bit".equalsIgnoreCase(datatypes[i])) {
+                    ps.setBoolean(i+1, Boolean.parseBoolean(args[i]) );
+                } else if ("money".equalsIgnoreCase(datatypes[i])) {
+                    ps.setDouble(i+1, Double.parseDouble(args[i]) );
                 } else if ("string".equalsIgnoreCase(datatypes[i])) {
                     ps.setString(i+1, args[i]);
                 } else if ("date".equalsIgnoreCase(datatypes[i])) {
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d");
                     ps.setDate(i+1, java.sql.Date.valueOf(args[i]));
-                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {
+                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
                     
-                   
+                    ps.setDate(i+1, Date.valueOf(args[i]));
+                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
                     java.util.Date result;                    
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
                     result = d.parse (args[i]);
@@ -273,7 +280,7 @@ public class DatabaseInterface implements Debug {
                     cs.setDate(i+1, sqlDate);
                 } // other data types
             }
-            rs = cs.executeQuery();
+            cs.executeQuery();
            
             return;
         } catch (Exception e) {

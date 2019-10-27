@@ -20,12 +20,14 @@ public class Seat extends Circle {
     private final int CIRCLE_RADIUS = 6;
     private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
     private final Color COLOR_UNAVAILABLE = Color.RED;
+    private final Color COLOR_SELECTED = Color.LIME;
     
     // Instance variables
     private final int seatNumber; // Final ivar - set in constructor
     private final int rowNumber; // Final ivar - set in constructor
     private final char section;
     private boolean isAvailable;
+    private boolean isSelected;
     
     // Getter methods
     // No setters should be required as set in constructor
@@ -47,6 +49,7 @@ public class Seat extends Circle {
         this.rowNumber = rowNumber;
         this.section = section;
         this.isAvailable = isAvailable;
+        this.isSelected = false;
         // Create circle on initialization
         this.setSeatImage();
         // Register with Event Handler
@@ -59,7 +62,12 @@ public class Seat extends Circle {
         public void handle(MouseEvent e) {
             System.out.println("Seat Number: " + seatNumber + ". Row Number: " + rowNumber + ""
                     + " Section: " + section);
-            isAvailable = !isAvailable;
+            //isAvailable = !isAvailable;
+            if (isAvailable) {
+                isSelected = !isSelected;
+            } else {
+                System.out.println("Seat not available.");
+            }
             updateImage();
         }
     };
@@ -75,7 +83,11 @@ public class Seat extends Circle {
     private void updateImage() {
         if (isAvailable) {
             setFill(COLOR_AVAILABLE);
-        } else {
+        }
+        if (isSelected) {
+            setFill(COLOR_SELECTED);
+        }
+        if (!isAvailable) {
             setFill(COLOR_UNAVAILABLE);
         }
     }
