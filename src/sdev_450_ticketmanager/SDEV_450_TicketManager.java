@@ -20,6 +20,7 @@ import javafx.stage.Stage;
  * @Date: Sep 24, 2019
  * @Description: Entry point for the application. Loads the LoginView
  */
+// Test comment
 public class SDEV_450_TicketManager extends Application {
     @Override
     public void start(Stage stage) throws Exception {
