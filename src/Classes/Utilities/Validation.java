@@ -188,6 +188,27 @@ public class Validation extends Alerts{
         
         return isValid;
     }
+    
+    /**
+     * Validates equality of two passwords passed in as arguments.
+     * @param passOne
+     * @param passTwo
+     * @return boolean
+     */
+    public boolean validatePassword(String passOne, String passTwo) {
+        return passOne == passTwo;
+    }
+    
+    /**
+     * Validates email off of the emailRegex pattern.
+     * @param email
+     * @return boolean
+     */
+    public boolean validateEmail(String email) {
+        boolean validRegex = matchesRegex(email, emailRegex);
+        
+        return validRegex;
+    }
 
     /**
      * Returns result of match between input and the provided regex expression
@@ -199,5 +220,7 @@ public class Validation extends Alerts{
     private boolean matchesRegex(String input, String regex) {
         return input.matches(regex);
     }
+    
+    
 
 } //End Subclass ValidationUtils

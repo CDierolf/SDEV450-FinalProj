@@ -5,9 +5,9 @@
  */
 package Views.CreateAccountView;
 
+import Classes.Utilities.Validation;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,12 +15,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+
 /**
  * FXML Controller class
  *
  * @author pis7ftw
  */
-public class CreateAccountViewController implements Initializable {
+public class CreateAccountViewController extends Validation implements Initializable {
 
     @FXML
     private Button createAccountButton;
@@ -42,19 +43,26 @@ public class CreateAccountViewController implements Initializable {
     }
 
     public boolean validateAccountInput() {
-        // TODO Validate input
-        // Create new validation class in classes/utilities
-        // validate email with regex
+        boolean isValidPassword = validatePassword(this.passwordText.getText(), 
+                this.retypePasswordText.getText());
+        boolean isValidEmail = validateEmail(this.emailText.getText());
 
-        return true;
+        return isValidPassword && isValidEmail;
 
     }
     
+    public boolean validatePopulatedFields() {
+        boolean userNameBlank = validateForBlankInput(this.userNameText.getText(), "Username", false);
+        boolean firstPasswordBlank = validateForBlankInput(this.passwordText.getText(), "Password", false);
+        boolean secondPasswordBlank = validateForBlankInput(this.retypePasswordText.getText(), "Password", false);
+        boolean emailBlank = validateForBlankInput(this.emailText.getText(), "Email", false);
+    }
+    
     public void createNewUserAccount() {
-        if (validateAccountInput()) {
-            handleCloseButtonAction();
+        if (!validateAccountInput() || !validatePopulatedFields()) {
+            // Show err's
         } else {
-            // DISPLAY ERROR
+            handleCloseButtonAction();
         }
     }
 
@@ -62,5 +70,7 @@ public class CreateAccountViewController implements Initializable {
         Stage stage = (Stage) createAccountButton.getScene().getWindow();
         stage.close();
     }
+    
+    
 
 }

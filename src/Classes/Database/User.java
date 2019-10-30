@@ -1,5 +1,7 @@
 package Classes.Database;
 
+import Classes.Utilities.Validation;
+
 /**
  * @Course: SDEV 250 ~ Java Programming I
  * @Author Name: Stephen Graybeal
@@ -8,26 +10,37 @@ package Classes.Database;
  * @Subclass User Description:
  */
 //Imports
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import org.json.JSONObject;
-
-//Begin Subclass User
-public class User {
+public class User extends Validation{
 
     long userID;
     String username;
     String password;
     String email;
-    String firstname;
-    String lastname;
-    String address1;
-    String address2;
-    String city;
-    String state;
-    int zipcode;
+    
+    
+    public User(String uName, String password, String email) {
+
+        this.username = uName;
+        this.password = password;
+        this.email = email;
+    }
+    
+    public String getUsername() {
+        return this.username;
+    }
+    public String getPassword() {
+        return this.password;
+    }
+    public String getEmail() {
+        return this.email;
+    }
+    
+    
+    
+    
+    
+    
+    
 
 } //End Subclass Userpackage Classes.Database;
 
