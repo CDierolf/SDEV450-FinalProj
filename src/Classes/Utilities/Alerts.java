@@ -13,13 +13,13 @@ import javafx.scene.control.Alert;
 
 //Begin Subclass Alerts
 public class Alerts {
-    Alert alert = new Alert(Alert.AlertType.WARNING);
+    private static Alert alert = new Alert(Alert.AlertType.WARNING);
     
     /**
      * Provides an alert for a blank field.
      * @return 
      */
-    public Alert blankFieldAlert(String fieldID) {
+    public static Alert blankFieldAlert(String fieldID) {
         alert.setTitle("Blank Field Found");
         alert.setHeaderText(fieldID + " cannot be blank.");
         alert.setContentText("Please provide a valid value for "
@@ -32,7 +32,7 @@ public class Alerts {
      * Provides an alert for invalid characters within a field.
      * @return 
      */
-    public Alert invalidIntegerAlert(String fieldID) {
+    public static Alert invalidIntegerAlert(String fieldID) {
         alert.setTitle("Invalid Value Entered");
         alert.setHeaderText(fieldID + " must have at least one number\n"
                 + "and contain numbers only.");
@@ -41,7 +41,7 @@ public class Alerts {
         return alert;
     }
     
-    public Alert invalidDoubleAlert(String fieldID) {
+    public static Alert invalidDoubleAlert(String fieldID) {
         alert.setTitle("Invalid Decimal Value Entered");
         alert.setHeaderText(fieldID + " must contain a decimal value only without 0's");
         alert.setContentText("Please provide a valid decimal value for " + fieldID);
@@ -49,7 +49,7 @@ public class Alerts {
         return alert;
     }
     
-    public Alert invalidNameAlert(String fieldID) {
+    public static Alert invalidNameAlert(String fieldID) {
         alert.setTitle("Invalid Name");
         alert.setHeaderText(fieldID + " must contain at least one character,"
                 + "\nand cannot contain numbers or special characters.");
@@ -58,7 +58,7 @@ public class Alerts {
         return alert;
     }
     
-    public Alert stackEmptyAlert() {
+    public static Alert stackEmptyAlert() {
         alert.setTitle("Nothing to Sort");
         alert.setHeaderText("There is no longer any values to remove from the"
                 + " list.");
@@ -67,7 +67,7 @@ public class Alerts {
         return alert;
     }
     
-    public Alert genericAlert(String title, String header, String content) {
+    public static Alert genericAlert(String title, String header, String content) {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);

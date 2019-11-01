@@ -1,7 +1,9 @@
 package Classes.Utilities;
 
+import java.util.Arrays;
 import java.util.List;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
 
 /** 
  * @Course: SDEV 350 ~ Java Programming II
@@ -15,10 +17,10 @@ import javafx.scene.control.CheckBox;
 //Begin Subclass Validation
 public class Validation extends Alerts{
     
-    private final String numericalRegex = "^[0-9]*$";
-    private final String nameRegex = "^[A-Za-z\\s]*$";
-    private final String doubleRegex = "-?\\d+(\\.\\d+)?";
-    private final String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)"
+    private static final String numericalRegex = "^[0-9]*$";
+    private static final String nameRegex = "^[A-Za-z\\s]*$";
+    private static final String doubleRegex = "-?\\d+(\\.\\d+)?";
+    private static final String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)"
                         + "*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     /**
@@ -28,7 +30,7 @@ public class Validation extends Alerts{
      * @param displayAlert
      * @return
      */
-    public boolean validateIntegerInput(String s, String fieldID, boolean displayAlert) {
+    public static boolean validateIntegerInput(String s, String fieldID, boolean displayAlert) {
 
         String s1 = s.trim();
         boolean validRegex = matchesRegex(s, numericalRegex);
@@ -53,7 +55,7 @@ public class Validation extends Alerts{
      * @param s
      * @return 
      */
-    public boolean validateIntegerInput(String s) {
+    public static boolean validateIntegerInput(String s) {
         String s1 = s.trim();
         boolean validRegex = matchesRegex(s, numericalRegex);
         boolean isValid = false;
@@ -72,7 +74,7 @@ public class Validation extends Alerts{
      * @param s
      * @return
      */
-    public boolean validateForBlankInput(String s, String fieldID,
+    public static boolean validateForBlankInput(String s, String fieldID,
             boolean displayAlert) {
 
         boolean isInvalid = s.isEmpty() || s.trim().length() == 0;
@@ -105,7 +107,7 @@ public class Validation extends Alerts{
      * @param displayAlert - display alert (true/false)
      * @return
      */
-    public boolean validateDoubleInput(String s, String fieldID, boolean displayAlert) {
+    public static boolean validateDoubleInput(String s, String fieldID, boolean displayAlert) {
         String s1 = s.trim();
         boolean isValid = false;
         boolean hasZero = String.valueOf(s1).contains("0");
@@ -128,7 +130,7 @@ public class Validation extends Alerts{
         return isValid;
     }
 
-    public boolean validateNameInput(String s, String fieldID, boolean displayAlert) {
+    public static boolean validateNameInput(String s, String fieldID, boolean displayAlert) {
         String s1 = s.trim();
         boolean isValid = false;
         boolean validRegex = matchesRegex(s1, nameRegex);
@@ -152,7 +154,7 @@ public class Validation extends Alerts{
      * @param lstChecks
      * @return true only one selected, false more than one selected
      */
-    public boolean oneCheckSelected(List<CheckBox> lstChecks, boolean displayAlert) {
+    public static boolean oneCheckSelected(List<CheckBox> lstChecks, boolean displayAlert) {
         int numChecks = 0;
         boolean valid = false;
         for (CheckBox c : lstChecks) {
@@ -173,7 +175,7 @@ public class Validation extends Alerts{
         return valid;
     }
     
-    public boolean validateFilePath(String s, String fieldID, boolean displayAlert) {
+    public static boolean validateFilePath(String s, String fieldID, boolean displayAlert) {
         String s1 = s.trim();
         boolean isValid = false;
         if (s1.isEmpty()) {
@@ -195,8 +197,9 @@ public class Validation extends Alerts{
      * @param passTwo
      * @return boolean
      */
-    public boolean validatePassword(String passOne, String passTwo) {
-        return passOne == passTwo;
+    public static boolean validatePassword(PasswordField passOne, PasswordField passTwo) {
+       
+       return (passOne.getText().equals(passTwo.getText()));
     }
     
     /**
@@ -204,7 +207,7 @@ public class Validation extends Alerts{
      * @param email
      * @return boolean
      */
-    public boolean validateEmail(String email) {
+    public static boolean validateEmail(String email) {
         boolean validRegex = matchesRegex(email, emailRegex);
         
         return validRegex;
@@ -217,7 +220,7 @@ public class Validation extends Alerts{
      * @param regex - String regex
      * @return
      */
-    private boolean matchesRegex(String input, String regex) {
+    private static boolean matchesRegex(String input, String regex) {
         return input.matches(regex);
     }
     

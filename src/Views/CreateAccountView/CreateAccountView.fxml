@@ -28,10 +28,10 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="186.0" prefWidth="195.0" spacing="24.0">
                <children>
-                  <TextField />
-                  <PasswordField />
-                  <PasswordField />
-                  <TextField />
+                  <TextField fx:id="userNameText" />
+                  <PasswordField fx:id="passwordText" />
+                  <PasswordField fx:id="retypePasswordText" />
+                  <TextField fx:id="emailText" />
                </children>
                <HBox.margin>
                   <Insets left="15.0" top="10.0" />
