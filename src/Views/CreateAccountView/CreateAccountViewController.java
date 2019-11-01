@@ -9,7 +9,6 @@ import Classes.Utilities.Alerts;
 import Classes.Utilities.Enums.FieldEnum;
 import Classes.Utilities.Validation;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,23 +46,43 @@ public class CreateAccountViewController extends Validation implements Initializ
     }
 
     // Validate password matching and valid email regex
-    public boolean validateAccountInput() {
-        boolean validPasswords = Validation.validatePassword(this.passwordText, 
+    private boolean validateAccountInput() {
+        boolean validPasswords = Validation.validatePassword(this.passwordText,
                 this.retypePasswordText);
         boolean validEmail = Validation.validateEmail(this.emailText.getText());
         
-        return validPasswords && validEmail;
+        boolean validForm = false;
+
+        boolean validationArray[] = { validPasswords, validEmail };
+        
+        for (boolean b : validationArray) {
+            if (!b) {
+                if (b == validPasswords) {
+                    showAlert(FieldEnum.FIRST_PASSWORD_FIELD);
+                    validForm = false;
+                    break;
+                }
+                if (b == validEmail) {
+                    showAlert(FieldEnum.EMAIL_FIELD);
+                    validForm = false;
+                    break;
+                }
+            } else {
+                validForm = true;
+            }
+        }
+        return validForm;
     }
 
     // Ensure all fields contain data.
-    public boolean validatePopulatedFields() {
+    private boolean validatePopulatedFields() {
         boolean usernameBlank = Validation.validateForBlankInput(this.userNameText.getText(), "-Username-", false);
         boolean passwordTextBlank = Validation.validateForBlankInput(this.passwordText.getText(), "-Password-", false);
         boolean passwordTextTwoBlank = Validation.validateForBlankInput(this.retypePasswordText.getText(), "-Password-", false);
         boolean emailTextBlank = Validation.validateForBlankInput(this.emailText.getText(), "-Email-", false);
 
         boolean validationArray[] = {usernameBlank, passwordTextBlank, passwordTextTwoBlank, emailTextBlank};
-        
+
         boolean validForm = false;
 
         for (boolean b : validationArray) {
@@ -127,7 +146,7 @@ public class CreateAccountViewController extends Validation implements Initializ
 
     // Validate and create new user in backend.
     public void createNewUserAccount() {
-        
+
         if (validatePopulatedFields() && validateAccountInput()) {
             // TODO 
             // Submit data to backend
