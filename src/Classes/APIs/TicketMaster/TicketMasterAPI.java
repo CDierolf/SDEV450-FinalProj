@@ -1,7 +1,6 @@
 package Classes.APIs.TicketMaster;
 
 
-import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Views.LoginView.LoginViewController;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -10,9 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
