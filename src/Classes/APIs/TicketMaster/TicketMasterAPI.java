@@ -6,9 +6,13 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
@@ -26,7 +30,7 @@ import org.json.JSONObject;
 public class TicketMasterAPI {
 
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
-    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/event.json?";
+    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?size=20";
     private final int HARDCODED_REGION = 90017;
     
     
@@ -81,14 +85,12 @@ public class TicketMasterAPI {
     }
 
     private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber) throws ProtocolException, IOException {
-        
-        //String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&page="+pageNumber+"&locale=*";
-        
-        String webService = "https://app.ticketmaster.com/discovery/v2/events?size=20&page="+pageNumber+"&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&locale=*";
 
-        //TODO ENCODE URL WITH API AND SEARCH PARAMETER AND PAGE NUMBER
-       // https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=Green+Bay+Packers&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm
-        URL apiURL = new URL(webService);
+        //String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&page="+pageNumber+"&locale=*";
+        //String webService = "https://app.ticketmaster.com/discovery/v2/events?size=20&page="+pageNumber+"&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&locale=*";
+
+        //URL apiURL = new URL(webService);
+        URL apiURL = encodeUrl(keyword, pageNumber);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
@@ -125,6 +127,17 @@ public class TicketMasterAPI {
         TicketMasterEvent tme = ticketMasterGsonObject.fromJson(ticketMasterJsonString, TicketMasterEvent.class);
 
         return tme;
+    }
+    
+    private URL encodeUrl(String keyWord, String pageNum) throws MalformedURLException, UnsupportedEncodingException {
+
+        String query = "&page="+pageNum+"&apikey="+API_KEY+"&keyword="+ URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString())+"&locale+*";
+        URL url;
+        
+        url = new URL(API_BASE_URL + query);
+        
+        System.out.println(url);
+        return url;
     }
 
 } //End Subclass TicketMasterAPI
