@@ -48,6 +48,8 @@ public class FindEventsViewController implements Initializable {
     @FXML
     private Button searchButton;
     @FXML
+    private TextField postalCodeTextField;
+    @FXML
     private Button previousPageButton;
     @FXML
     private Button nextPageButton;
@@ -60,6 +62,7 @@ public class FindEventsViewController implements Initializable {
     DashboardViewController dvc;
     private int currentPage = 0;
     private String currentKeyword = "";  
+    private String currentPostalCode = "";
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,14 +73,15 @@ public class FindEventsViewController implements Initializable {
         this.dvc = dvc;
     }
 
-    private void loadEvents(String eventKeyword, String pageNumber) throws IOException, Exception {
+    private void loadEvents(String eventKeyword, String pageNumber, String postalCode) throws IOException, Exception {
 
         // Save the current keyword for pagination
         this.currentKeyword = this.searchTextField.getText();
+        this.currentPostalCode = this.postalCodeTextField.getText();
 
         TicketMasterAPI tma = new TicketMasterAPI();
 
-        events = tma.findEvents(eventKeyword, pageNumber).getEmbeddedEvents().getEvents();
+        events = tma.findEvents(eventKeyword, pageNumber, postalCode).getEmbeddedEvents().getEvents();
 
         for (int i = 0; i < events.size(); i++) {
             try {
@@ -153,12 +157,12 @@ public class FindEventsViewController implements Initializable {
         clearEvents();
         resetPageNumber();
        
-        loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage));
+        loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
     }
 
     public void gotoNextPage() throws IOException, Exception {
         clearEvents();
-        loadEvents(currentKeyword, Integer.toString(currentPage));
+        loadEvents(currentKeyword, Integer.toString(currentPage), currentPostalCode);
         if (events == null) {
         } else {
             this.currentPage++;

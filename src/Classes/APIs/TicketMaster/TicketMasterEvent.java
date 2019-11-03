@@ -32,23 +32,26 @@ public class TicketMasterEvent {
         public int getNumberOfEvents() {
             return this.events.size();
         }
+        
 
         public class Events {
 
             private String name;
             private String imageUrl;
             private String id;
-            private double price = 18.00;
+            private double price;
             private List<Images> images;
             private Image eventImage;
             private List<PriceRanges> priceRanges;
             private Dates dates;
+            private List<VenueData> venues = new ArrayList<>();
+            public VenueData _embedded;
 
             public double getPrice() {
 //                if (priceRanges == null) {
 //                    this.price = 18.00;
 //                }
-                return 18.00;
+                return 1.00;
             }
 //            public List<PriceRanges> retrievePrice() {
 //
@@ -131,6 +134,37 @@ public class TicketMasterEvent {
 
                 public double getPrice() {
                     return this.max;
+                }
+            }
+            
+            public class VenueData {
+                public List<Venue> venues = new ArrayList<>();
+                
+                public class Venue {
+                    public String name;
+                    public String id;
+                    public String url;
+                    public VenueCity city;
+                    public String postalCode;
+                    public List<VenueImage> images = new ArrayList<>();
+                    
+                    public class VenueImage {
+                        public String url;
+                        
+                    }
+                    public class VenueCity {
+                        public String name;
+                    }
+                    
+                    public class VenueState {
+                        public String name;
+                    }
+                    
+                    public class VenueAddress {
+                        public String address;
+                    }
+                    
+                    // TODO figure out why Venue Data is not showing up in debug
                 }
             }
 

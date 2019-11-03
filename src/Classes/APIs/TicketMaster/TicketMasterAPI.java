@@ -34,8 +34,8 @@ public class TicketMasterAPI {
     private final int HARDCODED_REGION = 90017;
     
     
-    public TicketMasterEvent findEvents(String eventKeyword, String pageNumber) {
-        TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber);
+    public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) {
+        TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber, postalCode);
         
         System.out.println("NUMBER OF EVENTS: " + event.getEmbeddedEvents().getNumberOfEvents());
         
@@ -50,7 +50,7 @@ public class TicketMasterAPI {
     }
     
 
-    private TicketMasterEvent getTicketMasterJSONEventData(String eventKeyword, String pageNumber) {
+    private TicketMasterEvent getTicketMasterJSONEventData(String eventKeyword, String pageNumber, String postalCode) {
 
         HttpURLConnection connection;
         JSONObject ticketMasterJsonObject = null;
@@ -58,7 +58,7 @@ public class TicketMasterAPI {
         BufferedReader ticketMasterJsonStream;
         TicketMasterEvent ticketMasterEvent;    
         try {
-            connection = createTicketMasterAPIConnection(eventKeyword, pageNumber);
+            connection = createTicketMasterAPIConnection(eventKeyword, pageNumber, postalCode);
             if (checkTicketMasterAPIConnection(connection)) {
 
                 ticketMasterJsonStream = getTicketMasterJSONStream(connection);
@@ -84,13 +84,16 @@ public class TicketMasterAPI {
         }
     }
 
-    private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber) throws ProtocolException, IOException {
+    //TODO
+    // Implement RADIUS
+    // GET VENUE INFORMATION https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/#venue-details-v2
+    private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber, String postalCode) throws ProtocolException, IOException {
 
         //String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&page="+pageNumber+"&locale=*";
         //String webService = "https://app.ticketmaster.com/discovery/v2/events?size=20&page="+pageNumber+"&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&locale=*";
 
         //URL apiURL = new URL(webService);
-        URL apiURL = encodeUrl(keyword, pageNumber);
+        URL apiURL = encodeUrl(keyword, pageNumber, postalCode);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
@@ -129,9 +132,9 @@ public class TicketMasterAPI {
         return tme;
     }
     
-    private URL encodeUrl(String keyWord, String pageNum) throws MalformedURLException, UnsupportedEncodingException {
+    private URL encodeUrl(String keyWord, String pageNum, String postalCode) throws MalformedURLException, UnsupportedEncodingException {
 
-        String query = "&page="+pageNum+"&apikey="+API_KEY+"&keyword="+ URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString())+"&locale+*";
+        String query = "&page="+pageNum+"&apikey="+API_KEY+"&postalCode="+postalCode+"&keyword="+ URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString())+"&locale+*";
         URL url;
         
         url = new URL(API_BASE_URL + query);
