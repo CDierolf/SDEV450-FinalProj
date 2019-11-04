@@ -1,7 +1,11 @@
 package Classes.APIs.TicketMaster;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import javafx.scene.image.Image;
 
 /**
@@ -32,7 +36,6 @@ public class TicketMasterEvent {
         public int getNumberOfEvents() {
             return this.events.size();
         }
-        
 
         public class Events {
 
@@ -44,20 +47,19 @@ public class TicketMasterEvent {
             private Image eventImage;
             private List<PriceRanges> priceRanges;
             private Dates dates;
-            private List<VenueData> venues = new ArrayList<>();
-            public VenueData _embedded;
+            private VenueData _embedded;
 
-            public double getPrice() {
-//                if (priceRanges == null) {
-//                    this.price = 18.00;
-//                }
-                return 1.00;
+            public VenueData getVenueData() {
+                return this._embedded;
             }
-//            public List<PriceRanges> retrievePrice() {
-//
-//
-//                return this.priceRanges;
-//            }
+
+            public String getPrice() {
+                if (priceRanges != null)
+                    return this.priceRanges.get(0).getPrice();
+                else {
+                    return "TBD";
+                }
+            }
 
             public String getEventID() {
                 return this.id;
@@ -119,52 +121,149 @@ public class TicketMasterEvent {
                     public String localTime;
 
                     public String getEventLocalDate() {
-                        return this.localDate;
+                        if (this.localDate != null) {
+                            return this.localDate;
+                        } else {
+                            return "TBD";
+                        }
                     }
 
                     public String getEventLocalTime() {
-                        return this.localTime;
+                        if (this.localTime != null) {
+                            return this.localTime;
+                        } else {
+                            return "TBD";
+                        }
                     }
                 }
             }
 
             public class PriceRanges {
 
-                private double max;
+                private String max;
 
-                public double getPrice() {
-                    return this.max;
+                public String getPrice() {
+                    if (this.max != null) {
+                        setPrice();
+                        return max;
+                    } else {
+                        return "TBD";
+                    }
+                }
+
+                private void setPrice() {
+                    if (Double.parseDouble(max) > 100) {
+                        Random r = new Random();
+                        double randomValue = 30.00 + (98.00 - 30.00) * r.nextDouble();
+                        DecimalFormat twoPlaces = new DecimalFormat("0.00");
+                        this.max = twoPlaces.format(randomValue);
+                    }
                 }
             }
-            
+
             public class VenueData {
-                public List<Venue> venues = new ArrayList<>();
-                
+
+                private List<Venue> venues = new ArrayList<>();
+
+                public List<Venue> getVenues() {
+                    return this.venues;
+                }
+
                 public class Venue {
-                    public String name;
-                    public String id;
-                    public String url;
-                    public VenueCity city;
-                    public String postalCode;
-                    public List<VenueImage> images = new ArrayList<>();
-                    
+
+                    private String name;
+                    private String id;
+                    private String url;
+                    private VenueImage image;
+                    private VenueCity city;
+                    private VenueState state;
+                    private VenueAddress address;
+                    private String postalCode;
+                    private List<VenueImage> images = new ArrayList<>();
+
+                    public String getVenueName() {
+                        return this.name;
+                    }
+
+                    public String getVenueId() {
+                        return this.id;
+                    }
+
+                    public String getVenueUrl() {
+                        return this.url;
+                    }
+
+                    public String getVenuePostalCode() {
+                        return this.postalCode;
+                    }
+
+                    public String getVenueImageUrl() {
+                        return this.image.getVenueImageUrl();
+                    }
+
+                    public String getVenueCity() {
+                        return this.city.getVenueCity();
+                    }
+
+                    public String getVenueState() {
+                        return this.state.getVenueState();
+                    }
+
+                    public String getVenueAddress() {
+                        return this.address.getVenueAddress();
+                    }
+
                     public class VenueImage {
-                        public String url;
-                        
+
+                        private String url;
+
+                        public String getVenueImageUrl() {
+                            if (this.url != null) {
+                                return this.url;
+                            } else {
+                                return null;
+                            }
+                        }
                     }
+
                     public class VenueCity {
+
                         public String name;
+
+                        public String getVenueCity() {
+                            if (this.name != null) {
+                                return this.name;
+                            } else {
+                                return "Not Available";
+                            }
+                        }
                     }
-                    
+
                     public class VenueState {
+
                         public String name;
+
+                        public String getVenueState() {
+                            if (this.name != null) {
+                                return this.name;
+                            } else {
+                                return "Not Available";
+                            }
+                        }
                     }
-                    
+
                     public class VenueAddress {
-                        public String address;
+
+                        public String line1;
+
+                        public String getVenueAddress() {
+                            if (this.line1 != null) {
+                                return this.line1;
+                            } else {
+                                return "Not Available";
+                            }
+                        }
                     }
-                    
-                    // TODO figure out why Venue Data is not showing up in debug
                 }
             }
 

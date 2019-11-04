@@ -84,6 +84,11 @@ public class FindEventsViewController implements Initializable {
         events = tma.findEvents(eventKeyword, pageNumber, postalCode).getEmbeddedEvents().getEvents();
 
         for (int i = 0; i < events.size(); i++) {
+            System.out.println("Location name: " + events.get(i).getVenueData().getVenues().get(0).getVenueName());
+            System.out.println("Location address: " + events.get(i).getVenueData().getVenues().get(0).getVenueAddress());
+            System.out.println("Location city: " + events.get(i).getVenueData().getVenues().get(0).getVenueCity());
+            System.out.println("Location state: " + events.get(i).getVenueData().getVenues().get(0).getVenueState());
+            System.out.println("Location zip: " + events.get(i).getVenueData().getVenues().get(0).getVenuePostalCode());
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/Views/TicketComponent/TicketComponent.fxml"));

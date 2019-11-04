@@ -65,6 +65,7 @@ public class TicketMasterAPI {
                 ticketMasterJsonObject = parseTicketMasterJSONStreamIntoObject(ticketMasterJsonStream);
                 ticketMasterJsonString = ticketMasterJsonObject.toString();
                 ticketMasterEvent = deserializeTicketMasterJsonIntoEventObject(ticketMasterJsonString);
+
                 return ticketMasterEvent; // Everything we alright.
                 
             } else {
@@ -134,12 +135,10 @@ public class TicketMasterAPI {
     
     private URL encodeUrl(String keyWord, String pageNum, String postalCode) throws MalformedURLException, UnsupportedEncodingException {
 
-        String query = "&page="+pageNum+"&apikey="+API_KEY+"&postalCode="+postalCode+"&keyword="+ URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString())+"&locale+*";
+        String query = "&countryCode=US&page="+pageNum+"&apikey="+API_KEY+"&postalCode="+postalCode+"&keyword="+ 
+                URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString())+"&locale=en-us";
         URL url;
-        
         url = new URL(API_BASE_URL + query);
-        
-        System.out.println(url);
         return url;
     }
 

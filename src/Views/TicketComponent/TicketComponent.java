@@ -9,11 +9,13 @@ package Views.TicketComponent;
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events.VenueData;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -54,7 +56,7 @@ public class TicketComponent implements Initializable {
 
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
-        this.pricePerTicketLabel.setText("$" + Double.toString(event.getPrice()));
+        this.pricePerTicketLabel.setText("$" + event.getPrice());
 
         // Set event and dashboard variables
         this.event = event;
@@ -64,11 +66,7 @@ public class TicketComponent implements Initializable {
     private String getEventDateTimeDetails(Events event) {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
-
-        if (time == null) {
-            time = "TBD";
-        }
-
+        
         return date + " " + time;
     }
 
