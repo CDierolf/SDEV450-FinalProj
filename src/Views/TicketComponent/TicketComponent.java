@@ -2,20 +2,19 @@ package Views.TicketComponent;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
- * @Author Name: Stephen Graybeal, based heavily on Chris's TicketComponentController
+ * @Author Name: Stephen Graybeal, based heavily on Chris's
+ * TicketComponentController
  * @Assignment Name: Views.TicketComponent
  * @Date: Nov 3, 2019
  * @Subclass TicketComponent Description:
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events.VenueData;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -25,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 //Begin Subclass TicketComponent
 public class TicketComponent implements Initializable {
@@ -45,6 +45,8 @@ public class TicketComponent implements Initializable {
     private ImageView eventImageView;
     @FXML
     private Image eventImage;
+    @FXML
+    private VBox imageVBox;
 
     private Events event; // Event stored for UI interaction
     private DashboardViewController dvc; // To update Dashboard view
@@ -57,7 +59,7 @@ public class TicketComponent implements Initializable {
     }
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
-        
+
         String city = event.getVenueData().getVenues().get(0).getVenueCity();
         String state = event.getVenueData().getVenues().get(0).getVenueState();
 
@@ -75,7 +77,7 @@ public class TicketComponent implements Initializable {
     private String getEventDateTimeDetails(Events event) {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
-        
+
         return date + " " + time;
     }
 
@@ -100,7 +102,9 @@ public class TicketComponent implements Initializable {
     }
 
     public void getImage(Events event) throws FileNotFoundException {
-        eventImageView.setImage(event.getEventImage());
+        if (event.getEventImage() != null) {
+            eventImageView.setImage(event.getEventImage());
+        }
     }
 
     public void buttonClicked() {
@@ -111,12 +115,11 @@ public class TicketComponent implements Initializable {
         } catch (IOException e) {
             System.out.println((e.toString()));
         }
-        
+
         //if purchased
         try {
             viewTicket();
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.toString());
         }
     }
