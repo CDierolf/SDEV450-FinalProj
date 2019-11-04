@@ -34,6 +34,10 @@ public class TicketComponent implements Initializable {
     @FXML
     private Label dateTimeLabel;
     @FXML
+    private Label venueCityStateLabel;
+    @FXML
+    private Label venueLocationLabel;
+    @FXML
     private Label pricePerTicketLabel;
     @FXML
     private Button actionButton;
@@ -53,10 +57,15 @@ public class TicketComponent implements Initializable {
     }
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
+        
+        String city = event.getVenueData().getVenues().get(0).getVenueCity();
+        String state = event.getVenueData().getVenues().get(0).getVenueState();
 
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
         this.pricePerTicketLabel.setText("$" + event.getPrice());
+        this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
+        this.venueCityStateLabel.setText(city + ", " + state);
 
         // Set event and dashboard variables
         this.event = event;
