@@ -14,8 +14,21 @@
    <children>
       <HBox layoutX="10.0" prefHeight="100.0" prefWidth="1180.0" spacing="10.0">
          <children>
-            <TextField fx:id="searchTextField" onAction="#getEvents" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
-            <TextField fx:id="postalCodeTextField" promptText="Postal Code" />
+            <VBox prefHeight="100.0" prefWidth="251.0">
+               <children>
+                  <TextField fx:id="searchTextField" onAction="#getEvents" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
+               </children>
+            </VBox>
+            <VBox prefHeight="100.0" prefWidth="118.0">
+               <children>
+                  <TextField fx:id="postalCodeTextField" promptText="Postal Code" />
+                  <Label id="warningLabel" fx:id="postalCodeWarningLabel" text="Label">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
             <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Search" />
          </children>
       </HBox>

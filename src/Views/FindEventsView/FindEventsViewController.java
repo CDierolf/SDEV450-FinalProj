@@ -7,6 +7,7 @@ package Views.FindEventsView;
 
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
+import Classes.Utilities.Validation;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.TicketComponentController;
 import java.io.FileNotFoundException;
@@ -55,20 +56,23 @@ public class FindEventsViewController implements Initializable {
     private Button nextPageButton;
     @FXML
     private Label pageLabel;
-    
+    @FXML
+    private Label postalCodeWarningLabel;
+
     List<TicketMasterEvent.Embedded.Events> events = new ArrayList<>();
     List<TicketComponentController> tcElements = new ArrayList<>();
     List<VBox> ticketComponents = new ArrayList<>();
     DashboardViewController dvc;
     private int currentPage = 0;
-    private String currentKeyword = "";  
+    private String currentKeyword = "";
     private String currentPostalCode = "";
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.pageLabel.setText(Integer.toString(currentPage));
+        this.postalCodeWarningLabel.setVisible(false);
     }
-    
+
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
     }
@@ -104,7 +108,7 @@ public class FindEventsViewController implements Initializable {
                 Logger.getLogger(FindEventsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         // Run the loadEventComponents() method
         // in a separate background thread
         Thread thread = new Thread(() -> {
@@ -121,7 +125,6 @@ public class FindEventsViewController implements Initializable {
         thread.setDaemon(true);
         thread.start();
     }
-
 
     // Load all data into the ticketcomponent controllers
     // Get the images (runs concurrently from loadEvents()
@@ -157,12 +160,19 @@ public class FindEventsViewController implements Initializable {
                 break;
         }
     }
-    
+
     public void getEvents() throws IOException, Exception {
-        clearEvents();
-        resetPageNumber();
-       
-        loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
+
+        if (validatePostalCode()) {
+            this.postalCodeWarningLabel.setVisible(false);
+            clearEvents();
+            resetPageNumber();
+            loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
+        } else {
+            this.postalCodeWarningLabel.setVisible(true);
+            this.postalCodeWarningLabel.setText("Inavlid postal code");
+            
+        }
     }
 
     public void gotoNextPage() throws IOException, Exception {
@@ -184,7 +194,7 @@ public class FindEventsViewController implements Initializable {
             // Recall API with currentKeyword and currentPage
         }
     }
-    
+
     private void resetPageNumber() {
         this.currentPage = 0;
         this.pageLabel.setText(Integer.toString(currentPage));
@@ -198,5 +208,18 @@ public class FindEventsViewController implements Initializable {
         centerVBox.getChildren().clear();
         rightVBox.getChildren().clear();
         rightMostVBox.getChildren().clear();
+    }
+
+    private boolean validatePostalCode() {
+        boolean isValidPostalCode = false;
+        if (this.postalCodeTextField.getText().isEmpty()) {
+            return true;
+        }
+
+        if (!this.postalCodeTextField.getText().isEmpty()) {
+            isValidPostalCode = Validation.validateIntegerLength(this.postalCodeTextField.getText(), 5, "-Postal Code-", false);
+        }
+
+        return isValidPostalCode;
     }
 }
