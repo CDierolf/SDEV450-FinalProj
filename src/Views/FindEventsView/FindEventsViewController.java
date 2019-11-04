@@ -75,6 +75,8 @@ public class FindEventsViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.pageLabel.setText(Integer.toString(currentPage));
         this.postalCodeWarningLabel.setVisible(false);
+        this.previousPageButton.setDisable(true);
+        this.nextPageButton.setDisable(true);
     }
 
     public void setDashboardController(DashboardViewController dvc) {
@@ -197,17 +199,21 @@ public class FindEventsViewController implements Initializable {
             this.currentPage++;
             this.pageLabel.setText(Integer.toString(this.currentPage));
             loadEvents(currentKeyword, Integer.toString(currentPage), currentPostalCode);
+            this.previousPageButton.setDisable(false);
         } else {
             this.nextPageButton.setDisable(true);
         }
     }
 
-    public void gotoPreviousPage() {
-        if (currentPage == 1) {
+    public void gotoPreviousPage() throws Exception {
+        if (currentPage == 0) {
             // Can't go back any farther
-            System.out.println("Unable to go back anymore.");
+            this.previousPageButton.setDisable(true);
         } else {
             this.currentPage--;
+            this.pageLabel.setText(Integer.toString(this.currentPage));
+            clearEvents();
+            loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
             // Recall API with currentKeyword and currentPage
         }
     }

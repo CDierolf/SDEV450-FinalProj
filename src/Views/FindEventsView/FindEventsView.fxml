@@ -66,7 +66,7 @@
       </Pane>
       <HBox alignment="CENTER" layoutX="14.0" layoutY="744.0" prefHeight="68.0" prefWidth="1173.0">
          <children>
-            <Button fx:id="previousPageButton" mnemonicParsing="false" text="&lt;&lt;" />
+            <Button fx:id="previousPageButton" mnemonicParsing="false" onAction="#gotoPreviousPage" text="&lt;&lt;" />
             <Label fx:id="pageLabel" text="Label" />
             <Button fx:id="nextPageButton" mnemonicParsing="false" onAction="#gotoNextPage" text="&gt;&gt;" />
          </children>
