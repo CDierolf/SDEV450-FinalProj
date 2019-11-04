@@ -2,10 +2,12 @@ package Views.SeatMaps.Venue;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Utilities.Debug;
+import Views.SeatSelectionView.SeatSelectionViewController;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Random;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -25,7 +27,7 @@ import javafx.scene.shape.Rectangle;
 //Begin Subclass Venu1
 public class Venue extends BorderPane implements Debug  {
 
-   
+   public SeatSelectionViewController svc;
 
     public Venue(int venueId) {
         try {
@@ -38,8 +40,8 @@ public class Venue extends BorderPane implements Debug  {
                         " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));
             }
             */
-            //setTop(createRows(14,27)); // hard coded rows/seats
-            setTop(createRows(rs));
+            setTop(createRows(14,27)); // hard coded rows/seats
+            //setTop(createRows(rs));
             setBottom(addStage());
             setCenter(moshPit());
             dao.close(); // close connection, statement, resultset
@@ -50,33 +52,40 @@ public class Venue extends BorderPane implements Debug  {
     /* get the venue from the event id.
     if the event does not exist in the database, add it and populate some sample sales 
     */
-    public Venue(Events event) {
-        try {
-            this.setStyle("-fx-background-color: #FFFFFF");
-            Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
-            ResultSet rs = dao.getVenue(event);
-            /* display seats for debugging*/
-            /*while (rs.next()) {
-                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat") + 
-                        ", Section:" +  rs.getString("section") + "SOLD? " + rs.getInt("sold"));
-            }*/
-            
-            //setTop(createRows(14,27)); // hard coded rows/seats
-            setTop(createRows(rs));
-            setBottom(addStage());
-            //setCenter(moshPit()); // mosh pit was hard coded, will have to set it up in DB if we want to sell tickets
-            dao.close(); // close connection, statement, resultset
-        } catch (SQLException ex) {
-            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    public Venue(Events event, SeatSelectionViewController seatVC) {
+        
+        // DAO object not working
+//        try {
+//            this.setStyle("-fx-background-color: #FFFFFF");
+//            Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
+//            ResultSet rs = dao.getVenue(event);
+//            
+//            /* display seats for debugging*/
+//            /*while (rs.next()) {
+//                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat") + 
+//                        ", Section:" +  rs.getString("section") + "SOLD? " + rs.getInt("sold"));
+//            }*/
+//            
+//            setTop(createRows(14,27)); // hard coded rows/seats
+//            //setTop(createRows(rs));
+//            setBottom(addStage());
+//            //setCenter(moshPit()); // mosh pit was hard coded, will have to set it up in DB if we want to sell tickets
+//            
+//            dao.close(); // close connection, statement, resultset
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
+        svc = seatVC;
+        setTop(createRows(14,27)); // hard coded rows/seats
+        setBottom(addStage());
+        
+    }
 
     private VBox createRows(int rowcount, int seatsPerRow) {
         VBox rows = new VBox();
         rows.setSpacing(5);
         rows.setAlignment(Pos.CENTER);
-        //int numRows = 0;
         double spacing = 10.0;
         for (int i = 0; i < rowcount; i++) {
             HBox seats = new HBox();
@@ -84,8 +93,17 @@ public class Venue extends BorderPane implements Debug  {
             //numRows++;
             seats.setSpacing(spacing -= 0.2);
             
-            for (int j = 0; j < seatsPerRow; j++) {
-                Seat seat = new Seat(i + 1, j + 1, 'G', true);
+            for (int j = 0; j < seatsPerRow; j++) {                
+                Seat seat = new Seat(j + 1, i + 1, 'G', true);
+                seat.setSeatSelectionViewController(svc);
+                
+                // Set random seats as sold/unavailable
+                Random randSeatSoldGenerator = new Random();
+                int randSeat = randSeatSoldGenerator.nextInt(5);
+                if (randSeat == 3) {
+                    seat.seatUnavailable();
+                }
+                
                 seats.getChildren().add(seat);
             }
             rows.getChildren().add(seats);
@@ -95,6 +113,7 @@ public class Venue extends BorderPane implements Debug  {
         
     }
     
+    /* COMMENTED OUT UNTIL VENUE DAO IS RETURNING SEATS
     // create the display from the database
     private VBox createRows(ResultSet rs) throws SQLException {
         VBox rows = new VBox();
@@ -137,8 +156,9 @@ public class Venue extends BorderPane implements Debug  {
         } 
         rows.getChildren().add(seats);// add first row
         return rows;
-        
     }
+    */
+    
     private VBox addStage() {
         VBox stageVBox = new VBox();
         stageVBox.setAlignment(Pos.CENTER);
