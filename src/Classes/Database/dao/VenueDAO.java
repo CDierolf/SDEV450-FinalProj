@@ -125,21 +125,22 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
-        String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
-        callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+        //String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
+        String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
+"		VALUES (?,?,?,?,?,?,?,?)";
+        preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         
-        close();//close connection, statement, resultset
-        return;
+       
         // generate some sample sales
-        /*venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
+        venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
         dataTypes = new ArrayList<String>(); 
         venueValues.add(event.getEventID());
         dataTypes.add("string");
         Q1 = "{ call [usp_EventsGenerateDummySales](?) }";
-        rs = callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+        preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));
-        close();//close connection, statement, resultset*/
+        close();//close connection, statement, resultset
     }
 
         
