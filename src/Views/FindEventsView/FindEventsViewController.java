@@ -34,6 +34,8 @@ import javafx.scene.layout.VBox;
  * @author pis7ftw
  */
 public class FindEventsViewController implements Initializable {
+    
+    private final int MAX_ALLOWABLE_EVENTS_PER_PAGE = 20;
 
     // Dashboard UI Objects
     @FXML
@@ -62,8 +64,10 @@ public class FindEventsViewController implements Initializable {
     List<TicketMasterEvent.Embedded.Events> events = new ArrayList<>();
     List<TicketComponentController> tcElements = new ArrayList<>();
     List<VBox> ticketComponents = new ArrayList<>();
+    TicketMasterAPI tma = new TicketMasterAPI();
     DashboardViewController dvc;
     private int currentPage = 0;
+    private int numEvents = 0;
     private String currentKeyword = "";
     private String currentPostalCode = "";
 
@@ -83,10 +87,21 @@ public class FindEventsViewController implements Initializable {
         this.currentKeyword = this.searchTextField.getText();
         this.currentPostalCode = this.postalCodeTextField.getText();
 
-        TicketMasterAPI tma = new TicketMasterAPI();
-
+        // Get a list of events from the API.
         events = tma.findEvents(eventKeyword, pageNumber, postalCode).getEmbeddedEvents().getEvents();
+        
+        // Save the number of events returned.
+        numEvents = events.size();
+        System.out.println(numEvents);
+        
+        // Set pagination advancability
+        if (!canGotoNextPage()) {
+            this.nextPageButton.setDisable(true);
+        } else {
+            this.nextPageButton.setDisable(false);
+        }
 
+        // For each event, create a TicketComponent object
         for (int i = 0; i < events.size(); i++) {
             System.out.println("Location name: " + events.get(i).getVenueData().getVenues().get(0).getVenueName());
             System.out.println("Location address: " + events.get(i).getVenueData().getVenues().get(0).getVenueAddress());
@@ -176,12 +191,14 @@ public class FindEventsViewController implements Initializable {
     }
 
     public void gotoNextPage() throws IOException, Exception {
-        clearEvents();
-        loadEvents(currentKeyword, Integer.toString(currentPage), currentPostalCode);
-        if (events == null) {
-        } else {
+        
+        if (canGotoNextPage()) {
+            clearEvents();
             this.currentPage++;
             this.pageLabel.setText(Integer.toString(this.currentPage));
+            loadEvents(currentKeyword, Integer.toString(currentPage), currentPostalCode);
+        } else {
+            this.nextPageButton.setDisable(true);
         }
     }
 
@@ -221,5 +238,19 @@ public class FindEventsViewController implements Initializable {
         }
 
         return isValidPostalCode;
+    }
+    
+    private boolean canGotoNextPage() {
+        
+        boolean canAdvance = false;
+        if (numEvents < this.MAX_ALLOWABLE_EVENTS_PER_PAGE) {
+            canAdvance = false;
+        }
+        
+        if (numEvents >= this.MAX_ALLOWABLE_EVENTS_PER_PAGE) {
+            canAdvance =  true;
+        }
+        
+        return canAdvance;
     }
 }

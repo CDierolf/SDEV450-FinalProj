@@ -31,7 +31,6 @@ public class TicketMasterAPI {
 
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
     private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?size=20";
-    private final int HARDCODED_REGION = 90017;
     
     private String eventKeyword;
     private String pageNumber;
@@ -50,8 +49,6 @@ public class TicketMasterAPI {
     
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber, postalCode);
-        
-        System.out.println("NUMBER OF EVENTS: " + event.getEmbeddedEvents().getNumberOfEvents());
         
         System.out.println(event);
         if (event == null) {
