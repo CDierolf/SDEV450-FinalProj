@@ -1,0 +1,16 @@
+/** 
+ * @Course: SDEV 450 ~ Java Programming III
+ * @Author Name: Neil C. Hart
+ * @Assignment Name: TicketManager
+ * @Date: Nov 3, 2019
+ * @Description: CSS - Seat Selection View
+ */
+
+.label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font: 17px 'Arial';
+}
+
+#leftSidebar {
+    
+}

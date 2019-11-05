@@ -1,6 +1,7 @@
 package Views.SeatMaps.Venue;
 
 //Imports
+import Views.SeatSelectionView.SeatSelectionViewController;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
@@ -18,7 +19,7 @@ import javafx.scene.paint.Color;
 //Begin Subclass Seat
 public class Seat extends Circle {
     
-    private final int CIRCLE_RADIUS = 6;
+    private final int CIRCLE_RADIUS = 9;
     private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
     private final Color COLOR_UNAVAILABLE = Color.RED;
     private final Color COLOR_SELECTED = Color.LIME;
@@ -29,6 +30,7 @@ public class Seat extends Circle {
     private final char section;
     private boolean isAvailable;
     private boolean isSelected;
+    private SeatSelectionViewController svc;
     
     private final Tooltip tt = new Tooltip("Select this seat");
     
@@ -67,7 +69,7 @@ public class Seat extends Circle {
                     + " Section: " + section);
             //isAvailable = !isAvailable;
             if (isAvailable) {
-                isSelected = !isSelected;
+                selectSeat();
             } else {
                 System.out.println("Seat not available.");
             }
@@ -99,11 +101,37 @@ public class Seat extends Circle {
             tt.setText("Seat unavailable");
         }
     }
+     
+    // Set SeatSelectionViewController for callbacks
+    public void setSeatSelectionViewController(SeatSelectionViewController seatVC) {
+        svc = seatVC;
+    }
     
     // Sell seat - change availability and display
-    public void sellSeat() {
+    public void selectSeat() {
+        if (isAvailable) {
+            if (!isSelected) {
+                isSelected = true;
+                updateImage();
+                svc.seatSelected(this);
+            } else {
+                isSelected = false;
+                updateImage();
+                svc.seatUnselected(this);
+            }            
+        }
+    }
+    
+    // Set seat as already sold
+    public void seatUnavailable() {
         isAvailable = false;
         updateImage();
+    }
+    
+    // Return seat description
+    public String getDescription() {
+        String description = "Seat: " + seatNumber + " - Row: " + rowNumber + " - Section: " + section;
+        return description;
     }
 
 } //End Subclass Seat
