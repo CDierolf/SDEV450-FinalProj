@@ -112,7 +112,7 @@ public class Venue extends BorderPane implements Debug  {
         
     }
     
-    /* COMMENTED OUT UNTIL VENUE DAO IS RETURNING SEATS
+    /* COMMENTED OUT UNTIL VENUE DAO IS RETURNING SEATS -
     // create the display from the database
     private VBox createRows(ResultSet rs) throws SQLException {
         VBox rows = new VBox();
