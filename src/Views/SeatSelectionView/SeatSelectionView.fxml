@@ -36,8 +36,8 @@
                   </Label>
                   <Line endX="78.83334350585938" endY="1.52587890625E-5" layoutX="140.0" layoutY="190.0" startX="-81.83334350585938" startY="1.52587890625E-5" />
                   <VBox fx:id="eventVBox" alignment="TOP_CENTER" layoutY="202.0" prefHeight="451.0" prefWidth="280.0" spacing="3.0" />
-                  <Button fx:id="backButton" layoutX="109.0" layoutY="763.0" mnemonicParsing="false" onMouseClicked="#goBackToFindEventsView" text="Go Back" />
-                  <Button layoutX="88.0" layoutY="727.0" mnemonicParsing="false" text="Purchase Tickets" />
+                  <Button id="dark-blue" fx:id="backButton" layoutX="91.0" layoutY="763.0" mnemonicParsing="false" onMouseClicked="#goBackToFindEventsView" stylesheets="@../CSS/DashboardViewCSS.css" text="Go Back" />
+                  <Button id="shiny-orange" layoutX="64.0" layoutY="712.0" mnemonicParsing="false" stylesheets="@../CSS/DashboardViewCSS.css" text="Purchase Tickets" />
                   <Label fx:id="lblTotal" layoutX="14.0" layoutY="667.0" prefHeight="20.0" prefWidth="252.0" text="Total: $0.00" />
                </children>
             </Pane>

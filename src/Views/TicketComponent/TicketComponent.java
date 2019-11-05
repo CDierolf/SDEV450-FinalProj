@@ -65,7 +65,16 @@ public class TicketComponent implements Initializable {
 
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
-        this.pricePerTicketLabel.setText("$" + event.getPrice());
+        
+        String seatPrice;
+        if (!"TBD".equals(event.getPrice())) {
+            double pricePerTicketValue = Double.valueOf(event.getPrice());
+            seatPrice = String.format("%.2f", pricePerTicketValue);
+        } else {
+            seatPrice = event.getPrice();
+        }
+        this.pricePerTicketLabel.setText("$" + seatPrice);
+        
         this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
         this.venueCityStateLabel.setText(city + ", " + state);
 

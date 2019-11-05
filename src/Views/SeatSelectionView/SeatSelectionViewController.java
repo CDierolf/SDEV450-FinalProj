@@ -108,8 +108,8 @@ public class SeatSelectionViewController implements Initializable {
         lblEventDate.setText(formattedDate
         + " at " + formattedTime);
         
-        String price = e.getPrice();
-        lblEventSeatPrice.setText("Seat Price: $" + price);
+        double seatValue = Double.valueOf(event.getPrice());
+        lblEventSeatPrice.setText("Seat Price: $" + String.format("%.2f", seatValue));
         selectedSeats = new ArrayList<>();
         selectedSeatsLabels = new ArrayList<>();
     }

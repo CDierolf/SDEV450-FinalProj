@@ -67,7 +67,6 @@ public class Seat extends Circle {
         public void handle(MouseEvent e) {
             System.out.println("Seat Number: " + seatNumber + ". Row Number: " + rowNumber + ""
                     + " Section: " + section);
-            //isAvailable = !isAvailable;
             if (isAvailable) {
                 selectSeat();
             } else {
