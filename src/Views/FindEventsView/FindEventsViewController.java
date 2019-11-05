@@ -7,6 +7,7 @@ package Views.FindEventsView;
 
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
+import Classes.Utilities.Validation;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.TicketComponentController;
 import java.io.FileNotFoundException;
@@ -33,6 +34,8 @@ import javafx.scene.layout.VBox;
  * @author pis7ftw
  */
 public class FindEventsViewController implements Initializable {
+    
+    private final int MAX_ALLOWABLE_EVENTS_PER_PAGE = 20;
 
     // Dashboard UI Objects
     @FXML
@@ -55,20 +58,27 @@ public class FindEventsViewController implements Initializable {
     private Button nextPageButton;
     @FXML
     private Label pageLabel;
-    
+    @FXML
+    private Label postalCodeWarningLabel;
+
     List<TicketMasterEvent.Embedded.Events> events = new ArrayList<>();
     List<TicketComponentController> tcElements = new ArrayList<>();
     List<VBox> ticketComponents = new ArrayList<>();
+    TicketMasterAPI tma = new TicketMasterAPI();
     DashboardViewController dvc;
     private int currentPage = 0;
-    private String currentKeyword = "";  
+    private int numEvents = 0;
+    private String currentKeyword = "";
     private String currentPostalCode = "";
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.pageLabel.setText(Integer.toString(currentPage));
+        this.postalCodeWarningLabel.setVisible(false);
+        this.previousPageButton.setDisable(true);
+        this.nextPageButton.setDisable(true);
     }
-    
+
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
     }
@@ -79,10 +89,21 @@ public class FindEventsViewController implements Initializable {
         this.currentKeyword = this.searchTextField.getText();
         this.currentPostalCode = this.postalCodeTextField.getText();
 
-        TicketMasterAPI tma = new TicketMasterAPI();
-
+        // Get a list of events from the API.
         events = tma.findEvents(eventKeyword, pageNumber, postalCode).getEmbeddedEvents().getEvents();
+        
+        // Save the number of events returned.
+        numEvents = events.size();
+        System.out.println(numEvents);
+        
+        // Set pagination advancability
+        if (!canGotoNextPage()) {
+            this.nextPageButton.setDisable(true);
+        } else {
+            this.nextPageButton.setDisable(false);
+        }
 
+        // For each event, create a TicketComponent object
         for (int i = 0; i < events.size(); i++) {
             System.out.println("Location name: " + events.get(i).getVenueData().getVenues().get(0).getVenueName());
             System.out.println("Location address: " + events.get(i).getVenueData().getVenues().get(0).getVenueAddress());
@@ -104,7 +125,7 @@ public class FindEventsViewController implements Initializable {
                 Logger.getLogger(FindEventsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         // Run the loadEventComponents() method
         // in a separate background thread
         Thread thread = new Thread(() -> {
@@ -121,7 +142,6 @@ public class FindEventsViewController implements Initializable {
         thread.setDaemon(true);
         thread.start();
     }
-
 
     // Load all data into the ticketcomponent controllers
     // Get the images (runs concurrently from loadEvents()
@@ -157,34 +177,47 @@ public class FindEventsViewController implements Initializable {
                 break;
         }
     }
-    
+
     public void getEvents() throws IOException, Exception {
-        clearEvents();
-        resetPageNumber();
-       
-        loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
+
+        if (validatePostalCode()) {
+            this.postalCodeWarningLabel.setVisible(false);
+            clearEvents();
+            resetPageNumber();
+            loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
+        } else {
+            this.postalCodeWarningLabel.setVisible(true);
+            this.postalCodeWarningLabel.setText("Inavlid postal code");
+            
+        }
     }
 
     public void gotoNextPage() throws IOException, Exception {
-        clearEvents();
-        loadEvents(currentKeyword, Integer.toString(currentPage), currentPostalCode);
-        if (events == null) {
-        } else {
+        
+        if (canGotoNextPage()) {
+            clearEvents();
             this.currentPage++;
             this.pageLabel.setText(Integer.toString(this.currentPage));
+            loadEvents(currentKeyword, Integer.toString(currentPage), currentPostalCode);
+            this.previousPageButton.setDisable(false);
+        } else {
+            this.nextPageButton.setDisable(true);
         }
     }
 
-    public void gotoPreviousPage() {
-        if (currentPage == 1) {
+    public void gotoPreviousPage() throws Exception {
+        if (currentPage == 0) {
             // Can't go back any farther
-            System.out.println("Unable to go back anymore.");
+            this.previousPageButton.setDisable(true);
         } else {
             this.currentPage--;
+            this.pageLabel.setText(Integer.toString(this.currentPage));
+            clearEvents();
+            loadEvents(this.searchTextField.getText(), Integer.toString(this.currentPage), this.postalCodeTextField.getText());
             // Recall API with currentKeyword and currentPage
         }
     }
-    
+
     private void resetPageNumber() {
         this.currentPage = 0;
         this.pageLabel.setText(Integer.toString(currentPage));
@@ -198,5 +231,32 @@ public class FindEventsViewController implements Initializable {
         centerVBox.getChildren().clear();
         rightVBox.getChildren().clear();
         rightMostVBox.getChildren().clear();
+    }
+
+    private boolean validatePostalCode() {
+        boolean isValidPostalCode = false;
+        if (this.postalCodeTextField.getText().isEmpty()) {
+            return true;
+        }
+
+        if (!this.postalCodeTextField.getText().isEmpty()) {
+            isValidPostalCode = Validation.validateIntegerLength(this.postalCodeTextField.getText(), 5, "-Postal Code-", false);
+        }
+
+        return isValidPostalCode;
+    }
+    
+    private boolean canGotoNextPage() {
+        
+        boolean canAdvance = false;
+        if (numEvents < this.MAX_ALLOWABLE_EVENTS_PER_PAGE) {
+            canAdvance = false;
+        }
+        
+        if (numEvents >= this.MAX_ALLOWABLE_EVENTS_PER_PAGE) {
+            canAdvance =  true;
+        }
+        
+        return canAdvance;
     }
 }
