@@ -53,28 +53,27 @@ public class Venue extends BorderPane implements Debug  {
     if the event does not exist in the database, add it and populate some sample sales 
     */
     public Venue(Events event, SeatSelectionViewController seatVC) {
-        
-        // DAO object not working
-//        try {
-//            this.setStyle("-fx-background-color: #FFFFFF");
-//            Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
-//            ResultSet rs = dao.getVenue(event);
-//            
-//            /* display seats for debugging*/
-//            /*while (rs.next()) {
-//                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat") + 
-//                        ", Section:" +  rs.getString("section") + "SOLD? " + rs.getInt("sold"));
-//            }*/
-//            
-//            setTop(createRows(14,27)); // hard coded rows/seats
-//            //setTop(createRows(rs));
-//            setBottom(addStage());
-//            //setCenter(moshPit()); // mosh pit was hard coded, will have to set it up in DB if we want to sell tickets
-//            
-//            dao.close(); // close connection, statement, resultset
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
+        try {
+            this.setStyle("-fx-background-color: #FFFFFF");
+            Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
+            ResultSet rs = dao.getVenue(event);
+            
+            /* display seats for debugging*/
+            /*while (rs.next()) {
+                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat") + 
+                        ", Section:" +  rs.getString("section") + "SOLD? " + rs.getInt("sold"));
+            }*/
+            
+            setTop(createRows(14,27)); // hard coded rows/seats
+            //setTop(createRows(rs));
+            setBottom(addStage());
+            //setCenter(moshPit()); // mosh pit was hard coded, will have to set it up in DB if we want to sell tickets
+            
+            dao.close(); // close connection, statement, resultset
+        } catch (SQLException ex) {
+            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         svc = seatVC;
         setTop(createRows(14,27)); // hard coded rows/seats
