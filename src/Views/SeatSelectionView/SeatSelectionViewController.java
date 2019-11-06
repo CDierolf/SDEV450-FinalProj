@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Views.SeatSelectionView;
-
+import Classes.Utilities.Alerts;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Views.DashboardView.DashboardViewController;
 import Views.SeatMaps.Venue.Seat;
@@ -101,15 +101,22 @@ public class SeatSelectionViewController implements Initializable {
         
         String unformattedDate = e.getEventDates().getEventStartData().getEventLocalDate();
         String unformattedTime = e.getEventDates().getEventStartData().getEventLocalTime();
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(unformattedDate);
-        Date time = new SimpleDateFormat("HH:mm:ss").parse(unformattedTime);
-        String formattedDate = new SimpleDateFormat("EEE, MMM d").format(date);
-        String formattedTime = new SimpleDateFormat("h:mm a").format(time);
-        lblEventDate.setText(formattedDate
-        + " at " + formattedTime);
-        
-        double seatValue = Double.valueOf(event.getPrice());
-        lblEventSeatPrice.setText("Seat Price: $" + String.format("%.2f", seatValue));
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(unformattedDate);
+            Date time = new SimpleDateFormat("HH:mm:ss").parse(unformattedTime);
+            String formattedDate = new SimpleDateFormat("EEE, MMM d").format(date);
+            String formattedTime = new SimpleDateFormat("h:mm a").format(time);
+            lblEventDate.setText(formattedDate
+            + " at " + formattedTime);
+        }catch(Exception ex) {
+           Alerts.genericAlert("Date error","Date error","Date and time is not set for this show yet. Try again at a later date.").showAndWait();   
+        }
+        try {
+            double seatValue = Double.valueOf(event.getPrice());
+            lblEventSeatPrice.setText("Seat Price: $" + String.format("%.2f", seatValue));
+        }catch(Exception ex) {
+           Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();   
+        }
         selectedSeats = new ArrayList<>();
         selectedSeatsLabels = new ArrayList<>();
     }

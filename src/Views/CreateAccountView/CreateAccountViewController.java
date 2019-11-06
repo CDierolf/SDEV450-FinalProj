@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Views.CreateAccountView;
 
 import Classes.Utilities.Alerts;
@@ -16,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import Classes.Database.User;
 /**
  * FXML Controller class
  *
@@ -50,11 +45,11 @@ public class CreateAccountViewController extends Validation implements Initializ
         boolean validPasswords = Validation.validatePassword(this.passwordText,
                 this.retypePasswordText);
         boolean validEmail = Validation.validateEmail(this.emailText.getText());
-        
+
         boolean validForm = false;
 
         boolean validationArray[] = { validPasswords, validEmail };
-        
+
         for (boolean b : validationArray) {
             if (!b) {
                 if (b == validPasswords) {
@@ -148,8 +143,13 @@ public class CreateAccountViewController extends Validation implements Initializ
     public void createNewUserAccount() {
 
         if (validatePopulatedFields() && validateAccountInput()) {
-            // TODO 
+            // TODO
             // Submit data to backend
+            User user = new User( this.userNameText.getText(),
+                    this.passwordText.getText(),
+                    this.emailText.getText());
+            user.addUser();
+
         }
     }
 

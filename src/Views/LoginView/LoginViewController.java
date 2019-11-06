@@ -5,6 +5,7 @@
  */
 package Views.LoginView;
 
+import Classes.Database.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +19,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import Classes.Utilities.Alerts;
+
 
 public class LoginViewController implements Initializable {
 
@@ -57,6 +60,9 @@ public class LoginViewController implements Initializable {
     public void openDashboard() throws IOException {
         // TODO 
         // Authenticate User
+        User user = new User( this.userNameText.getText(),
+                this.passwordText.getText());
+        user.loginUser();
         // If Authenticated, display Dashbaord close LoginView
         // If Not Authenticated, display error
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -64,7 +70,7 @@ public class LoginViewController implements Initializable {
 
         Scene scene = new Scene(fxmlLoader.load(), 1461, 831);
         Stage stage = new Stage();
-        stage.setTitle("Welcome ***USERNAME***");
+        stage.setTitle("Welcome " + this.userNameText.getText());
         stage.setScene(scene);
         //stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();

@@ -11,6 +11,7 @@ package Classes.Database.dao;
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Database.DatabaseInterface;
+import Classes.Utilities.Alerts;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -110,16 +111,32 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         venueValues.add(event.getName());
         dataTypes.add("string");
+        if(event.getEventDates().getEventStartData().getEventLocalTime()=="TBD"){ 
+            Alerts.genericAlert("Date error","Date error","Date and time is not set for this show yet. Try again at a later date.").showAndWait();   
+            venueValues.add("null");
+            dataTypes.add("string"); // passing time as string and convert in the stored procedure
+            venueValues.add("null");
+            dataTypes.add("date");
+            return;
+        }else{
+            venueValues.add(event.getEventDates().getEventStartData().getEventLocalTime());
+            dataTypes.add("string"); // passing time as string and convert in the stored procedure
+            venueValues.add(event.getEventDates().getEventStartData().getEventLocalDate());
+            dataTypes.add("date");           
+            
+        }
 
-        venueValues.add(event.getEventDates().getEventStartData().getEventLocalTime());
-        dataTypes.add("string"); // passing time as string and convert in the stored procedure
-        venueValues.add(event.getEventDates().getEventStartData().getEventLocalDate());
-        dataTypes.add("date");
         venueValues.add("0");// timetba
         dataTypes.add("bit");
         venueValues.add("0");// datetba
         dataTypes.add("bit");
-        venueValues.add(String.valueOf(event.getPrice()));
+        if(event.getPrice()=="TBD"){            
+            Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();   
+            venueValues.add("0");
+            return;
+        } else {
+            venueValues.add(String.valueOf(event.getPrice()));
+        }
         dataTypes.add("string"); // pass as string and convert in database
         venueValues.add("info for event");
         dataTypes.add("string");

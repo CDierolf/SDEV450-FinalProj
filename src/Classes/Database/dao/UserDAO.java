@@ -51,7 +51,7 @@ public class UserDAO extends DatabaseInterface  {
     
     
     
-    public void addUser(String username, String password, String email) {
+    public int addUser(String username, String password, String email) {
         init();
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
@@ -68,7 +68,7 @@ public class UserDAO extends DatabaseInterface  {
                 dataTypes.toArray(new String[dataTypes.size()]));
         
         close();//close connection, statement, resultset
-        return;
+        return userid;
     }
     
     public int loginUser(String username, String password) {
