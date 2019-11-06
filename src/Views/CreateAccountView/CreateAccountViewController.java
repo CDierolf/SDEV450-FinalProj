@@ -5,6 +5,8 @@
  */
 package Views.CreateAccountView;
 
+import Classes.Database.User;
+import Classes.Database.dao.UserDAO;
 import Classes.Utilities.Alerts;
 import Classes.Utilities.Enums.FieldEnum;
 import Classes.Utilities.Validation;
@@ -36,6 +38,8 @@ public class CreateAccountViewController extends Validation implements Initializ
     private TextField emailText;
 
     Alerts alerts = new Alerts();
+    
+    UserDAO userDAO = new UserDAO();
 
     /**
      * Initializes the controller class.
@@ -148,8 +152,9 @@ public class CreateAccountViewController extends Validation implements Initializ
     public void createNewUserAccount() {
 
         if (validatePopulatedFields() && validateAccountInput()) {
-            // TODO 
-            // Submit data to backend
+            User user = new User(this.userNameText.getText(), this.passwordText.getText(), this.emailText.getText());
+            userDAO.addUser(user);
+            
         }
     }
 
