@@ -11,13 +11,10 @@ package Classes.Database.dao;
 //Imports
 
 import Classes.Database.DatabaseInterface;
-import java.sql.CallableStatement;
-import java.sql.Connection;
+import Classes.Database.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 //Begin Subclass VenueDAO
 
 /**
@@ -49,7 +46,25 @@ public class UserDAO extends DatabaseInterface  {
         return rs;
     }
     
-    
+    public void addUser(User user) {
+         init();
+        ArrayList<String> userValues = new ArrayList<String>(); 
+        ArrayList<String> dataTypes = new ArrayList<String>(); 
+        
+        userValues.add(user.getUsername());
+        dataTypes.add("string");
+        userValues.add(user.getPassword());
+        dataTypes.add("string");
+        userValues.add(user.getEmail());
+        dataTypes.add("string");
+        // insert the event into the database
+        String Q1 = "{call [usp_UsersInsert](?,?,?,?)}";
+        int userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]), 
+                dataTypes.toArray(new String[dataTypes.size()]));
+        
+        close();//close connection, statement, resultset
+        return;
+    }
     
     public int addUser(String username, String password, String email) {
         init();
