@@ -28,7 +28,7 @@
                     </VBox.margin>
                 </StackPane>
                 <Button id="shiny-orange" fx:id="findEventsButton" mnemonicParsing="false" onAction="#loadFindEventsView" prefHeight="27.0" prefWidth="274.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
-                <Button id="shiny-orange" mnemonicParsing="false" prefHeight="27.0" prefWidth="276.0" text="View Purchased Events" />
+                <Button id="shiny-orange" mnemonicParsing="false" onAction="#sendmail" prefHeight="27.0" prefWidth="276.0" text="View Purchased Events" />
                 <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0">
                     <children>
                         <Button id="dark-blue" mnemonicParsing="false" prefHeight="27.0" prefWidth="224.0" text="Logout" />

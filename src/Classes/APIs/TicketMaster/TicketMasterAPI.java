@@ -97,7 +97,6 @@ public class TicketMasterAPI {
     }
 
     //TODO
-    // Implement RADIUS
     // GET VENUE INFORMATION https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/#venue-details-v2
     private HttpURLConnection createTicketMasterAPIConnection(String keyword, String pageNumber, String postalCode) throws ProtocolException, IOException {
 
