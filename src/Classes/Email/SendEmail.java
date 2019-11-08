@@ -19,19 +19,22 @@ public class SendEmail {
     private final String pWord = "6yhbv12@";
 
     private String recipient;
+    private String subject;
     private String message;
     private String event;
 
     public SendEmail() {
     }
 
-    public SendEmail(String recipient, String message) {
+    public SendEmail(String recipient, String subject, String message) {
         this.recipient = recipient;
+        this.subject = subject;
         this.message = message;
     }
 
-    public SendEmail(String recipient, String message, String event) throws MessagingException {
+    public SendEmail(String recipient, String subject, String message, String event) throws MessagingException {
         this.recipient = recipient;
+        this.subject = subject;
         this.message = message;
         this.event = event;
 
@@ -39,36 +42,63 @@ public class SendEmail {
 
     }
 
-    public void sendMail() {
+    private String getMessage() {
+        return this.message;
+    }
+
+    private String getRecipient() {
+        return this.recipient;
+    }
+
+    private String getEvent() {
+        return this.event;
+    }
+
+    private String getSubject() {
+        return this.subject;
+    }
+
+    private Properties setProps() {
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "465");
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.socketFactory.port", "465");
         prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        return prop;
+    }
 
-        Session session = Session.getInstance(prop,
+    private Session setSession(Properties props) {
+        Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(uName, pWord);
             }
         });
 
-        try {
+        return session;
+    }
 
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("ticketamateur@TicketAmateurEnterprises.com"));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse("Thomas.muck@mymail.champlain.edu, chidi117@gmail.com")
-            );
-            message.setSubject("Your new Events!");
-            message.setText("Dear, Tom\n Based on your previous purchases, we thought"
-                    + "you would enjoy the following\n"
-                    + "Snoop Dog\n"
-                    + "Ariana Grande\n"
-                    + "The Asteroids Galaxy Tour"
-                    + "Mickey Avalon");
+    private Message constructMessage(Session session) throws AddressException, MessagingException {
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("ticketamateur@TicketAmateurEnterprises.com"));
+        message.setRecipients(
+                Message.RecipientType.TO,
+                InternetAddress.parse(getRecipient())
+        );
+
+        message.setSubject(getSubject());
+        message.setText(getMessage());
+
+        return message;
+    }
+
+    public void sendMail() throws MessagingException {
+        Properties props = setProps();
+        Session session = setSession(props);
+        Message message = constructMessage(session);
+
+        try {
 
             Transport.send(message);
 

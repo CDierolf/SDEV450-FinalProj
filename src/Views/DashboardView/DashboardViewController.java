@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javax.mail.MessagingException;
 
 /**
  * FXML Controller class
@@ -41,10 +42,10 @@ public class DashboardViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
     
-    public void sendmail() {
+    public void sendmail() throws MessagingException {
         System.out.println("Sending email...");
-        //SendEmail sendEmail = new SendEmail();
-        //sendEmail.sendMail();
+        SendEmail sendEmail = new SendEmail("chidi117@gmail.com", "Test", "Hello");
+        sendEmail.sendMail();
     }
 
     // Load the FindEventsView into the dynamicViewPane
