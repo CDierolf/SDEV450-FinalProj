@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import Classes.Utilities.Alerts;
+import java.security.NoSuchAlgorithmException;
 
 
 public class LoginViewController implements Initializable {
@@ -57,14 +58,19 @@ public class LoginViewController implements Initializable {
         }
     }
 
-    public void openDashboard() throws IOException {
+    public void openDashboard() throws IOException, NoSuchAlgorithmException {
         // TODO 
         // Authenticate User
         User user = new User( this.userNameText.getText(),
                 this.passwordText.getText());
-        user.loginUser();
+        int userid = user.loginUser();
         // If Authenticated, display Dashbaord close LoginView
         // If Not Authenticated, display error
+        if(userid == 0){
+            this.userNameText.setText("");
+            this.passwordText.setText("");
+            return;
+        }
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/Views/DashboardView/DashboardView.fxml"));
 

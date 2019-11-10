@@ -340,7 +340,6 @@ public class DatabaseInterface implements Debug {
                 } // other data types
             }
             cs.registerOutParameter(args.length+1, java.sql.Types.INTEGER);
-
             cs.execute();
             returnValue = cs.getInt(args.length+1);
             close();

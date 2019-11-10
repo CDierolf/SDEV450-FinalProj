@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import Classes.Database.User;
+import java.security.NoSuchAlgorithmException;
 /**
  * FXML Controller class
  *
@@ -140,7 +141,7 @@ public class CreateAccountViewController extends Validation implements Initializ
     }
 
     // Validate and create new user in backend.
-    public void createNewUserAccount() {
+    public void createNewUserAccount() throws NoSuchAlgorithmException {
 
         if (validatePopulatedFields() && validateAccountInput()) {
             // TODO
@@ -149,7 +150,9 @@ public class CreateAccountViewController extends Validation implements Initializ
                     this.passwordText.getText(),
                     this.emailText.getText());
             user.addUser();
-
+            alerts.genericAlert("Account created.", "Account created. Please login",
+                        "Account created. Please login").showAndWait();
+            handleCloseButtonAction();
         }
     }
 

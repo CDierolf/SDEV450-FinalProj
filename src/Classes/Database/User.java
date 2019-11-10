@@ -2,6 +2,7 @@ package Classes.Database;
 
 import Classes.Utilities.Alerts;
 import Classes.Utilities.Validation;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -68,7 +69,7 @@ public class User extends Validation{
     public String getEmail() {
         return this.email;
     }
-    public void addUser() {
+    public void addUser() throws NoSuchAlgorithmException {
         Classes.Database.dao.UserDAO dao = new Classes.Database.dao.UserDAO();
                 dao.init();
                 this.setUserID(dao.addUser(
@@ -79,7 +80,7 @@ public class User extends Validation{
     }
     
     
-    public void loginUser() {
+    public int loginUser() throws NoSuchAlgorithmException {
         Classes.Database.dao.UserDAO dao = new Classes.Database.dao.UserDAO();
         int userID = dao.loginUser(
                 this.getUsername(),
@@ -91,6 +92,7 @@ public class User extends Validation{
             this.setLoggedin(true);
             this.setUserID(userID);
         }
+        return userID;
     }
     
     
