@@ -142,9 +142,9 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
-        String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
-        //String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
-//"		VALUES (?,?,?,?,?,?,?,?)";
+        //String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
+        String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
+"		VALUES (?,?,?,?,?,?,?,?)";
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         
