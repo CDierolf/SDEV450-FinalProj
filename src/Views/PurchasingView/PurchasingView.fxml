@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="796.0" prefWidth="875.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.PurchasingView.PurchasingViewController">
+    <stylesheets>
+        <URL value="@/Views/CSS/PurchasingView.css" />
+    </stylesheets>
+   <children>
+      <GridPane hgap="10.0" layoutX="182.0" layoutY="14.0" prefHeight="513.0" prefWidth="509.0" vgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="tfFName" promptText="First Name" GridPane.rowIndex="1" />
+            <TextField fx:id="tfLName" promptText="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfAddress" prefHeight="25.0" prefWidth="215.0" promptText="Address" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+            <TextField fx:id="tfCreditCard" promptText="Credit Card Number" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+            <TextField fx:id="tfState" promptText="State" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="tfZip" promptText="Zip Code" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="tfCity" prefHeight="25.0" prefWidth="247.0" promptText="City" GridPane.rowIndex="3" />
+            <TextField fx:id="tfEmail" promptText="Email" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <TextField fx:id="tfExpiration" promptText="Expiration" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <TextField fx:id="tfCVV" promptText="CVV" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <TextField fx:id="tfCardName" promptText="Name on Card" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+            <Label prefHeight="34.0" prefWidth="226.0" text="Shipping Information" textFill="WHITE" GridPane.columnSpan="3">
+               <font>
+                  <Font name="Arial" size="23.0" />
+               </font>
+            </Label>
+            <Label prefHeight="34.0" prefWidth="259.0" text="Payment Method" textFill="WHITE" GridPane.columnSpan="3" GridPane.rowIndex="5">
+               <font>
+                  <Font name="Arial" size="23.0" />
+               </font>
+            </Label>
+            <Button id="shiny-orange" mnemonicParsing="false" onMouseClicked="#purchaseTickets" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Purchase Tickets" GridPane.rowIndex="9" />
+            <Button id="dark-blue" mnemonicParsing="false" onMouseClicked="#goBackToVenue" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Back to Venue" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+         </children>
+      </GridPane>
+      <Label fx:id="lblFName" layoutX="192.0" layoutY="62.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblLName" layoutX="364.0" layoutY="62.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAddress" layoutX="191.0" layoutY="115.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCity" layoutX="192.0" layoutY="168.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblState" layoutX="364.0" layoutY="168.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblZip" layoutX="537.0" layoutY="168.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblEmail" layoutX="192.0" layoutY="221.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCreditCard" layoutX="191.0" layoutY="326.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCardName" layoutX="191.0" layoutY="379.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCVV" layoutX="538.0" layoutY="379.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblExpiration" layoutX="538.0" layoutY="326.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">
+         <font>
+            <Font name="System Italic" size="10.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

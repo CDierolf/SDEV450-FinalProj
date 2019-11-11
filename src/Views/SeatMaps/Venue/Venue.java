@@ -67,6 +67,7 @@ public class Venue extends BorderPane implements Debug {
         String lastrow = "";
         int i = 0;
         int j = 0;
+        
         while (rs.next()) {
             Boolean available = (rs.getInt("sold") != 1);
             row = rs.getString("row");
@@ -93,6 +94,7 @@ public class Venue extends BorderPane implements Debug {
             i++;
             seats.getChildren().add(seat);
         }
+        
         rows.getChildren().add(seats);// add first row
         return rows;
     }
