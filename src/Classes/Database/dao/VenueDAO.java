@@ -73,6 +73,7 @@ public class VenueDAO extends DatabaseInterface  {
         String Q1 = "{call usp_EventExists(?,?) }";
         int exists = callableStatementReturnInt(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
+        close();
         if(exists==0) {
             // call a method to create event in db and populate some fake seat sales for the event
             addEvent(event);            
@@ -142,12 +143,12 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
-        //String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
+       // String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
         String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
-"		VALUES (?,?,?,?,?,?,?,?)";
+"		VALUES (?,?,?,?,?,?,?,?)";/**/
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        
+        close();
        
         // generate some sample sales
         venueValues = new ArrayList<String>(); // reset the arrays, only sending event id

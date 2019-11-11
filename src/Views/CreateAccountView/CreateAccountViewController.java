@@ -150,7 +150,7 @@ public class CreateAccountViewController extends Validation implements Initializ
                     this.passwordText.getText(),
                     this.emailText.getText());
             user.addUser();
-            alerts.genericAlert("Account created.", "Account created. Please login",
+            alerts.genericAlert("Account created.", "Account created. ",
                         "Account created. Please login").showAndWait();
             handleCloseButtonAction();
         }

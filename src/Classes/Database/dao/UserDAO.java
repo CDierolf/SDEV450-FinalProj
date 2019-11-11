@@ -98,7 +98,7 @@ public class UserDAO extends DatabaseInterface  {
     
     public int loginUser(String username, String password) throws NoSuchAlgorithmException {
         init();
-        String Q1 = "{call usp_loginUser_temp(?,?,?) }";
+        String Q1 = "{call usp_loginUser(?,?,?) }";
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
         
@@ -111,13 +111,9 @@ public class UserDAO extends DatabaseInterface  {
 
         int loggedin = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        if(loggedin==0) {
-            // login failed    
-            return 0;
-        } else {
-            // login succeeded
-            return 1;
-        }
+
+            return loggedin;
+
     }
     
     
