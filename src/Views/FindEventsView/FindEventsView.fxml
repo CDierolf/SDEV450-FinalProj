@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="eventViewPane" prefHeight="813.0" prefWidth="1190.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.FindEventsView.FindEventsViewController">
    <children>
@@ -30,7 +31,18 @@
                </children>
             </VBox>
             <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Search" />
+            <Label fx:id="noEventsLabel" text="No Events were found" textFill="RED">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
       </HBox>
       <Pane layoutX="10.0" layoutY="105.0" prefHeight="631.0" prefWidth="1180.0">
          <children>

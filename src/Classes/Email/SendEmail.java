@@ -37,9 +37,7 @@ public class SendEmail {
         this.subject = subject;
         this.message = message;
         this.event = event;
-
         sendMail();
-
     }
 
     private String getMessage() {

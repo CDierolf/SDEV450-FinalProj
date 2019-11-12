@@ -1,6 +1,5 @@
 package Classes.APIs.TicketMaster;
 
-
 import Views.LoginView.LoginViewController;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -31,27 +30,29 @@ public class TicketMasterAPI {
 
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
     private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?size=20";
-    
+
     private String eventKeyword;
     private String pageNumber;
     private String postalCode;
-    
-    public TicketMasterAPI() {}
+
+    public TicketMasterAPI() {
+    }
+
     public TicketMasterAPI(String eventKeyword, String pageNumber) {
         this.eventKeyword = eventKeyword;
         this.pageNumber = pageNumber;
     }
+
     public TicketMasterAPI(String eventKeyword, String postalCode, String pageNumber) {
         this.eventKeyword = eventKeyword;
         this.postalCode = postalCode;
         this.pageNumber = pageNumber;
     }
-    
+
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber, postalCode);
-        
-        System.out.println(event);
-        if (event == null) {
+
+        if (event.getEmbeddedEvents() == null) {
             System.out.println("No events found.");
             // No events were found :(
             return null;
@@ -59,7 +60,6 @@ public class TicketMasterAPI {
             return (event);
         }
     }
-    
 
     private TicketMasterEvent getTicketMasterJSONEventData(String eventKeyword, String pageNumber, String postalCode) {
 
@@ -67,7 +67,7 @@ public class TicketMasterAPI {
         JSONObject ticketMasterJsonObject = null;
         String ticketMasterJsonString;
         BufferedReader ticketMasterJsonStream;
-        TicketMasterEvent ticketMasterEvent;    
+        TicketMasterEvent ticketMasterEvent;
         try {
             connection = createTicketMasterAPIConnection(eventKeyword, pageNumber, postalCode);
             if (checkTicketMasterAPIConnection(connection)) {
@@ -76,15 +76,14 @@ public class TicketMasterAPI {
                 ticketMasterJsonObject = parseTicketMasterJSONStreamIntoObject(ticketMasterJsonStream);
                 ticketMasterJsonString = ticketMasterJsonObject.toString();
                 ticketMasterEvent = deserializeTicketMasterJsonIntoEventObject(ticketMasterJsonString);
-
                 return ticketMasterEvent; // Everything we alright.
-                
+
             } else {
                 // TODO Throw error
                 // Unable to connect to api
                 System.out.println("Unable to connect to api.");
                 System.out.println(connection.getResponseCode());
-                
+
                 return null;
             }
         } catch (IOException e) {
@@ -102,7 +101,6 @@ public class TicketMasterAPI {
 
         //String webService = "https://app.ticketmaster.com/discovery/v2/events?apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&page="+pageNumber+"&locale=*";
         //String webService = "https://app.ticketmaster.com/discovery/v2/events?size=20&page="+pageNumber+"&apikey=2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm&keyword="+keyword+"&locale=*";
-
         //URL apiURL = new URL(webService);
         URL apiURL = encodeUrl(keyword, pageNumber, postalCode);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
@@ -142,11 +140,11 @@ public class TicketMasterAPI {
 
         return tme;
     }
-    
+
     private URL encodeUrl(String keyWord, String pageNum, String postalCode) throws MalformedURLException, UnsupportedEncodingException {
 
-        String query = "&countryCode=US&page="+pageNum+"&apikey="+API_KEY+"&postalCode="+postalCode+"&keyword="+ 
-                URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString())+"&locale=en-us";
+        String query = "&countryCode=US&page=" + pageNum + "&apikey=" + API_KEY + "&postalCode=" + postalCode + "&keyword="
+                + URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString()) + "&locale=en-us";
         URL url;
         url = new URL(API_BASE_URL + query);
         return url;

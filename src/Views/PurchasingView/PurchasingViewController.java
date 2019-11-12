@@ -5,14 +5,16 @@
  */
 package Views.PurchasingView;
 
+import Classes.Email.Messages;
+import Classes.Email.SendEmail;
 import Views.SeatSelectionView.SeatSelectionViewController;
-import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Database.User;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
@@ -20,10 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import Classes.Database.dao.PurchaseDAO;
-import Views.DashboardView.DashboardViewController;
-import Views.SeatMaps.Venue.Seat;
-import java.sql.SQLException;
+import javax.mail.MessagingException;
 
 /**
  * FXML Controller class
@@ -213,23 +212,21 @@ public class PurchasingViewController implements Initializable {
     // Purchase Tickets
     // TODO - Add purchase finalizing to save seats to purchased seats for user
     //        and send email with purchase information
-    public void purchaseTickets() throws SQLException {
-        //clearValidation();
-       // if (validateFields()) {
-            Classes.Database.dao.PurchaseDAO dao = new Classes.Database.dao.PurchaseDAO();
-            dao.init();
-            long userid = this.getDashboardController().getUser().getUserID();
-
-            ArrayList<Seat> seats = this.svc.getSelectedSeats();
-            int[] selectedSeatIds = new int[seats.size()];
-            for(int i=0; i<seats.size(); i++) { // put the seat ids into an array
-                selectedSeatIds[i] = seats.get(i).getSeatid();
+    public void purchaseTickets() {
+        clearValidation();
+        if (1 == 1) {
+            System.out.println("Purchasing tickets...");
+            String emailMessage = Messages.purchasedEventMessage(
+                    svc.getEvent().getName(), 
+                    svc.getSelectedSeats(), 
+                    svc.getPurchaseTotal(), 
+                    tfFName.getText());
+            try {
+                SendEmail newEmail = new SendEmail(tfEmail.getText(), "Ticket Purchase", emailMessage, svc.getEvent().getName());
+            } catch (MessagingException ex) {
+                Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            dao.makePurchase(this.getDashboardController().getUser(), 
-                    this.getEvent(), 
-                    selectedSeatIds);
-            System.out.println("Purchasing tickets...userid:" + Long.toString(userid));
-        //}
+        }
     }
 
     // Set SeatSelectionViewController for callbacks

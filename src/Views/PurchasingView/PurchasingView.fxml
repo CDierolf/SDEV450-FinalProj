@@ -45,7 +45,7 @@
             <TextField fx:id="tfExpiration" promptText="Expiration" GridPane.columnIndex="2" GridPane.rowIndex="6" />
             <TextField fx:id="tfCVV" promptText="CVV" GridPane.columnIndex="2" GridPane.rowIndex="7" />
             <TextField fx:id="tfCardName" promptText="Name on Card" GridPane.columnSpan="2" GridPane.rowIndex="7" />
-            <Label prefHeight="34.0" prefWidth="226.0" text="Shipping Information" textFill="WHITE" GridPane.columnSpan="3">
+            <Label prefHeight="34.0" prefWidth="226.0" text="Billing Information" textFill="WHITE" GridPane.columnSpan="3">
                <font>
                   <Font name="Arial" size="23.0" />
                </font>

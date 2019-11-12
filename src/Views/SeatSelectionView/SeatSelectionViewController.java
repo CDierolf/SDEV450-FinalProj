@@ -183,6 +183,21 @@ public class SeatSelectionViewController implements Initializable {
         // Format total and display on label
         lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
+    
+    // Return current event
+    public Events getEvent() {
+        return event;
+    }
+    
+    // Return currently selected seats
+    public ArrayList<Seat> getSelectedSeats() {
+        return selectedSeats;
+    }
+    
+    // Return total of selected seats
+    public String getPurchaseTotal() {
+        return String.format("%.2f", total);
+    }
 
     // Load Purchasing View
     public void loadPurchasingView() throws IOException {
