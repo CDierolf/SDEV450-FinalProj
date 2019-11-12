@@ -5,12 +5,16 @@
  */
 package Views.PurchasingView;
 
+import Classes.Email.Messages;
+import Classes.Email.SendEmail;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
@@ -18,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javax.mail.MessagingException;
 
 /**
  * FXML Controller class
@@ -182,8 +187,18 @@ public class PurchasingViewController implements Initializable {
     //        and send email with purchase information
     public void purchaseTickets() {
         clearValidation();
-        if (validateFields()) {
+        if (1 == 1) {
             System.out.println("Purchasing tickets...");
+            String emailMessage = Messages.purchasedEventMessage(
+                    svc.getEvent().getName(), 
+                    svc.getSelectedSeats(), 
+                    svc.getPurchaseTotal(), 
+                    tfFName.getText());
+            try {
+                SendEmail newEmail = new SendEmail(tfEmail.getText(), "Ticket Purchase", emailMessage, svc.getEvent().getName());
+            } catch (MessagingException ex) {
+                Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
