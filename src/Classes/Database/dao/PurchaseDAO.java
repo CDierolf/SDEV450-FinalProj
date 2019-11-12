@@ -57,7 +57,7 @@ public class PurchaseDAO extends DatabaseInterface  {
         callableStatement(Q1, purchaseValues.toArray(
                 new String[purchaseValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        
+
 
         return;
     }

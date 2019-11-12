@@ -9,6 +9,7 @@ import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Database.User;
 import Classes.Email.Messages;
 import Classes.Email.SendEmail;
+import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import Views.SeatMaps.Venue.Seat;
 import Views.SeatSelectionView.SeatSelectionViewController;
@@ -91,6 +92,7 @@ public class PurchasingViewController implements Initializable {
     private Events event;
     private User user;
     DashboardViewController dvc;
+     Alerts alerts = new Alerts();
 
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
@@ -234,6 +236,8 @@ public class PurchasingViewController implements Initializable {
                 dao.makePurchase(this.getDashboardController().getUser(),
                         this.getEvent(),
                         selectedSeatIds);
+                alerts.genericAlert("Tickets have been purchased", "",
+                        "").showAndWait();
             } catch (SQLException ex) {
                 Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
