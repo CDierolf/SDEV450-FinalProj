@@ -2,11 +2,11 @@ package Classes.Database.dao;
 
 
 /** 
- * @Course: SDEV 250 ~ Java Programming I
+ * @Course: SDEV 450 ~ Enterprise Java
  * @Author Name: Tom Muck
- * @Assignment Name: com.nc4.factsFileParser.dao
- * @Date: Oct 31, 2018
- * @Subclass EventDAO Description: 
+ * @Assignment Name: TicketManager
+ * @Date: Nov 11, 2019
+ * @Subclass VenueDAO Description: 
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Views.DashboardView;
-
+import Classes.Database.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Email.SendEmail;
 import Views.FindEventsView.FindEventsViewController;
@@ -35,13 +35,24 @@ public class DashboardViewController implements Initializable {
     @FXML
     private AnchorPane seatSelectionViewPane;
 
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            setUser(new User());
             loadLandingView();
+                    System.out.println("USERNAME:" + this.getUser().getUsername());
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -74,15 +85,16 @@ public class DashboardViewController implements Initializable {
     // Pass this instance of the DashboardViewController into the
     // FindEventsViewController.
     public void loadFindEventsView() throws IOException {
+        //System.out.println("USERNAME:"+this.getUser().getUsername());
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/FindEventsView/FindEventsView.fxml"));
         AnchorPane eventsViewPane = loader.load();
 
         FindEventsViewController eventsViewController = loader.getController();
-
+        eventsViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(eventsViewPane);
-        eventsViewController.setDashboardController(this);
+        
     }
 
     // Unloads the SeatSelectionView from the dynamicViewPane

@@ -6,6 +6,8 @@
 package Views.PurchasingView;
 
 import Views.SeatSelectionView.SeatSelectionViewController;
+import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.Database.User;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +20,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import Classes.Database.dao.PurchaseDAO;
+import Views.DashboardView.DashboardViewController;
+import Views.SeatMaps.Venue.Seat;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -77,6 +83,33 @@ public class PurchasingViewController implements Initializable {
     private Label lblCardName;
     @FXML
     private Label lblCVV;
+    
+    private Events event;
+    private User user;
+    DashboardViewController dvc;
+
+    public void setDashboardController(DashboardViewController dvc) {
+        this.dvc = dvc;
+    }
+    public DashboardViewController getDashboardController() {
+        return dvc;
+    }
+    public Events getEvent() {
+        return event;
+    }
+
+    public void setEvent(Events event) {
+        this.event = event;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
 
     /**
      * Initializes the controller class.
@@ -180,11 +213,23 @@ public class PurchasingViewController implements Initializable {
     // Purchase Tickets
     // TODO - Add purchase finalizing to save seats to purchased seats for user
     //        and send email with purchase information
-    public void purchaseTickets() {
-        clearValidation();
-        if (validateFields()) {
-            System.out.println("Purchasing tickets...");
-        }
+    public void purchaseTickets() throws SQLException {
+        //clearValidation();
+       // if (validateFields()) {
+            Classes.Database.dao.PurchaseDAO dao = new Classes.Database.dao.PurchaseDAO();
+            dao.init();
+            long userid = this.getDashboardController().getUser().getUserID();
+
+            ArrayList<Seat> seats = this.svc.getSelectedSeats();
+            int[] selectedSeatIds = new int[seats.size()];
+            for(int i=0; i<seats.size(); i++) { // put the seat ids into an array
+                selectedSeatIds[i] = seats.get(i).getSeatid();
+            }
+            dao.makePurchase(this.getDashboardController().getUser(), 
+                    this.getEvent(), 
+                    selectedSeatIds);
+            System.out.println("Purchasing tickets...userid:" + Long.toString(userid));
+        //}
     }
 
     // Set SeatSelectionViewController for callbacks

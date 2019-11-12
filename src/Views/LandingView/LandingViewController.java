@@ -46,21 +46,21 @@ public class LandingViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadMyEvents("34566");
+        loadMyEvents();        
     }
 
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
     }
 
-    private void loadMyEvents(String userID) {
+    private void loadMyEvents() {
         //TODO get user ID from logged in user
         di.init();
         ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
-                + " UserId = '" + userID + "'");
+                + " UserId = '" + dvc.getUser().getUserID() + "'");
         try {
             while (rs.next()) {
-                System.out.println(rs.getString("UserId"));
+                System.out.println(rs.getString("EventId"));
             }
         } catch (SQLException e) {
             System.out.println(e);

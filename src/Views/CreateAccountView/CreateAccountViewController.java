@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import Classes.Database.User;
+import Views.DashboardView.DashboardViewController;
 import java.security.NoSuchAlgorithmException;
 /**
  * FXML Controller class
@@ -32,7 +33,7 @@ public class CreateAccountViewController extends Validation implements Initializ
     private TextField emailText;
 
     Alerts alerts = new Alerts();
-
+    DashboardViewController dvc;
     /**
      * Initializes the controller class.
      */

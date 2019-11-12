@@ -30,6 +30,7 @@ public class Seat extends Circle {
     private final char section;
     private boolean isAvailable;
     private boolean isSelected;
+    private int seatid;// seat id from database for purchasing ticket
     private SeatSelectionViewController svc;
     
     private final Tooltip tt = new Tooltip("Select this seat");
@@ -49,16 +50,25 @@ public class Seat extends Circle {
     }
     
     // Constructor
-    public Seat(int seatNumber, int rowNumber, char section, boolean isAvailable) {
+    public Seat(int seatNumber, int rowNumber, char section, boolean isAvailable, int seatid) {
         this.seatNumber = seatNumber;
         this.rowNumber = rowNumber;
         this.section = section;
         this.isAvailable = isAvailable;
+        this.seatid = seatid;
         Tooltip.install(this, tt);
         // Create circle on initialization
         this.setSeatImage();
         // Register with Event Handler
         addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    public int getSeatid() {
+        return seatid;
+    }
+
+    public void setSeatid(int seatid) {
+        this.seatid = seatid;
     }
     
     // Mouse Click Event Handler

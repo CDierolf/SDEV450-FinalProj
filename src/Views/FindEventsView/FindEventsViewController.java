@@ -77,6 +77,7 @@ public class FindEventsViewController implements Initializable {
         this.postalCodeWarningLabel.setVisible(false);
         this.previousPageButton.setDisable(true);
         this.nextPageButton.setDisable(true);
+                //System.out.println("USERNAME:" + this.dvc.getUser().getUsername());
     }
 
     public void setDashboardController(DashboardViewController dvc) {

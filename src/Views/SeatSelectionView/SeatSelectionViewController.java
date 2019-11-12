@@ -7,6 +7,7 @@ package Views.SeatSelectionView;
 
 import Classes.Utilities.Alerts;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.Database.User;
 import Views.DashboardView.DashboardViewController;
 import Views.PurchasingView.PurchasingViewController;
 import Views.SeatMaps.Venue.Seat;
@@ -54,10 +55,28 @@ public class SeatSelectionViewController implements Initializable {
     private Pane purchasingPane;
 
     private DashboardViewController dvc;
+
+
+
+
     private Events event;
     private ArrayList<Seat> selectedSeats;
     private ArrayList<Label> selectedSeatsLabels;
     private double total;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Events getEvent() {
+        return event;
+    }
+
 
     /**
      * Initializes the controller class.
@@ -84,7 +103,9 @@ public class SeatSelectionViewController implements Initializable {
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
     }
-
+    public DashboardViewController getDashboardController() {
+        return dvc;
+    }
     // Load event data details and show the venue seating.
     public void loadVenue(Events event) {
         System.out.println("Running loadEvent() method.");
@@ -177,6 +198,17 @@ public class SeatSelectionViewController implements Initializable {
         PurchasingViewController pvc = loader.getController();
         pvc.setSeatSelectionViewController(this);
         pvc.setupValidation();
+        pvc.setDashboardController(this.getDashboardController());
+        pvc.setEvent(this.getEvent()); // set the event to the purchase controller
+        pvc.setUser(this.getUser()); // set the current user to the purchase controller
+    }
+
+    public ArrayList<Seat> getSelectedSeats() {
+        return selectedSeats;
+    }
+
+    public void setSelectedSeats(ArrayList<Seat> selectedSeats) {
+        this.selectedSeats = selectedSeats;
     }
     
     // Unload Purchasing View

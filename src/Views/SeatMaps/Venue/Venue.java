@@ -89,7 +89,8 @@ public class Venue extends BorderPane implements Debug {
             Seat seat = new Seat(rs.getInt("seat"),
                     rs.getInt("row"),
                     'G',
-                    available);
+                    available, 
+                    rs.getInt("seatid"));
             seat.setSeatSelectionViewController(svc);
             i++;
             seats.getChildren().add(seat);
@@ -114,12 +115,13 @@ public class Venue extends BorderPane implements Debug {
     }
 
     private HBox moshPit() {
+        // current venues don't support mosh pit
         HBox center = new HBox();
         VBox v = new VBox();
         for (int i = 0; i < 3; i++) {
             HBox h = new HBox();
             for (int j = 0; j < 15; j++) {
-                Seat seat = new Seat(i + 1, j + 1, 'M', true);
+                Seat seat = new Seat(i + 1, j + 1, 'M', true, 0);
                 h.getChildren().add(seat);
             }
             v.getChildren().add(h);
