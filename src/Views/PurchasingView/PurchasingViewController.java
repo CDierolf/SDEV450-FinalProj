@@ -5,10 +5,15 @@
  */
 package Views.PurchasingView;
 
+import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.Database.User;
 import Classes.Email.Messages;
 import Classes.Email.SendEmail;
+import Views.DashboardView.DashboardViewController;
+import Views.SeatMaps.Venue.Seat;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -216,6 +221,24 @@ public class PurchasingViewController implements Initializable {
         clearValidation();
         if (1 == 1) {
             System.out.println("Purchasing tickets...");
+            Classes.Database.dao.PurchaseDAO dao = new Classes.Database.dao.PurchaseDAO();
+            dao.init();
+            long userid = this.getDashboardController().getUser().getUserID();
+
+            ArrayList<Seat> seats = this.svc.getSelectedSeats();
+            int[] selectedSeatIds = new int[seats.size()];
+            for(int i=0; i<seats.size(); i++) { // put the seat ids into an array
+                selectedSeatIds[i] = seats.get(i).getSeatid();
+            }
+            try {
+                dao.makePurchase(this.getDashboardController().getUser(),
+                        this.getEvent(),
+                        selectedSeatIds);
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Purchasing tickets...userid:" + Long.toString(userid));
+
             String emailMessage = Messages.purchasedEventMessage(
                     svc.getEvent().getName(), 
                     svc.getSelectedSeats(), 

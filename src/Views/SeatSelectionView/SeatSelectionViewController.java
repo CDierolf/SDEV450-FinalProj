@@ -184,10 +184,6 @@ public class SeatSelectionViewController implements Initializable {
         lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
     
-    // Return current event
-    public Events getEvent() {
-        return event;
-    }
     
     // Return currently selected seats
     public ArrayList<Seat> getSelectedSeats() {
@@ -218,9 +214,7 @@ public class SeatSelectionViewController implements Initializable {
         pvc.setUser(this.getUser()); // set the current user to the purchase controller
     }
 
-    public ArrayList<Seat> getSelectedSeats() {
-        return selectedSeats;
-    }
+
 
     public void setSelectedSeats(ArrayList<Seat> selectedSeats) {
         this.selectedSeats = selectedSeats;
