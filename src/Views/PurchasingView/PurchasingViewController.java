@@ -243,8 +243,10 @@ public class PurchasingViewController implements Initializable {
                 dao.makePurchase(this.getDashboardController().getUser(),
                         this.getEvent(),
                         selectedSeatIds);
-                alerts.genericAlert("Tickets have been purchased", "",
-                        "").showAndWait();
+                alerts.genericAlert("Tickets have been purchased", Integer.toString(selectedSeatIds.length) +
+                        " Tickets have been purchased",
+                        Integer.toString(selectedSeatIds.length) +
+                                " Tickets have been purchased").showAndWait();
             } catch (SQLException ex) {
                 Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
