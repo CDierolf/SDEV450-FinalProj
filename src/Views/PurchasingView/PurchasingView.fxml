@@ -55,8 +55,8 @@
                   <Font name="Arial" size="23.0" />
                </font>
             </Label>
-            <Button id="shiny-orange" mnemonicParsing="false" onMouseClicked="#purchaseTickets" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Purchase Tickets" GridPane.rowIndex="9" />
-            <Button id="dark-blue" mnemonicParsing="false" onMouseClicked="#goBackToVenue" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Back to Venue" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Button fx:id="btnPurchase" id="shiny-orange" mnemonicParsing="false" onMouseClicked="#purchaseTickets" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Purchase Tickets" GridPane.rowIndex="9" />
+            <Button fx:id="btnBack" id="dark-blue" mnemonicParsing="false" onMouseClicked="#goBackToVenue" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Back to Venue" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>
       <Label fx:id="lblFName" layoutX="192.0" layoutY="62.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">

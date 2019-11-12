@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javax.mail.MessagingException;
@@ -88,6 +89,9 @@ public class PurchasingViewController implements Initializable {
     private Label lblCardName;
     @FXML
     private Label lblCVV;
+    @FXML 
+    private Button btnPurchase;
+    private Button btnBack;
     
     private Events event;
     private User user;
@@ -221,7 +225,9 @@ public class PurchasingViewController implements Initializable {
     //        and send email with purchase information
     public void purchaseTickets() {
         clearValidation();
+        
         if (1 == 1) {
+            btnPurchase.setDisable(true);
             System.out.println("Purchasing tickets...");
             Classes.Database.dao.PurchaseDAO dao = new Classes.Database.dao.PurchaseDAO();
             dao.init();
