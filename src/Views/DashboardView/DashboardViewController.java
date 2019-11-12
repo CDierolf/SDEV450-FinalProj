@@ -51,8 +51,7 @@ public class DashboardViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             setUser(new User());
-            loadLandingView();
-                    System.out.println("USERNAME:" + this.getUser().getUsername());
+            loadLandingView();                    
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -75,10 +74,10 @@ public class DashboardViewController implements Initializable {
         AnchorPane landingViewPane = loader.load();
 
         LandingViewController landingViewController = loader.getController();
-
+        landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-        landingViewController.setDashboardController(this);
+        landingViewController.loadMyEvents();
     }
 
     // Load the FindEventsView into the dynamicViewPane

@@ -13,6 +13,7 @@ import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import Views.SeatMaps.Venue.Seat;
 import Views.SeatSelectionView.SeatSelectionViewController;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -259,6 +260,9 @@ public class PurchasingViewController implements Initializable {
             } catch (MessagingException ex) {
                 Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            svc.unloadPurchasingView();
+                //this.getDashboardController().loadLandingView();// go back to landing
+
         }
     }
 
