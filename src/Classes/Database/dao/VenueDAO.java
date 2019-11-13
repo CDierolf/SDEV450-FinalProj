@@ -155,7 +155,9 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes = new ArrayList<String>(); 
         venueValues.add(event.getEventID());
         dataTypes.add("string");
-        Q1 = "{ call [usp_EventsGenerateDummySales](?) }";
+        venueValues.add(event.getVenueData().getVenues().get(0).getVenueName());
+        dataTypes.add("string");
+        Q1 = "{ call [usp_EventsGenerateDummySalesNew](?,?) }";
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));
         close();//close connection, statement, resultset
