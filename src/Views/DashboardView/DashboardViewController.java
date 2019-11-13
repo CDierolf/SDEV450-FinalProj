@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javax.mail.MessagingException;
 
@@ -113,6 +114,7 @@ public class DashboardViewController implements Initializable {
 
         SeatSelectionViewController seatSelectionViewController = loader.getController();
         seatSelectionViewController.setDashboardController(this);
+        //seatSelectionViewController.setAlert(a);
         seatSelectionViewController.setEventData(e);
         toggleEventViewVisiblity(true);
 

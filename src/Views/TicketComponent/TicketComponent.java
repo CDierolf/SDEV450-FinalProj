@@ -10,6 +10,7 @@ package Views.TicketComponent;
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
@@ -20,6 +21,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -65,7 +67,7 @@ public class TicketComponent implements Initializable {
 
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
-        
+
         String seatPrice;
         if (!"TBD".equals(event.getPrice())) {
             double pricePerTicketValue = Double.valueOf(event.getPrice());
@@ -74,7 +76,7 @@ public class TicketComponent implements Initializable {
             seatPrice = event.getPrice();
         }
         this.pricePerTicketLabel.setText("$" + seatPrice);
-        
+
         this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
         this.venueCityStateLabel.setText(city + ", " + state);
 
@@ -117,7 +119,6 @@ public class TicketComponent implements Initializable {
     }
 
     public void buttonClicked() {
-        //TODO differentiate between an event with purchased tickets
         //if not purchased
         try {
             purchaseTickets();
@@ -151,4 +152,5 @@ public class TicketComponent implements Initializable {
     public void viewTicket() throws IOException {
         //TODO add logic to show ticket for this event
     }
+
 }

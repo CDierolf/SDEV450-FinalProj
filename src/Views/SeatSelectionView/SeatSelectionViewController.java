@@ -21,9 +21,11 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -56,9 +58,6 @@ public class SeatSelectionViewController implements Initializable {
 
     private DashboardViewController dvc;
 
-
-
-
     private Events event;
     private ArrayList<Seat> selectedSeats;
     private ArrayList<Label> selectedSeatsLabels;
@@ -77,7 +76,6 @@ public class SeatSelectionViewController implements Initializable {
         return event;
     }
 
-
     /**
      * Initializes the controller class.
      */
@@ -90,7 +88,9 @@ public class SeatSelectionViewController implements Initializable {
     // Sets the event data for the View
     public void setEventData(Events e) {
         this.event = e;
-        loadVenue(e);
+        //loadVenue(e);
+        // Call threaded loadVenue(e) method.
+        loadVenueSeating(e);
         try {
             loadEventData(e);
         } catch (ParseException ex) {
@@ -103,9 +103,11 @@ public class SeatSelectionViewController implements Initializable {
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
     }
+
     public DashboardViewController getDashboardController() {
         return dvc;
     }
+
     // Load event data details and show the venue seating.
     public void loadVenue(Events event) {
         System.out.println("Running loadEvent() method.");
@@ -120,8 +122,23 @@ public class SeatSelectionViewController implements Initializable {
         //isVenueLoaded = true;
     }
 
-    // Load in event data
-    private void loadEventData(Events e) throws ParseException {
+    
+    // Loading Venue on separate thread
+    private void loadVenueSeating(Events e) {
+        Thread thread = new Thread(() -> {
+            Runnable run = () -> {
+                loadVenue(e);
+            };
+            Platform.runLater(run);
+        });
+
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+
+// Load in event data
+private void loadEventData(Events e) throws ParseException {
         lblEventName.setText(e.getName());
 
         String unformattedDate = e.getEventDates().getEventStartData().getEventLocalDate();

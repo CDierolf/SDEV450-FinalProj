@@ -28,6 +28,11 @@ public class Alerts {
         return alert;
     }
     
+    public static Alert loadingAlert(String message) {
+        alert.setTitle(message);
+        return alert;
+    }
+    
     /**
      * Provides an alert for invalid characters within a field.
      * @return 
