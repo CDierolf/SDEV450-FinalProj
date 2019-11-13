@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="232.0" styleClass="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.TicketComponentController">
+<VBox fx:id="imageVBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="281.0" styleClass="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.TicketComponentController">
    <children>
       <ImageView fx:id="eventImageView" fitHeight="126.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <VBox prefHeight="93.0" prefWidth="232.0" spacing="5.0">
@@ -25,6 +25,16 @@
          <children>
             <Label id="titleLabel" text="Date and Time" />
             <Label id="dataLabel" fx:id="dateTimeLabel" text="October 25th, 2019 8:00:00pm" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+         <children>
+            <Label id="titleLabel" text="Location:" />
+            <Label id="dataLabel" fx:id="venueLocationLabel" text="Gillet Stadium" />
+            <Label id="dataLabel" fx:id="venueCityStateLabel" text="Boston, MA" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -1,0 +1,13 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+
+.warningLabel {
+    -fx-text-fill: red;
+    -fx-font: 10px 'Arial';
+    -fx-font-style: italic;
+}

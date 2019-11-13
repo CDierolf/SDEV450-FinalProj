@@ -2,15 +2,16 @@ package Classes.Database.dao;
 
 
 /** 
- * @Course: SDEV 250 ~ Java Programming I
+ * @Course: SDEV 450 ~ Enterprise Java
  * @Author Name: Tom Muck
- * @Assignment Name: com.nc4.factsFileParser.dao
- * @Date: Oct 31, 2018
- * @Subclass EventDAO Description: 
+ * @Assignment Name: TicketManager
+ * @Date: Nov 11, 2019
+ * @Subclass VenueDAO Description: 
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Database.DatabaseInterface;
+import Classes.Utilities.Alerts;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -72,6 +73,7 @@ public class VenueDAO extends DatabaseInterface  {
         String Q1 = "{call usp_EventExists(?,?) }";
         int exists = callableStatementReturnInt(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
+        close();
         if(exists==0) {
             // call a method to create event in db and populate some fake seat sales for the event
             addEvent(event);            
@@ -110,36 +112,55 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         venueValues.add(event.getName());
         dataTypes.add("string");
+        if(event.getEventDates().getEventStartData().getEventLocalTime()=="TBD"){ 
+            Alerts.genericAlert("Date error","Date error","Date and time is not set for this show yet. Try again at a later date.").showAndWait();   
+            venueValues.add("null");
+            dataTypes.add("string"); // passing time as string and convert in the stored procedure
+            venueValues.add("null");
+            dataTypes.add("date");
+            return;
+        }else{
+            venueValues.add(event.getEventDates().getEventStartData().getEventLocalTime());
+            dataTypes.add("string"); // passing time as string and convert in the stored procedure
+            venueValues.add(event.getEventDates().getEventStartData().getEventLocalDate());
+            dataTypes.add("date");           
+            
+        }
 
-        venueValues.add(event.getEventDates().getEventStartData().getEventLocalTime());
-        dataTypes.add("string"); // passing time as string and convert in the stored procedure
-        venueValues.add(event.getEventDates().getEventStartData().getEventLocalDate());
-        dataTypes.add("date");
         venueValues.add("0");// timetba
         dataTypes.add("bit");
         venueValues.add("0");// datetba
         dataTypes.add("bit");
-        venueValues.add(String.valueOf(event.getPrice()));
+        if(event.getPrice()=="TBD"){            
+            Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();   
+            venueValues.add("0");
+            return;
+        } else {
+            venueValues.add(String.valueOf(event.getPrice()));
+        }
         dataTypes.add("string"); // pass as string and convert in database
         venueValues.add("info for event");
         dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
-        String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
-        callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+       // String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
+        String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
+"		VALUES (?,?,?,?,?,?,?,?)";/**/
+        preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        
-        close();//close connection, statement, resultset
-        return;
+        close();
+       
         // generate some sample sales
-        /*venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
+        venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
         dataTypes = new ArrayList<String>(); 
         venueValues.add(event.getEventID());
         dataTypes.add("string");
-        Q1 = "{ call [usp_EventsGenerateDummySales](?) }";
-        rs = callableStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
+        venueValues.add(event.getVenueData().getVenues().get(0).getVenueName());
+        dataTypes.add("string");
+        Q1 = "{ call [usp_EventsGenerateDummySalesNew](?,?) }";
+        preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));
-        close();//close connection, statement, resultset*/
+        close();//close connection, statement, resultset
     }
 
         

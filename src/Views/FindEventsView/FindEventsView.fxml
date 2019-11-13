@@ -9,14 +9,40 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="eventViewPane" prefHeight="813.0" prefWidth="1190.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.FindEventsView.FindEventsViewController">
    <children>
-      <HBox layoutX="10.0" prefHeight="100.0" prefWidth="1180.0">
+      <HBox layoutX="10.0" prefHeight="100.0" prefWidth="1180.0" spacing="10.0">
          <children>
-            <TextField fx:id="searchTextField" onAction="#getEvents" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
+            <VBox prefHeight="100.0" prefWidth="251.0">
+               <children>
+                  <TextField fx:id="searchTextField" onAction="#getEvents" prefHeight="27.0" prefWidth="304.0" promptText="Enter search criteria" />
+               </children>
+            </VBox>
+            <VBox prefHeight="100.0" prefWidth="118.0">
+               <children>
+                  <TextField fx:id="postalCodeTextField" promptText="Postal Code" />
+                  <Label id="warningLabel" fx:id="postalCodeWarningLabel" text="Label">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
             <Button fx:id="searchButton" mnemonicParsing="false" onAction="#getEvents" text="Search" />
+            <Label fx:id="noEventsLabel" text="No Events were found" textFill="RED">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
       </HBox>
       <Pane layoutX="10.0" layoutY="105.0" prefHeight="631.0" prefWidth="1180.0">
          <children>
@@ -52,7 +78,7 @@
       </Pane>
       <HBox alignment="CENTER" layoutX="14.0" layoutY="744.0" prefHeight="68.0" prefWidth="1173.0">
          <children>
-            <Button fx:id="previousPageButton" mnemonicParsing="false" text="&lt;&lt;" />
+            <Button fx:id="previousPageButton" mnemonicParsing="false" onAction="#gotoPreviousPage" text="&lt;&lt;" />
             <Label fx:id="pageLabel" text="Label" />
             <Button fx:id="nextPageButton" mnemonicParsing="false" onAction="#gotoNextPage" text="&gt;&gt;" />
          </children>

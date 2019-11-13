@@ -7,26 +7,51 @@ package Classes.Database;
 *  @Subclass Event Description:
 */
 //Imports
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import org.json.JSONObject;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import Classes.Database.DatabaseInterface;
 
 //Begin Subclass Event
 public class Event {
-    long eventID;
+    String eventID;
     int venueID;
     String eventname;
     //java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(); //ph
-    java.util.Date startDate = new java.util.Date();
+    Date startDate = new Date();
     //maybe add time here
-    java.util.Date dateTBA = new java.util.Date();
+    Date dateTBA = new Date();
     //maybe add time here
     String category; //TODO: maybe a class or enum for these
     String genre;
     double price;
     String info;
+    
+    public Event(String eventID){
+        
+    }
+    
+    public static Date toDate(String date){
+        Date myDate=new Date();
+        SimpleDateFormat APIDate = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+        try{
+            myDate=APIDate.parse(date);
+        }
+        catch(Exception e){
+            //time is probably TBD
+            APIDate=new SimpleDateFormat("yyyy-mm-dd");
+            try{
+                myDate=APIDate.parse(date);
+                myDate.setHours(14);
+                myDate.setMinutes(14);
+            }
+            catch(Exception f){
+                System.out.println(f.toString());
+            }
+        }
+        
+        return myDate;
+    }
     
     
 } //End Subclass Event

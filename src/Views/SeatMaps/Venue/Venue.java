@@ -2,6 +2,7 @@ package Views.SeatMaps.Venue;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Utilities.Debug;
+import Views.SeatSelectionView.SeatSelectionViewController;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -23,77 +24,36 @@ import javafx.scene.shape.Rectangle;
  */
 //Imports
 //Begin Subclass Venu1
-public class Venue extends BorderPane implements Debug  {
+public class Venue extends BorderPane implements Debug {
 
-   
+    public SeatSelectionViewController svc;
 
-    public Venue(int venueId) {
-        try {
-            this.setStyle("-fx-background-color: #FFFFFF");
-            Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
-            ResultSet rs = dao.getVenue(venueId);
-            /* display seats for debugging
-            while (rs.next()) {
-                System.out.println("Row" + rs.getString("row") +
-                        " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));
-            }
-            */
-            //setTop(createRows(14,27)); // hard coded rows/seats
-            setTop(createRows(rs));
-            setBottom(addStage());
-            setCenter(moshPit());
-            dao.close(); // close connection, statement, resultset
-        } catch (SQLException ex) {
-            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     /* get the venue from the event id.
     if the event does not exist in the database, add it and populate some sample sales 
-    */
-    public Venue(Events event) {
+     */
+    public Venue(Events event, SeatSelectionViewController seatVC) {
+        this.svc = seatVC;
         try {
             this.setStyle("-fx-background-color: #FFFFFF");
             Classes.Database.dao.VenueDAO dao = new Classes.Database.dao.VenueDAO();
             ResultSet rs = dao.getVenue(event);
+
             /* display seats for debugging*/
-            /*while (rs.next()) {
-                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat") + 
-                        ", Section:" +  rs.getString("section") + "SOLD? " + rs.getInt("sold"));
-            }*/
-            
-            //setTop(createRows(14,27)); // hard coded rows/seats
+//            while (rs.next()) {
+//                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat")
+//                        + ", Section:" + rs.getString("section") + "SOLD? " + rs.getInt("sold"));
+//            }
+
             setTop(createRows(rs));
             setBottom(addStage());
             //setCenter(moshPit()); // mosh pit was hard coded, will have to set it up in DB if we want to sell tickets
+
             dao.close(); // close connection, statement, resultset
         } catch (SQLException ex) {
             Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-
-    private VBox createRows(int rowcount, int seatsPerRow) {
-        VBox rows = new VBox();
-        rows.setSpacing(5);
-        rows.setAlignment(Pos.CENTER);
-        //int numRows = 0;
-        double spacing = 10.0;
-        for (int i = 0; i < rowcount; i++) {
-            HBox seats = new HBox();
-            seats.setAlignment(Pos.CENTER);
-            //numRows++;
-            seats.setSpacing(spacing -= 0.2);
-            
-            for (int j = 0; j < seatsPerRow; j++) {
-                Seat seat = new Seat(i + 1, j + 1, 'G', true);
-                seats.getChildren().add(seat);
-            }
-            rows.getChildren().add(seats);
-        }
-        
-        return rows;
-        
-    }
     
     // create the display from the database
     private VBox createRows(ResultSet rs) throws SQLException {
@@ -101,44 +61,45 @@ public class Venue extends BorderPane implements Debug  {
         rows.setSpacing(5);
         rows.setAlignment(Pos.CENTER);
         double spacing = 10.0;
-        //rs.next(); // get first row
+
+        HBox seats = new HBox();
         String row = "";
         String lastrow = "";
-        int i=0;int j=0;
-        HBox seats = new HBox();
+        int i = 0;
+        int j = 0;
         
-        while (rs.next()) { 
-            Boolean available = (rs.getInt("sold")!=1);
-            //if (lastrow == "") lastrow = rs.getString("row");// first iteration, set lastrow
+        while (rs.next()) {
+            Boolean available = (rs.getInt("sold") != 1);
             row = rs.getString("row");
-            available = (rs.getInt("sold")!=1);
-            if(!row.equals(lastrow)) {   
+            available = (rs.getInt("sold") != 1);
+            if (!row.equals(lastrow)) {
                 rows.getChildren().add(seats);
                 lastrow = row;
                 j++;
-                i=0;
+                i = 0;
                 seats = new HBox();
             }
-//            
-//                System.out.println("Row" + rs.getString("row") +
-//                       " , Seat:" + rs.getString("seat") + ", Section:" +  rs.getString("section"));          
+
+//            System.out.println("Row" + rs.getString("row")
+//                    + " , Seat:" + rs.getString("seat") + ", Section:" + rs.getString("section"));
 
             seats.setAlignment(Pos.CENTER);
 
-            seats.setSpacing(spacing);            
-            Seat seat = new Seat(rs.getInt("seat"), 
-                    rs.getInt("row"), 
-                    'G', 
-                    available);
+            seats.setSpacing(spacing);
+            Seat seat = new Seat(rs.getInt("seat"),
+                    rs.getInt("row"),
+                    'G',
+                    available, 
+                    rs.getInt("seatid"));
+            seat.setSeatSelectionViewController(svc);
             i++;
             seats.getChildren().add(seat);
-            //lastrow = row;
-
-        } 
+        }
+        
         rows.getChildren().add(seats);// add first row
         return rows;
-        
     }
+
     private VBox addStage() {
         VBox stageVBox = new VBox();
         stageVBox.setAlignment(Pos.CENTER);
@@ -152,14 +113,15 @@ public class Venue extends BorderPane implements Debug  {
         stageVBox.getChildren().addAll(label, eventStage);
         return stageVBox;
     }
-    
+
     private HBox moshPit() {
+        // current venues don't support mosh pit
         HBox center = new HBox();
         VBox v = new VBox();
         for (int i = 0; i < 3; i++) {
             HBox h = new HBox();
             for (int j = 0; j < 15; j++) {
-                Seat seat = new Seat(i+1, j+1, 'M', true);
+                Seat seat = new Seat(i + 1, j + 1, 'M', true, 0);
                 h.getChildren().add(seat);
             }
             v.getChildren().add(h);
@@ -169,26 +131,27 @@ public class Venue extends BorderPane implements Debug  {
         center.getChildren().add(v);
         center.setAlignment(Pos.CENTER);
         return center;
-        
+
     }
+
     /**
      *
      * @param theArray
      * @return
      */
     @Override
-     public String myToString(String[] theArray) {
+    public String myToString(String[] theArray) {
         String result = "[";
         for (int i = 0; i < theArray.length; i++) {
-           if (i > 0) {
-              result = result + ",";
-           }
-           String item = theArray[i];
-           result = result + item;
+            if (i > 0) {
+                result = result + ",";
+            }
+            String item = theArray[i];
+            result = result + item;
         }
         result = result + "]";
         return result;
-     }
+    }
 
     @Override
     public boolean getLogToFile() {
@@ -224,5 +187,5 @@ public class Venue extends BorderPane implements Debug  {
     public boolean getDebug() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-     
+
 } //End Subclass Venu1

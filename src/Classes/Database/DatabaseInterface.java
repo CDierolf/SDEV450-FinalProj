@@ -38,7 +38,8 @@ public class DatabaseInterface implements Debug {
     private ResultSet rs;
     private boolean debug = true; // for debug mode
     private boolean logToFile = false; // for debugging, log to file or screen
-    
+    private boolean connectionStringSet = false; // do we have a connection string?
+
     /**
      *
      */
@@ -49,15 +50,17 @@ public class DatabaseInterface implements Debug {
      *
      */
     public void init() {
-        loadProperties();
-        buildConnectionString();
-        connectionPool.setUsername(getDbUsername());
-        connectionPool.setPassword(getDbPassword());
-        connectionPool.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        connectionPool.setUrl("jdbc:sqlserver://" + getDbIpaddress() + ":"
-                + getDbPort() + ";databaseName=" + getDbName());
-        connectionPool.setInitialSize(1);
-        //System.out.println(getDbUsername() + getDbPassword());
+        if(!connectionStringSet) {
+            loadProperties();
+            buildConnectionString();
+            connectionPool.setUsername(getDbUsername());
+            connectionPool.setPassword(getDbPassword());
+            connectionPool.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connectionPool.setUrl("jdbc:sqlserver://" + getDbIpaddress() + ":"
+                    + getDbPort() + ";databaseName=" + getDbName());
+            connectionPool.setInitialSize(1);
+            connectionStringSet = true;
+        }
     }
 
     /**
@@ -111,7 +114,8 @@ public class DatabaseInterface implements Debug {
         if(getDebug()) System.out.println(SQL);
         try {// Declare the JDBC objects.
             if(getDebug()) System.out.println(SQL);
-            connection = connectionPool.getConnection();
+            if(connection == null)
+                connection = connectionPool.getConnection();
             stmt = connection.createStatement();
             rs = stmt.executeQuery(SQL);
             return rs;
@@ -135,13 +139,13 @@ public class DatabaseInterface implements Debug {
      */
     public void preparedStatement(String query, String[] args,
             String[] datatypes) {
-        Connection con = null;
         PreparedStatement ps = null;
         try {
-            con = connectionPool.getConnection();
-            con.setAutoCommit(false);
+            if(connection == null)
+                connection = connectionPool.getConnection();
+                connection.setAutoCommit(false);
 
-            ps = con.prepareStatement(query);
+            ps = connection.prepareStatement(query);
 
             for (int i = 0; i < args.length; i++) {
                  if ("int".equalsIgnoreCase(datatypes[i])) {
@@ -171,7 +175,7 @@ public class DatabaseInterface implements Debug {
             }
 
             ps.executeUpdate();
-            con.commit();
+            connection.commit();
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
             e.printStackTrace();
@@ -188,15 +192,17 @@ public class DatabaseInterface implements Debug {
      * @return resultset
      */
     public ResultSet callableStatementRs(String query, String[] args,
-            String[] datatypes) {
-        Connection con = null;
+            String[] datatypes) throws SQLException {
+        if(connection == null)
+            connection = connectionPool.getConnection();
         CallableStatement cs = null;
 
         try {
-            con = connectionPool.getConnection();
-            con.setAutoCommit(false);
+            if(connection == null)
+                connection = connectionPool.getConnection();
+            connection.setAutoCommit(false);
 
-            cs = con.prepareCall(query);
+            cs = connection.prepareCall(query);
 
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
@@ -213,19 +219,19 @@ public class DatabaseInterface implements Debug {
                 } else if ("time".equalsIgnoreCase(datatypes[i])) {
                     /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
                     cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
-                    
+
                     cs.setDate(i+1, Date.valueOf(args[i]));
                 } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
-                    java.util.Date result;                    
+                    java.util.Date result;
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
                     result = d.parse (args[i]);
                     java.sql.Date sqlDate = new java.sql.Date(result.getTime());
-                    
+
                     cs.setDate(i+1, sqlDate);
                 } // other data types
             }
             rs = cs.executeQuery();
-           
+
             return rs;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -245,14 +251,15 @@ public class DatabaseInterface implements Debug {
      */
     public void callableStatement(String query, String[] args,
             String[] datatypes) {
-        Connection con = null;
         CallableStatement cs = null;
 
         try {
-            con = connectionPool.getConnection();
-            con.setAutoCommit(false);
+            if(connection == null)
+                connection = connectionPool.getConnection();
 
-            cs = con.prepareCall(query);
+            connection.setAutoCommit(false);
+
+            cs = connection.prepareCall(query);
 
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
@@ -280,8 +287,8 @@ public class DatabaseInterface implements Debug {
                     cs.setDate(i+1, sqlDate);
                 } // other data types
             }
-            cs.executeQuery();
-           
+            cs.execute();
+
             return;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -299,15 +306,15 @@ public class DatabaseInterface implements Debug {
      */
     public int callableStatementReturnInt(String query, String[] args,
             String[] datatypes) {
-        Connection con = null;
         CallableStatement cs = null;
         int returnValue = 0;
         try {
-            con = connectionPool.getConnection();
-            con.setAutoCommit(false);
+            if(connection == null)
+                connection = connectionPool.getConnection();
+            connection.setAutoCommit(false);
 
-            cs = con.prepareCall(query);
-            
+            cs = connection.prepareCall(query);
+
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
                     cs.setInt(i+1, Integer.parseInt(args[i]));
@@ -324,18 +331,15 @@ public class DatabaseInterface implements Debug {
                     SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss");
                     cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
                 } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
-                    java.util.Date result;                    
+                    java.util.Date result;
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
                     result = d.parse (args[i]);
                     java.sql.Date sqlDate = new java.sql.Date(result.getTime());
-                    
+
                     cs.setDate(i+1, sqlDate);
                 } // other data types
             }
             cs.registerOutParameter(args.length+1, java.sql.Types.INTEGER);
-            
-            //CallableStatement proc = con.prepareCall(query);
-            //proc.registerOutParameter(1, Types.INTEGER);
             cs.execute();
             returnValue = cs.getInt(args.length+1);
             close();
@@ -365,13 +369,13 @@ public class DatabaseInterface implements Debug {
                 JDBCError("close", "", true, e.getMessage());
             }
         }
-        if (connection != null) {
+ /*       if (connection != null) {
             try {
                 connection.close();
             } catch (Exception e) {
                 JDBCError("close", "", true, e.getMessage());
             }
-        }
+        }*/
     }
 
     /**

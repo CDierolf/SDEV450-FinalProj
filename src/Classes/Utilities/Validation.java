@@ -67,6 +67,19 @@ public class Validation extends Alerts{
         }
         return isValid;
     }
+    
+    public static boolean validateIntegerLength(String s, int len, String fieldID, boolean displayAlert) {
+        String s1 = s.trim();
+        boolean validLength = s1.length() == len;
+        boolean isValid = false;
+        
+        if (validLength) {
+            isValid = true;
+        } else {
+            isValid = false;
+        }
+        return isValid;
+    }
 
     /**
      * Validates if string contains data
