@@ -11,6 +11,7 @@ package Views.TicketComponent;
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Utilities.Alerts;
+import Classes.Database.Event;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
@@ -27,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 
 //Begin Subclass TicketComponent
 public class TicketComponent implements Initializable {
@@ -58,6 +60,14 @@ public class TicketComponent implements Initializable {
      */
     public void initialize(URL url, ResourceBundle rb) {
 
+    }
+    
+    public void setEventData(Event DBEvent){
+        this.eventLabel.setText(DBEvent.getEventName());
+        this.dateTimeLabel.setText(DBEvent.getStartDate().toString()); //FIXME format date
+        //TODO add venue info
+        
+        this.actionButton.setText("View Tickets");
     }
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {

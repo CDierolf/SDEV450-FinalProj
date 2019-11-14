@@ -15,13 +15,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<HBox prefHeight="162.0" prefWidth="628.0" styleClass="root" stylesheets="@../CSS/TicketComponentCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.HTicketComponentController">
+<HBox prefHeight="176.0" prefWidth="589.0" styleClass="root" stylesheets="@../CSS/TicketComponentCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.HTicketComponentController">
    <children>
       <ImageView fx:id="eventImageView" fitHeight="126.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="176.0" prefWidth="263.0">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="176.0" prefWidth="254.0">
          <children>
-            <VBox prefHeight="93.0" prefWidth="232.0" spacing="5.0">
+            <VBox prefHeight="92.0" prefWidth="235.0" spacing="5.0">
                <children>
                   <Label id="titleLabel" text="Event" />
                   <Label id="dataLabel" fx:id="eventLabel" maxHeight="-Infinity" prefHeight="45.0" prefWidth="211.0" text="Taylor Swifts Stupid Kitty Tour" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS" />
@@ -41,17 +40,17 @@
             </VBox>
          </children>
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="8.0" right="8.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox prefHeight="164.0" prefWidth="165.0" spacing="5.0">
+      <VBox prefHeight="176.0" prefWidth="146.0" spacing="5.0">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="54.0" prefWidth="132.0" spacing="10.0">
+                  <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="61.0" prefWidth="120.0" spacing="10.0">
                      <children>
                         <Label id="titleLabel" text="Price per Ticket" />
                         <Label id="dataLabel" fx:id="pricePerTicketLabel" text="\$20.00" />

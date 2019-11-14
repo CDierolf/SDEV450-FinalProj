@@ -12,6 +12,7 @@ import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.HTicketComponentController;
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
+import Classes.Database.Event;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Views.DashboardView.DashboardViewController;
@@ -22,10 +23,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 
 import Classes.Database.DatabaseInterface;
+import java.io.IOException;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 //Begin Subclass LandingViewController
 
@@ -46,58 +47,53 @@ public class LandingViewController implements Initializable {
     @FXML
     private Label botLabel;
 
+    @FXML
+    private HBox topHBox1;
+    
+    @FXML
+    private HBox topHBox2;
+    
+    @FXML
+    private HBox botHBox1;
+    
+    @FXML
+    private HBox botHBox2;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //loadMyEvents();        
     }
 
+    /**
+     *
+     * @param dvc
+     */
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
+        loadMyEvents(dvc.getUser().getUserID());
     }
 
-    public void loadMyEvents() {
-        di.init();
-
-        ArrayList<String> userValues = new ArrayList<String>(); // just one param for this request
-        ArrayList<String> dataTypes = new ArrayList<String>(); 
-        String Q1 = "{ call [usp_UsersEventsSelect](?) }";
-        userValues.add(Long.toString(dvc.getUser().getUserID()));
-        dataTypes.add("int");
-        ResultSet rs = null;
-        /*
-        	SELECT min(u.[UserEventId]), e.[EventId],  [OrderDate], [Tax] , e.eventname, e.startDate, count(*) as SeatCount
-	FROM   [dbo].[UsersEvents] u
-	inner join usereventseats S 
-	on u.UserEventId=s.UserEventId
-	INNER JOIN events e
-	ON u.EventId = e.eventid
-
-	WHERE  [UserId] = @userid
-	GROUP BY e.eventid, u.UserEventId, orderdate, tax,e.eventname, e.startDate
-        */
+    private void loadMyEvents(long userID) {
+        //FIXME temporary event
+        Event event = new Event("1A0ZA_4GkecKxIM");
         try {
-            rs = di.callableStatementRs(Q1, userValues.toArray(new String[userValues.size()]), 
-                    dataTypes.toArray(new String[dataTypes.size()]));
-        } catch (SQLException ex) {
-            Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Views/TicketComponent/HTicketComponent.fxml"));
+
+            HBox container = loader.load();
+            topHBox1.getChildren().add(container);
+            HTicketComponentController temp = loader.getController();
+            temp.setEventData(event);
+        } catch (IOException e) {
+            System.out.println(e);
         }
+
+        //TODO load events user has purchased
+        di.init();
+        ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
+                + " UserId = '" + userID + "'");
         try {
-            if (rs.next()) {
-                do{
-                    System.out.println("--------------------");
-                    System.out.println("Event id:");
-                    System.out.println(rs.getString("EventId"));
-                    System.out.println("Order Date:");
-                    System.out.println(rs.getDate("OrderDate"));
-                    System.out.println("Tax amount:");
-                    System.out.println(rs.getDouble("Tax"));
-                    System.out.println("Event name:");
-                    System.out.println(rs.getString("EventName"));
-                    System.out.println("Start date:");
-                    System.out.println(rs.getDate("StartDate"));
-                    System.out.println("Seat count in purchase:");
-                    System.out.println(rs.getInt("SeatCount"));                
-                } while (rs.next());
+            while (rs.next()) {
+                System.out.println(rs.getString("UserId"));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -108,7 +104,7 @@ public class LandingViewController implements Initializable {
 
     private void loadNearEvents(String userName) {
         // Get a list of events from the API using a random LA zip code for now
-        nearEvents = tma.findEvents("", "1", "90805").getEmbeddedEvents().getEvents();
+        nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
 
     }
 
