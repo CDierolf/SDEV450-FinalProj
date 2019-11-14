@@ -34,7 +34,7 @@ import javafx.scene.layout.VBox;
  * @author pis7ftw
  */
 public class FindEventsViewController implements Initializable {
-    
+
     private final int MAX_ALLOWABLE_EVENTS_PER_PAGE = 20;
 
     // Dashboard UI Objects
@@ -60,6 +60,8 @@ public class FindEventsViewController implements Initializable {
     private Label pageLabel;
     @FXML
     private Label postalCodeWarningLabel;
+    @FXML
+    private Label noEventsLabel;
 
     List<TicketMasterEvent.Embedded.Events> events = new ArrayList<>();
     List<TicketComponentController> tcElements = new ArrayList<>();
@@ -77,6 +79,7 @@ public class FindEventsViewController implements Initializable {
         this.postalCodeWarningLabel.setVisible(false);
         this.previousPageButton.setDisable(true);
         this.nextPageButton.setDisable(true);
+        this.noEventsLabel.setVisible(false);
     }
 
     public void setDashboardController(DashboardViewController dvc) {
@@ -88,59 +91,61 @@ public class FindEventsViewController implements Initializable {
         // Save the current keyword for pagination
         this.currentKeyword = this.searchTextField.getText();
         this.currentPostalCode = this.postalCodeTextField.getText();
+        this.noEventsLabel.setVisible(false);
+        Object o = tma.findEvents(eventKeyword, pageNumber, postalCode);
 
-        // Get a list of events from the API.
-        events = tma.findEvents(eventKeyword, pageNumber, postalCode).getEmbeddedEvents().getEvents();
-        
-        // Save the number of events returned.
-        numEvents = events.size();
-        System.out.println(numEvents);
-        
-        // Set pagination advancability
-        if (!canGotoNextPage()) {
-            this.nextPageButton.setDisable(true);
+        if (o == null) {
+            System.out.println("NULL");
+            this.noEventsLabel.setVisible(true);
         } else {
-            this.nextPageButton.setDisable(false);
-        }
+            events = tma.findEvents(eventKeyword, pageNumber, postalCode).getEmbeddedEvents().getEvents();
 
-        // For each event, create a TicketComponent object
-        for (int i = 0; i < events.size(); i++) {
-            System.out.println("Location name: " + events.get(i).getVenueData().getVenues().get(0).getVenueName());
-            System.out.println("Location address: " + events.get(i).getVenueData().getVenues().get(0).getVenueAddress());
-            System.out.println("Location city: " + events.get(i).getVenueData().getVenues().get(0).getVenueCity());
-            System.out.println("Location state: " + events.get(i).getVenueData().getVenues().get(0).getVenueState());
-            System.out.println("Location zip: " + events.get(i).getVenueData().getVenues().get(0).getVenuePostalCode());
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/Views/TicketComponent/TicketComponent.fxml"));
-                VBox ticketComponentPane = loader.load();
+            // Get a list of events from the API.
+            // Save the number of events returned.
+            numEvents = events.size();
 
-                ticketComponentPane.setId(Integer.toString(i));
-
-                ticketComponents.add(ticketComponentPane);
-                TicketComponentController tcCtrl = loader.getController();
-                tcElements.add(tcCtrl);
-
-            } catch (IOException ex) {
-                Logger.getLogger(FindEventsViewController.class.getName()).log(Level.SEVERE, null, ex);
+            // Set pagination advancability
+            if (!canGotoNextPage()) {
+                this.nextPageButton.setDisable(true);
+            } else {
+                this.nextPageButton.setDisable(false);
             }
-        }
 
-        // Run the loadEventComponents() method
-        // in a separate background thread
-        Thread thread = new Thread(() -> {
-            Runnable run = () -> {
+            // For each event, create a TicketComponent object
+            for (int i = 0; i < events.size(); i++) {
                 try {
-                    loadEventComponents();
-                } catch (FileNotFoundException ex) {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/Views/TicketComponent/TicketComponent.fxml"));
+                    VBox ticketComponentPane = loader.load();
+
+                    ticketComponentPane.setId(Integer.toString(i));
+
+                    ticketComponents.add(ticketComponentPane);
+                    TicketComponentController tcCtrl = loader.getController();
+                    tcElements.add(tcCtrl);
+
+                } catch (IOException ex) {
                     Logger.getLogger(FindEventsViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            };
-            Platform.runLater(run);
-        });
+            }
 
-        thread.setDaemon(true);
-        thread.start();
+            // Run the loadEventComponents() method
+            // in a separate background thread
+            Thread thread = new Thread(() -> {
+                Runnable run = () -> {
+                    try {
+                        loadEventComponents();
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(FindEventsViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                };
+                Platform.runLater(run);
+            });
+
+            thread.setDaemon(true);
+            thread.start();
+        }
+
     }
 
     // Load all data into the ticketcomponent controllers
@@ -188,12 +193,12 @@ public class FindEventsViewController implements Initializable {
         } else {
             this.postalCodeWarningLabel.setVisible(true);
             this.postalCodeWarningLabel.setText("Inavlid postal code");
-            
+
         }
     }
 
     public void gotoNextPage() throws IOException, Exception {
-        
+
         if (canGotoNextPage()) {
             clearEvents();
             this.currentPage++;
@@ -245,18 +250,18 @@ public class FindEventsViewController implements Initializable {
 
         return isValidPostalCode;
     }
-    
+
     private boolean canGotoNextPage() {
-        
+
         boolean canAdvance = false;
         if (numEvents < this.MAX_ALLOWABLE_EVENTS_PER_PAGE) {
             canAdvance = false;
         }
-        
+
         if (numEvents >= this.MAX_ALLOWABLE_EVENTS_PER_PAGE) {
-            canAdvance =  true;
+            canAdvance = true;
         }
-        
+
         return canAdvance;
     }
 }

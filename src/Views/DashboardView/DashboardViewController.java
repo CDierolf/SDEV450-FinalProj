@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Views.DashboardView;
-
+import Classes.Database.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Email.SendEmail;
 import Views.FindEventsView.FindEventsViewController;
@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javax.mail.MessagingException;
 
@@ -35,13 +36,23 @@ public class DashboardViewController implements Initializable {
     @FXML
     private AnchorPane seatSelectionViewPane;
 
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            loadLandingView();
+            setUser(new User());
+            loadLandingView();                    
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -64,25 +75,26 @@ public class DashboardViewController implements Initializable {
         AnchorPane landingViewPane = loader.load();
 
         LandingViewController landingViewController = loader.getController();
-
+        landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-        landingViewController.setDashboardController(this);
+        landingViewController.loadMyEvents();
     }
 
     // Load the FindEventsView into the dynamicViewPane
     // Pass this instance of the DashboardViewController into the
     // FindEventsViewController.
     public void loadFindEventsView() throws IOException {
+        //System.out.println("USERNAME:"+this.getUser().getUsername());
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/FindEventsView/FindEventsView.fxml"));
         AnchorPane eventsViewPane = loader.load();
 
         FindEventsViewController eventsViewController = loader.getController();
-
+        eventsViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(eventsViewPane);
-        eventsViewController.setDashboardController(this);
+        
     }
 
     // Unloads the SeatSelectionView from the dynamicViewPane
@@ -102,6 +114,7 @@ public class DashboardViewController implements Initializable {
 
         SeatSelectionViewController seatSelectionViewController = loader.getController();
         seatSelectionViewController.setDashboardController(this);
+        //seatSelectionViewController.setAlert(a);
         seatSelectionViewController.setEventData(e);
         toggleEventViewVisiblity(true);
 

@@ -26,6 +26,7 @@ public class SDEV_450_TicketManager extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Views/LoginView/LoginView.fxml"));
         Scene scene = new Scene(root);
+        
         stage.setScene(scene);
         stage.show();
     }

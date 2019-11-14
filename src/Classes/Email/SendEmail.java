@@ -1,8 +1,16 @@
 package Classes.Email;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+
 
 /**
  * @Course: SDEV 350 ~ Java Programming II
@@ -26,10 +34,11 @@ public class SendEmail {
     public SendEmail() {
     }
 
-    public SendEmail(String recipient, String subject, String message) {
+    public SendEmail(String recipient, String subject, String message) throws MessagingException {
         this.recipient = recipient;
         this.subject = subject;
         this.message = message;
+        sendMail();
     }
 
     public SendEmail(String recipient, String subject, String message, String event) throws MessagingException {
@@ -37,9 +46,7 @@ public class SendEmail {
         this.subject = subject;
         this.message = message;
         this.event = event;
-
         sendMail();
-
     }
 
     private String getMessage() {

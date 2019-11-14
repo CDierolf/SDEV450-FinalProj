@@ -2,11 +2,11 @@ package Classes.Database.dao;
 
 
 /** 
- * @Course: SDEV 250 ~ Java Programming I
+ * @Course: SDEV 450 ~ Enterprise Java
  * @Author Name: Tom Muck
- * @Assignment Name: com.nc4.factsFileParser.dao
- * @Date: Oct 31, 2018
- * @Subclass EventDAO Description: 
+ * @Assignment Name: TicketManager
+ * @Date: Nov 11, 2019
+ * @Subclass VenueDAO Description: 
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
@@ -73,6 +73,7 @@ public class VenueDAO extends DatabaseInterface  {
         String Q1 = "{call usp_EventExists(?,?) }";
         int exists = callableStatementReturnInt(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
+        close();
         if(exists==0) {
             // call a method to create event in db and populate some fake seat sales for the event
             addEvent(event);            
@@ -142,19 +143,21 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
-        //String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
+       // String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
         String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
-"		VALUES (?,?,?,?,?,?,?,?)";
+"		VALUES (?,?,?,?,?,?,?,?)";/**/
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        
+        close();
        
         // generate some sample sales
         venueValues = new ArrayList<String>(); // reset the arrays, only sending event id
         dataTypes = new ArrayList<String>(); 
         venueValues.add(event.getEventID());
         dataTypes.add("string");
-        Q1 = "{ call [usp_EventsGenerateDummySales](?) }";
+        venueValues.add(event.getVenueData().getVenues().get(0).getVenueName());
+        dataTypes.add("string");
+        Q1 = "{ call [usp_EventsGenerateDummySalesNew](?,?) }";
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));
         close();//close connection, statement, resultset

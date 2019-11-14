@@ -57,6 +57,12 @@ public class User extends Validation {
         this.password = password;
     }
 
+    public User() {
+
+        //this.username = uName;
+        //this.password = password;
+    }
+
     public String getUsername() {
         return this.username;
     }
@@ -92,6 +98,10 @@ public class User extends Validation {
             this.setUserID(userID);
             System.out.println("User logged in: " + this.username + ", ID: " + this.userID);
         }
+        return userID;
+    }
+
+    public long getUserID() {
         return userID;
     }
 
