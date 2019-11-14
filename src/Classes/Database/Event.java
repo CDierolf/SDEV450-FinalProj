@@ -11,6 +11,9 @@ package Classes.Database;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.sql.*;
+import Classes.Database.dao.EventDAO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //Begin Subclass Event
 public class Event {
@@ -30,8 +33,15 @@ public class Event {
      * @param eventID
      */
     public Event(String eventID) {
-        di.init();
-        ResultSet rs = di.retrieveRS("SELECT * FROM Events WHERE eventid = '" + eventID + "'");
+
+        Classes.Database.dao.EventDAO dao = new Classes.Database.dao.EventDAO();
+        dao.init();
+        ResultSet rs = null;
+        try {
+            rs = dao.getEvent(eventID);
+        } catch (SQLException ex) {
+            Logger.getLogger(Event.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.eventID = eventID;
 
         try {
