@@ -93,6 +93,7 @@ public class FindEventsViewController implements Initializable {
         this.currentPostalCode = this.postalCodeTextField.getText();
         this.noEventsLabel.setVisible(false);
         Object o = tma.findEvents(eventKeyword, pageNumber, postalCode);
+        
 
         if (o == null) {
             System.out.println("NULL");
