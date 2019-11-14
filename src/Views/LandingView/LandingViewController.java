@@ -12,6 +12,7 @@ import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.HTicketComponentController;
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
+import Classes.Database.Event;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Views.DashboardView.DashboardViewController;
@@ -22,8 +23,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 
 import Classes.Database.DatabaseInterface;
+import java.io.IOException;
 import java.sql.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 //Begin Subclass LandingViewController
 
@@ -44,17 +47,47 @@ public class LandingViewController implements Initializable {
     @FXML
     private Label botLabel;
 
+    @FXML
+    private HBox topHBox1;
+    
+    @FXML
+    private HBox topHBox2;
+    
+    @FXML
+    private HBox botHBox1;
+    
+    @FXML
+    private HBox botHBox2;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadMyEvents("34566");
     }
 
+    /**
+     *
+     * @param dvc
+     */
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
+        loadMyEvents(dvc.getUser().getUserID());
     }
 
-    private void loadMyEvents(String userID) {
-        //TODO get user ID from logged in user
+    private void loadMyEvents(long userID) {
+        //FIXME temporary event
+        Event event = new Event("1A0ZA_4GkecKxIM");
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Views/TicketComponent/HTicketComponent.fxml"));
+
+            HBox container = loader.load();
+            topHBox1.getChildren().add(container);
+            HTicketComponentController temp = loader.getController();
+            temp.setEventData(event);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        //TODO load events user has purchased
         di.init();
         ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
                 + " UserId = '" + userID + "'");

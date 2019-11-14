@@ -78,7 +78,7 @@ public class DashboardViewController implements Initializable {
         landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-        landingViewController.loadMyEvents();
+        
     }
 
     // Load the FindEventsView into the dynamicViewPane
