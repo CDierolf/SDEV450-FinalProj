@@ -17,12 +17,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import Classes.Utilities.PasswordUtilities;
 import java.security.NoSuchAlgorithmException;
-//Begin Subclass UserDAO
+//Begin Subclass EventDAO
 
-/**
- *
- * @author Tom.Muck
- */
+
 public class EventDAO extends DatabaseInterface  {
     public ResultSet getEvent(String eventid) throws SQLException {
         init();
