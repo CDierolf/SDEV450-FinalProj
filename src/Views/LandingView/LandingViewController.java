@@ -71,7 +71,7 @@ public class LandingViewController implements Initializable {
 
     private void loadNearEvents(String userName) {
         // Get a list of events from the API using a random LA zip code for now
-        nearEvents = tma.findEvents("", "1", "90805").getEmbeddedEvents().getEvents();
+        nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
 
     }
 
