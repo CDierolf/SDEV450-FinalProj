@@ -34,6 +34,7 @@ public class LandingViewController implements Initializable {
 
     DashboardViewController dvc;
     List<TicketMasterEvent.Embedded.Events> nearEvents = new ArrayList<>();
+    List<Event> purchasedEvents = new ArrayList<>();
     TicketMasterAPI tma = new TicketMasterAPI();
     DatabaseInterface di = new DatabaseInterface();
     @FXML
@@ -98,7 +99,7 @@ public class LandingViewController implements Initializable {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        //may be hacky because component uses API event instead of a base class
+        
 
     }
 

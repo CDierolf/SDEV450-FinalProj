@@ -97,13 +97,14 @@ public class LoginViewController implements Initializable {
 
     // Login user on separate thread
     private void loginUser() {
-        Thread thread = new Thread(() -> {
-            Runnable run = () -> {
+        //Thread thread = new Thread(() -> {
+            //Runnable run = () -> {
                 try {
                     // Authenticate User
-                    User user = new User(this.userNameText.getText(),
+                    user = new User(this.userNameText.getText(),
                             this.passwordText.getText());
                     int userid = user.loginUser();
+                    user.setUserID(userid);
                     // If Authenticated, display Dashbaord close LoginView
                     // If Not Authenticated, display error and return to screen
                     if (userid == 0) {
@@ -114,12 +115,12 @@ public class LoginViewController implements Initializable {
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            };
-            Platform.runLater(run);
-        });
+            //};
+            //Platform.runLater(run);
+        //});
 
-        thread.setDaemon(true);
-        thread.start();
+        //thread.setDaemon(true);
+        //thread.start();
     }
 
     public void closeApp() throws IOException {

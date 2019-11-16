@@ -44,18 +44,20 @@ public class DashboardViewController implements Initializable {
 
     public void setUser(User user) {
         this.user = user;
+        
+        //load LandingView here because it needs a user
+        try {            
+            loadLandingView();                    
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            setUser(new User());
-            loadLandingView();                    
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        //setUser(new User());
     }
 
     public void sendmail() throws MessagingException {
