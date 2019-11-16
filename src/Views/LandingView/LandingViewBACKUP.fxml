@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.LandingView.LandingViewController">
+   <children>
+      <VBox fx:id="outerVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <VBox fx:id="topVBox" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="topLabel" text="Your upcoming events" />
+                  <HBox fx:id="topHBox1" prefHeight="100.0" prefWidth="200.0" />
+                  <HBox fx:id="topHBox2" prefHeight="100.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+            <VBox fx:id="botVBox" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="botLabel" text="Other events in your area" />
+                  <HBox fx:id="botHBox1" prefHeight="100.0" prefWidth="200.0" />
+                  <HBox fx:id="botHBox2" prefHeight="100.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

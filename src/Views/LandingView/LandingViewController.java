@@ -25,6 +25,8 @@ import javafx.scene.layout.HBox;
 import Classes.Database.DatabaseInterface;
 import java.io.IOException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -32,7 +34,7 @@ import javafx.scene.control.Label;
 
 public class LandingViewController implements Initializable {
 
-    private final int NUMBER_OF_EVENTS_TO_DISPLAY = 4;
+    private final int ROWS_OF_EVENTS_TO_DISPLAY = 2;
 
     DashboardViewController dvc;
     List<Event> purchasedEvents = new ArrayList<>();
@@ -58,12 +60,10 @@ public class LandingViewController implements Initializable {
     @FXML
     private HBox topHBox2;
 
-    @FXML
-    private HBox botHBox1;
-
-    @FXML
-    private HBox botHBox2;
-
+    //@FXML
+    //private HBox botHBox1;
+    //@FXML
+    //private HBox botHBox2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
@@ -75,6 +75,7 @@ public class LandingViewController implements Initializable {
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
         loadMyEvents(dvc.getUser().getUserID());
+        loadNearEvents();
     }
 
     /**
@@ -114,10 +115,33 @@ public class LandingViewController implements Initializable {
      *
      * @param userName
      */
-    private void loadNearEvents(String userName) {
-        // Get a list of events from the API using a random LA zip code for now
+    private void loadNearEvents() {
+        // Get a list of events from the API using a specific zip code for now - 37201
         nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
+        int n = nearEvents.size();
+        if (n > ROWS_OF_EVENTS_TO_DISPLAY * 2) {
+            n = ROWS_OF_EVENTS_TO_DISPLAY * 2;
+        }
+        for (int i = 0; i < n; i += 2) {
+            HBox newRow = new HBox();
+            for (int j = i; j < i + 2; j++) {
+                if (j >= n) {
+                    break;
+                }
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/Views/TicketComponent/HTicketComponent.fxml"));
+                    HBox container = loader.load();
+                    newRow.getChildren().add(container);
+                    HTicketComponentController temp = loader.getController();
+                    temp.setEventData(nearEvents.get(j), null, dvc);
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
 
+            }
+            botVBox.getChildren().add(newRow);
+        }
     }
 
 } //End Subclass LandingViewController
