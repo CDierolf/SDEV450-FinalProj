@@ -11,12 +11,9 @@ package Classes.Database.dao;
 //Imports
 
 import Classes.Database.DatabaseInterface;
-import Classes.Database.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import Classes.Utilities.PasswordUtilities;
-import java.security.NoSuchAlgorithmException;
 //Begin Subclass EventDAO
 
 
