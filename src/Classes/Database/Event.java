@@ -14,16 +14,22 @@ import java.sql.*;
 import Classes.Database.dao.EventDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Classes.APIs.TicketMaster.*;
+import javafx.scene.image.Image;
 
 //Begin Subclass Event
 public class Event {
 
-    String eventID;
-    String eventName;
-    String imageURL;
-    Date startDate;
-    double price;
-    int venueID;
+    private String eventID;
+    private String eventName;
+    private Image image;
+    private Date startDate;
+    private Date startTime;
+    private double price;
+    private int venueID;
+    private String venueName;
+    private String venueCity;
+    private String venueState;
 
     DatabaseInterface di = new DatabaseInterface();
 
@@ -33,7 +39,7 @@ public class Event {
      * @param eventID
      */
     public Event(String eventID) {
-
+        //load what we can from the database
         Classes.Database.dao.EventDAO dao = new Classes.Database.dao.EventDAO();
         dao.init();
         ResultSet rs = null;
@@ -49,64 +55,66 @@ public class Event {
                 eventName = rs.getString("eventname");
                 //imageURL=rs.getString("image"); //currently all NULL
                 startDate = rs.getDate("startDate");
-                Time time = rs.getTime("startTime");
-                //TODO add time to startDate
+                startTime = rs.getTime("startTime");
                 price = rs.getDouble("price");
-                venueID = rs.getInt("venueid");
+                //venueID = rs.getInt("venueid"); FIXME column name not valid??
             }
 
         } catch (SQLException e) {
             System.out.println(e);
         }
         di.close();
+
+        //load the rest from the API
+        TicketMasterAPI api = new TicketMasterAPI();
+        TicketMasterEvent apiEvent = api.findEvents(eventID);
+        image = apiEvent._embedded.getEvents().get(0).getEventImage();
+        venueName = apiEvent._embedded.getEvents().get(0).getVenueData().
+                getVenues().get(0).getVenueName();
+        venueCity = apiEvent._embedded.getEvents().get(0).getVenueData().
+                getVenues().get(0).getVenueCity();
+        venueState = apiEvent._embedded.getEvents().get(0).getVenueData().
+                getVenues().get(0).getVenueState();
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public String getVenueName() {
+        return venueName;
+    }
+
+    public String getVenueCity() {
+        return venueCity;
+    }
+
+    public String getVenueState() {
+        return venueState;
     }
 
     public String getEventID() {
         return eventID;
     }
 
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
-    }
-
     public String getEventName() {
         return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
     }
 
     public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public int getVenueID() {
         return venueID;
-    }
-
-    public void setVenueID(int venueID) {
-        this.venueID = venueID;
     }
 
     public static Date toDate(String date) {

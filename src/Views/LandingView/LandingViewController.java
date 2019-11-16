@@ -32,9 +32,13 @@ import javafx.scene.control.Label;
 
 public class LandingViewController implements Initializable {
 
+    private final int NUMBER_OF_EVENTS_TO_DISPLAY = 4;
+
     DashboardViewController dvc;
-    List<TicketMasterEvent.Embedded.Events> nearEvents = new ArrayList<>();
     List<Event> purchasedEvents = new ArrayList<>();
+    List<HBox> purchasedComponents = new ArrayList<>();
+    List<TicketMasterEvent.Embedded.Events> nearEvents = new ArrayList<>();
+    List<HBox> nearComponents = new ArrayList<>();
     TicketMasterAPI tma = new TicketMasterAPI();
     DatabaseInterface di = new DatabaseInterface();
     @FXML
@@ -50,13 +54,13 @@ public class LandingViewController implements Initializable {
 
     @FXML
     private HBox topHBox1;
-    
+
     @FXML
     private HBox topHBox2;
-    
+
     @FXML
     private HBox botHBox1;
-    
+
     @FXML
     private HBox botHBox2;
 
@@ -73,6 +77,10 @@ public class LandingViewController implements Initializable {
         loadMyEvents(dvc.getUser().getUserID());
     }
 
+    /**
+     *
+     * @param userID
+     */
     private void loadMyEvents(long userID) {
         //FIXME temporary event
         Event event = new Event("1A0ZA_4GkecKxIM");
@@ -83,7 +91,7 @@ public class LandingViewController implements Initializable {
             HBox container = loader.load();
             topHBox1.getChildren().add(container);
             HTicketComponentController temp = loader.getController();
-            temp.setEventData(event);
+            temp.setEventData(event, this.dvc);
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -99,10 +107,13 @@ public class LandingViewController implements Initializable {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        
 
     }
 
+    /**
+     *
+     * @param userName
+     */
     private void loadNearEvents(String userName) {
         // Get a list of events from the API using a random LA zip code for now
         nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();

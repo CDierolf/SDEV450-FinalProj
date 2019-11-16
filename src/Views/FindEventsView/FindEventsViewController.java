@@ -155,7 +155,7 @@ public class FindEventsViewController implements Initializable {
 
         for (int i = 0; i < ticketComponents.size(); i++) {
             tcElements.get(i).setEventData(events.get(i), FindEventsViewController.this, dvc);
-            tcElements.get(i).loadImage();
+            //tcElements.get(i).loadImage(); now called inside TicketComponent
             displayEventComponents(ticketComponents.get(i), i);
         }
     }
