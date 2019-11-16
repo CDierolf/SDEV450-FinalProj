@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="176.0" prefWidth="589.0" styleClass="root" stylesheets="@../CSS/TicketComponentCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.HTicketComponentController">
+   <children>
+      <VBox>
+         <children>
+            <ImageView fx:id="eventImageView" fitHeight="126.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <Label id="dataLabel" fx:id="eventLabel" maxHeight="-Infinity" prefHeight="45.0" prefWidth="211.0" text="Taylor Swifts Stupid Kitty Tour" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="176.0" prefWidth="254.0">
+         <children>
+            <VBox prefHeight="92.0" prefWidth="235.0" spacing="5.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Label id="titleLabel" text="Location" />
+                  <Label id="dataLabel" fx:id="venueLocationLabel" text="October 25th, 2019 8:00:00pm" />
+                  <Label id="dataLabel" fx:id="venueCityStateLabel" layoutX="20.0" layoutY="45.0" text="October 25th, 2019 8:00:00pm" />
+               </children>
+            </VBox>
+            <VBox prefHeight="43.0" prefWidth="220.0" spacing="5.0">
+               <children>
+                  <Label id="titleLabel" text="Date and Time" />
+                  <Label id="dataLabel" fx:id="dateTimeLabel" text="October 25th, 2019 8:00:00pm" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="8.0" right="8.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="176.0" prefWidth="146.0" spacing="5.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <HBox alignment="CENTER" prefHeight="61.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="61.0" prefWidth="120.0" spacing="10.0">
+                     <children>
+                        <Label id="titleLabel" text="Price per Ticket" />
+                        <Label id="dataLabel" fx:id="pricePerTicketLabel" text="\$20.00" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Button id="shiny-orange" fx:id="actionButton" mnemonicParsing="false" onMouseClicked="#purchaseTickets" text="Purchase Tickets" textAlignment="CENTER" wrapText="true" />
+         </children>
+      </VBox>
+   </children>
+</HBox>
