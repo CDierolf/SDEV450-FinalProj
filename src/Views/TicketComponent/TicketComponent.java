@@ -10,7 +10,6 @@ package Views.TicketComponent;
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Utilities.Alerts;
 import Classes.Database.Event;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
@@ -22,13 +21,11 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Pane;
 
 //Begin Subclass TicketComponent
 public class TicketComponent implements Initializable {
@@ -56,10 +53,10 @@ public class TicketComponent implements Initializable {
     private Event DBEvent; //Event from database
     private DashboardViewController dvc; // To update Dashboard view
     private boolean purchased;
-
     /**
      * Initializes the controller class.
      */
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }

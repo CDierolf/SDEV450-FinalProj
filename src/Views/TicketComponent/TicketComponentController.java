@@ -5,7 +5,6 @@
  */
 package Views.TicketComponent;
 
-import Classes.Database.Event;
 import javafx.fxml.Initializable;
 
 /**
