@@ -33,7 +33,8 @@ import javafx.scene.control.Label;
 
 public class LandingViewController implements Initializable {
 
-    private final int ROWS_OF_EVENTS_TO_DISPLAY = 2;
+    private final int ROWS_OF_NEARBY_EVENTS_TO_DISPLAY = 2;
+    private final int ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY = 2;
 
     DashboardViewController dvc;
     List<Event> purchasedEvents = new ArrayList<>();
@@ -82,30 +83,48 @@ public class LandingViewController implements Initializable {
      * @param userID
      */
     private void loadMyEvents(long userID) {
-        //FIXME temporary event
-        Event event = new Event("1A0ZA_4GkecKxIM");
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/Views/TicketComponent/HTicketComponent.fxml"));
-
-            HBox container = loader.load();
-            topHBox1.getChildren().add(container);
-            HTicketComponentController temp = loader.getController();
-            temp.setEventData(event, this.dvc);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        //temporary event
+        //Event event = new Event("1A0ZA_4GkecKxIM");
 
         //TODO load events user has purchased
         di.init();
         ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
                 + " UserId = '" + userID + "'");
         try {
-            while (rs.next()) {
-                System.out.println(rs.getString("UserId"));
+            int i = 0;
+            while (rs.next()) { //fill up purchasedEvents
+                if (i > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
+                    break;
+                }
+                purchasedEvents.add(new Event(rs.getString("EventId")));
             }
         } catch (SQLException e) {
             System.out.println(e);
+        }
+
+        int n = purchasedEvents.size();
+        if (n > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
+            n = ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2;
+        }
+        for (int i = 0; i < n; i += 2) {
+            HBox newRow = new HBox();
+            for (int j = i; j < i + 2; j++) {
+                if (j >= n) {
+                    break;
+                }
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/Views/TicketComponent/HTicketComponent.fxml"));
+                    HBox container = loader.load();
+                    newRow.getChildren().add(container);
+                    HTicketComponentController temp = loader.getController();
+                    temp.setEventData(purchasedEvents.get(j), dvc);
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+
+            }
+            topVBox.getChildren().add(newRow);
         }
 
     }
@@ -118,8 +137,8 @@ public class LandingViewController implements Initializable {
         // Get a list of events from the API using a specific zip code for now - 37201
         nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
         int n = nearEvents.size();
-        if (n > ROWS_OF_EVENTS_TO_DISPLAY * 2) {
-            n = ROWS_OF_EVENTS_TO_DISPLAY * 2;
+        if (n > ROWS_OF_NEARBY_EVENTS_TO_DISPLAY * 2) {
+            n = ROWS_OF_NEARBY_EVENTS_TO_DISPLAY * 2;
         }
         for (int i = 0; i < n; i += 2) {
             HBox newRow = new HBox();
