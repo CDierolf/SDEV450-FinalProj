@@ -92,7 +92,7 @@ public class LandingViewController implements Initializable {
         di.init();
         //TODO replace with prepared statement
         ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
-                + " UserId = '" + userID + "");
+                + " UserId = '" + userID + "'");
         try {
             int i = 0;
             while (rs.next()) { //fill up purchasedEvents
