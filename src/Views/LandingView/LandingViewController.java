@@ -94,12 +94,13 @@ public class LandingViewController implements Initializable {
         ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
                 + " UserId = '" + userID + "'");
         try {
-            int i = 0;
+            int i = 1;
             while (rs.next()) { //fill up purchasedEvents
                 if (i > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
                     break;
                 }
                 purchasedEvents.add(new Event(rs.getString("EventId")));
+                i++;
             }
         } catch (SQLException e) {
             System.out.println(e);
