@@ -26,9 +26,12 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.event.*;
 //Begin Subclass LandingViewController
 
 public class LandingViewController implements Initializable {
@@ -86,8 +89,8 @@ public class LandingViewController implements Initializable {
         //temporary event
         //Event event = new Event("1A0ZA_4GkecKxIM");
 
-        //TODO load events user has purchased
         di.init();
+        //TODO replace with prepared statement
         ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
                 + " UserId = '" + userID + "'");
         try {
@@ -100,9 +103,15 @@ public class LandingViewController implements Initializable {
             }
         } catch (SQLException e) {
             System.out.println(e);
+            displayErrorTop();
         }
 
         int n = purchasedEvents.size();
+        //display error if there are no events
+        if (n == 0) {
+            displayErrorTop();
+            return;
+        }
         if (n > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
             n = ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2;
         }
@@ -137,6 +146,10 @@ public class LandingViewController implements Initializable {
         // Get a list of events from the API using a specific zip code for now - 37201
         nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
         int n = nearEvents.size();
+        if(n==0){
+            displayErrorBot();
+            return;
+        }
         if (n > ROWS_OF_NEARBY_EVENTS_TO_DISPLAY * 2) {
             n = ROWS_OF_NEARBY_EVENTS_TO_DISPLAY * 2;
         }
@@ -160,6 +173,38 @@ public class LandingViewController implements Initializable {
             }
             botVBox.getChildren().add(newRow);
         }
+    }
+
+    private void displayErrorTop() {
+        Label l = new Label("You haven't purchased any events yet");
+        Button b = new Button("Find some events");
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    dvc.loadFindEventsView();
+                } catch (IOException ex) {
+                    Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        topVBox.getChildren().addAll(l, b);
+    }
+
+    private void displayErrorBot() {
+        Label l = new Label("You haven't purchased any events yet");
+        Button b = new Button("Find some events");
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    dvc.loadFindEventsView();
+                } catch (IOException ex) {
+                    Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        topVBox.getChildren().addAll(l, b);
     }
 
 } //End Subclass LandingViewController
