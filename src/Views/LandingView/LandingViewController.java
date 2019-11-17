@@ -32,6 +32,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.event.*;
+import javafx.geometry.Insets;
 //Begin Subclass LandingViewController
 
 public class LandingViewController implements Initializable {
