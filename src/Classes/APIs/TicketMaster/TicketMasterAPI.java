@@ -29,7 +29,7 @@ import org.json.JSONObject;
 public class TicketMasterAPI {
 
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
-    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?size=20";
+    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?";
 
 
 
@@ -181,7 +181,7 @@ public class TicketMasterAPI {
     // Encode url for event
     private URL encodeUrl(String keyWord, String pageNum, String postalCode) throws MalformedURLException, UnsupportedEncodingException {
 
-        String query = "&countryCode=US&page=" + pageNum + "&apikey=" + API_KEY + "&postalCode=" + postalCode + "&keyword="
+        String query = "size=20&countryCode=US&page=" + pageNum + "&apikey=" + API_KEY + "&postalCode=" + postalCode + "&keyword="
                 + URLEncoder.encode(keyWord, StandardCharsets.UTF_8.toString()) + "&locale=en-us";
         URL url;
         url = new URL(API_BASE_URL + query);
@@ -190,8 +190,7 @@ public class TicketMasterAPI {
 
     // Encode url for eventid
     private URL encodeUrl(String eventId) throws MalformedURLException {
-        String query = "&eventID=" + eventId + "&apikey=" + API_KEY;
-        System.out.println("QUERY" + query);
+        String query = "id=" + eventId + "&apikey=" + API_KEY;
         URL url;
         url = new URL(API_BASE_URL + query);
         return url;
