@@ -91,7 +91,7 @@ public class LandingViewController implements Initializable {
 
         di.init();
         //TODO replace with prepared statement
-        ResultSet rs = di.retrieveRS("SELECT EventId FROM UsersEvents WHERE"
+        ResultSet rs = di.retrieveRS("SELECT TOP 4 EventId FROM UsersEvents WHERE"
                 + " UserId = '" + userID + "'");
         try {
             int i = 1;
