@@ -31,28 +31,7 @@ public class TicketMasterAPI {
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
     private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?size=20";
 
-    private String eventKeyword;
-    private String pageNumber;
-    private String postalCode;
-    private String eventId;
 
-    public TicketMasterAPI() {
-    }
-
-    public TicketMasterAPI(String eventKeyword, String pageNumber) {
-        this.eventKeyword = eventKeyword;
-        this.pageNumber = pageNumber;
-    }
-
-    public TicketMasterAPI(String eventKeyword, String postalCode, String pageNumber) {
-        this.eventKeyword = eventKeyword;
-        this.postalCode = postalCode;
-        this.pageNumber = pageNumber;
-    }
-
-    public TicketMasterAPI(String eventId) {
-        this.eventId = eventId;
-    }
 
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber, postalCode);
@@ -67,8 +46,7 @@ public class TicketMasterAPI {
     }
 
     public TicketMasterEvent findEvents(String eventID) {
-        TicketMasterEvent event = getTicketMasterJSONEventData(eventId);
-
+        TicketMasterEvent event = getTicketMasterJSONEventData(eventID);
         if (event.getEmbeddedEvents() == null) {
             System.out.println("No events found.");
             // No events were found :(
@@ -113,14 +91,13 @@ public class TicketMasterAPI {
     }
 
     private TicketMasterEvent getTicketMasterJSONEventData(String eventId) {
-
         HttpURLConnection connection;
         JSONObject ticketMasterJsonObject = null;
         String ticketMasterJsonString;
         BufferedReader ticketMasterJsonStream;
         TicketMasterEvent ticketMasterEvent;
         try {
-            connection = createTicketMasterAPIConnection(eventKeyword, pageNumber, postalCode);
+            connection = createTicketMasterAPIConnection(eventId);
             if (checkTicketMasterAPIConnection(connection)) {
 
                 ticketMasterJsonStream = getTicketMasterJSONStream(connection);
@@ -148,7 +125,7 @@ public class TicketMasterAPI {
 
     private HttpURLConnection createTicketMasterAPIConnection(String eventKeyword, String pageNumber, String postalCode) throws ProtocolException, IOException {
 
-        URL apiURL = encodeUrl(eventId);
+        URL apiURL = encodeUrl(eventKeyword, pageNumber, postalCode);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
@@ -158,7 +135,6 @@ public class TicketMasterAPI {
 
     // Get HTTP API Connection
     private HttpURLConnection createTicketMasterAPIConnection(String eventId) throws ProtocolException, IOException {
-
         URL apiURL = encodeUrl(eventId);
         HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
         connection.setRequestMethod("GET");
@@ -215,6 +191,7 @@ public class TicketMasterAPI {
     // Encode url for eventid
     private URL encodeUrl(String eventId) throws MalformedURLException {
         String query = "&eventID=" + eventId + "&apikey=" + API_KEY;
+        System.out.println("QUERY" + query);
         URL url;
         url = new URL(API_BASE_URL + query);
         return url;
