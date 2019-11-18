@@ -16,6 +16,8 @@ public class PurchasedEvent {
 
     private String eventName;
     private Date eventDate;
+    private String eventSeat;
+    private String eventRow;
 
     
     public void setEventName(String eventName) {
@@ -24,6 +26,12 @@ public class PurchasedEvent {
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
+    public void setEventSeat(String eventSeat) {
+        this.eventSeat = eventSeat;
+    }
+    public void setEventRow(String eventRow) {
+        this.eventRow = eventRow;
+    }
     
     public String getEventName() {
         return this.eventName;
@@ -31,4 +39,11 @@ public class PurchasedEvent {
     public Date getEventDate() {
         return this.eventDate;
     }
+    public String getEventSeat() {
+        return this.eventSeat;
+    }
+    public String getEventRow() {
+        return this.eventRow;
+    }
+    
 } //End Subclass PurchasedEvent

@@ -47,9 +47,14 @@ public class PurchasedTicketsViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        getEventData();
+    }
+    public void setDVC(DashboardViewController dvc) {
+        this.dvc = dvc;
     }
 
+    
+    // TODO Fix
     public void loadTicketComponents() {
         for (int i = 0; i < 10; i++) {
             try {
@@ -69,6 +74,7 @@ public class PurchasedTicketsViewController implements Initializable {
         }
     }
 
+    // TODO Fix
     private void loadEventDataToComponents() throws FileNotFoundException {
 
         for (int i = 0; i < ticketComponents.size(); i++) {
@@ -84,13 +90,14 @@ public class PurchasedTicketsViewController implements Initializable {
 
     }
 
+    // This works. No changes needed. Use eventData List to pull users purchased events data including seat and row
     private void getEventData() {
         di.init();
         ArrayList<String> userValues = new ArrayList<String>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<String>();
-        String Q1 = "{ call [usp_UsersEventsSelect](?) }";
+        String Q1 = "{ call [usp_getAllEventSeatsForUser](?) }";
         userValues.add(Long.toString(dvc.getUser().getUserID()));
-        dataTypes.add("int");
+        dataTypes.add("string");
         ResultSet rs = null;
         try {// execute the stored proc
             rs = di.callableStatementRs(Q1, userValues.toArray(new String[userValues.size()]),
@@ -100,10 +107,14 @@ public class PurchasedTicketsViewController implements Initializable {
         }
         try {
             if (rs.next()) {
+                
                 do {
                     PurchasedEvent purchasedEvent = new PurchasedEvent();
+                    
                     purchasedEvent.setEventName(rs.getString("EventName"));
                     purchasedEvent.setEventDate(rs.getDate("StartDate"));
+                    purchasedEvent.setEventSeat(rs.getString("Seat"));
+                    purchasedEvent.setEventRow(rs.getString("Row"));
                     this.eventData.add(purchasedEvent);
 
                 } while (rs.next());
@@ -111,5 +122,7 @@ public class PurchasedTicketsViewController implements Initializable {
         } catch (SQLException e) {
             System.out.println(e);
         }
+        
+        System.out.println("NUMBER OF USERS EVENTS LOADED: " + this.eventData.size());
     }
 }
