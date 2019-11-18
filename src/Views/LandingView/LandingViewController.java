@@ -93,7 +93,7 @@ public class LandingViewController implements Initializable {
         //TODO replace with prepared statement
         ResultSet rs = di.retrieveRS("SELECT TOP 4 EventId FROM UsersEvents WHERE"
                 + " UserId = '" + userID + "'");
-        try {
+       /* try {
             int i = 1;
             while (rs.next()) { //fill up purchasedEvents
                 if (i > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
@@ -105,7 +105,7 @@ public class LandingViewController implements Initializable {
         } catch (SQLException e) {
             System.out.println(e);
             displayErrorTop();
-        }
+        }*/
 
         int n = purchasedEvents.size();
         //display error if there are no events
