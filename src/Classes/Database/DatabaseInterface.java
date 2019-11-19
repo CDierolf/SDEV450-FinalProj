@@ -183,6 +183,60 @@ public class DatabaseInterface implements Debug {
         }
 
     }
+    
+        /**
+     * execute a prepared statement
+     *
+     * @param query
+     * @param args
+     * @param datatypes (int or string)
+     */
+    public ResultSet preparedStatementRs(String query, String[] args,
+            String[] datatypes) {
+        PreparedStatement ps = null;
+        try {
+            if(connection == null)
+                connection = connectionPool.getConnection();
+
+
+            ps = connection.prepareStatement(query);
+
+            for (int i = 0; i < args.length; i++) {
+                 if ("int".equalsIgnoreCase(datatypes[i])) {
+                    ps.setInt(i+1, Integer.parseInt(args[i]));
+                } else if ("bit".equalsIgnoreCase(datatypes[i])) {
+                    ps.setBoolean(i+1, Boolean.parseBoolean(args[i]) );
+                } else if ("money".equalsIgnoreCase(datatypes[i])) {
+                    ps.setDouble(i+1, Double.parseDouble(args[i]) );
+                } else if ("string".equalsIgnoreCase(datatypes[i])) {
+                    ps.setString(i+1, args[i]);
+                } else if ("date".equalsIgnoreCase(datatypes[i])) {
+                    SimpleDateFormat d = new SimpleDateFormat("y-M-d");
+                    ps.setDate(i+1, java.sql.Date.valueOf(args[i]));
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {
+                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
+                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
+                    
+                    ps.setDate(i+1, Date.valueOf(args[i]));
+                } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
+                    java.util.Date result;                    
+                    SimpleDateFormat d = new SimpleDateFormat("y-M-d HH:mm:ss");//2018-09-18 11:09:44
+                    result = d.parse (args[i]);
+                    java.sql.Date sqlDate = new java.sql.Date(result.getTime());
+                    
+                    ps.setDate(i+1, sqlDate);
+                } // other data types
+            }
+
+            rs = ps.executeQuery();
+            
+        } catch (Exception e) {
+            //String module, String query, Boolean exit, String error
+            e.printStackTrace();
+            JDBCError("preparedStatement", query, true, e.getMessage()  + "Args:" + myToString(args) + "Datatypes:" + myToString(datatypes));
+        }
+        return rs;
+    }
    /**
      * execute a callable statement
      *
@@ -200,7 +254,7 @@ public class DatabaseInterface implements Debug {
         try {
             if(connection == null)
                 connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
+
 
             cs = connection.prepareCall(query);
 
@@ -231,7 +285,7 @@ public class DatabaseInterface implements Debug {
                 } // other data types
             }
             rs = cs.executeQuery();
-            connection.commit();
+
             return rs;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -257,7 +311,6 @@ public class DatabaseInterface implements Debug {
             if(connection == null)
                 connection = connectionPool.getConnection();
 
-            connection.setAutoCommit(false);
 
             cs = connection.prepareCall(query);
 
@@ -288,7 +341,6 @@ public class DatabaseInterface implements Debug {
                 } // other data types
             }
             cs.execute();
-            connection.commit();
             return;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -311,7 +363,6 @@ public class DatabaseInterface implements Debug {
         try {
             if(connection == null)
                 connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
 
             cs = connection.prepareCall(query);
 
@@ -342,7 +393,6 @@ public class DatabaseInterface implements Debug {
             cs.registerOutParameter(args.length+1, java.sql.Types.INTEGER);
             cs.execute();
             returnValue = cs.getInt(args.length+1);
-            connection.commit();
             close();
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error

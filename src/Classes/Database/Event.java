@@ -53,29 +53,26 @@ public class Event {
         try {
             while (rs.next()) {
                 eventName = rs.getString("eventname");
-                //imageURL=rs.getString("image"); //currently all NULL
                 startDate = rs.getDate("startDate");
                 startTime = rs.getTime("startTime");
                 price = rs.getDouble("price");
-                //venueID = rs.getInt("venueid"); FIXME column name not valid??
+                venueID = rs.getInt("venueid"); 
+                image = new Image(rs.getString("image"));
+                venueName = rs.getString("venueName");
+                venueCity = rs.getString("venueCity");
+                venueState = rs.getString("venueState");
             }
 
         } catch (SQLException e) {
             System.out.println(e);
+        } finally {
+            dao.close();
         }
-        di.close();
 
-        //load the rest from the API
-        TicketMasterAPI api = new TicketMasterAPI();
-        TicketMasterEvent apiEvent = api.findEvents(eventID);
-        image = apiEvent._embedded.getEvents().get(0).getEventImage();
-        venueName = apiEvent._embedded.getEvents().get(0).getVenueData().
-                getVenues().get(0).getVenueName();
-        venueCity = apiEvent._embedded.getEvents().get(0).getVenueData().
-                getVenues().get(0).getVenueCity();
-        venueState = apiEvent._embedded.getEvents().get(0).getVenueData().
-                getVenues().get(0).getVenueState();
+        
     }
+
+     
 
     public Image getImage() {
         return image;
