@@ -112,24 +112,37 @@ public class PurchasedTicketsViewController implements Initializable {
             Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
+            PurchasedEvent pEvent;
+            Seat seat = new Seat();
             if (rs.next()) {
+                pEvent = new PurchasedEvent();
+                seat = new Seat();
+                pEvent.setEventName(rs.getString("EventName"));
+                pEvent.setEventDate(rs.getDate("StartDate"));
+                seat.setSeat(rs.getString("Seat"));
+                seat.setRow(rs.getString("Row"));
+                pEvent.addSeat(seat);
+                eventData.add(pEvent);
                 String currentEvent = rs.getString("EventName");
                 String nextEvent = "";
-
+                
                 do {
+                    
                     nextEvent = rs.getString("EventName");
-                    if (!currentEvent.equalsIgnoreCase(nextEvent)) {
-                        PurchasedEvent pEvent = new PurchasedEvent();
-                        Seat seat = new Seat();
-                        pEvent.setEventName(rs.getString("EventName"));
-                        pEvent.setEventDate(rs.getDate("StartDate"));
+                    pEvent = new PurchasedEvent();
+                    pEvent.setEventName(rs.getString("EventName"));
+                    pEvent.setEventDate(rs.getDate("StartDate"));
+                    do {
+
+                        seat = new Seat();
                         seat.setSeat(rs.getString("Seat"));
                         seat.setRow(rs.getString("Row"));
                         pEvent.addSeat(seat);
                         eventData.add(pEvent);
                         currentEvent = nextEvent;
-                    }
+                    } while (!currentEvent.equalsIgnoreCase(nextEvent));
                 } while (rs.next());
+                //eventData.add(pEvent);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -137,8 +150,16 @@ public class PurchasedTicketsViewController implements Initializable {
 
         System.out.println(
                 "NUMBER OF USERS EVENTS LOADED: " + this.eventData.size());
+        System.out.println("NUMBER OF SEATS: " + this.eventData.get(0).getSeats().size());
 
-
+        for (int i = 0; i < eventData.size(); i++) {
+            System.out.println("EVENT: " + eventData.get(i).getEventName());
+            System.out.println("EVENT DATE: " + eventData.get(i).getEventDate());
+            for (int j = 0; j < eventData.get(i).getSeats().size(); j++) {
+                System.out.print("SEAT: " + eventData.get(i).getSeats().get(j).getSeat());
+                System.out.println(" ROW: " + eventData.get(i).getSeats().get(j).getRow());
+            }
+        }
 
     }
 }
