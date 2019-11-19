@@ -6,16 +6,10 @@
 package Views.TicketComponent;
 
 import Classes.Database.DatabaseInterface;
-import Classes.Database.Event;
+import Classes.Database.PurchasedEvent;
 import Views.DashboardView.DashboardViewController;
-import Views.LandingView.LandingViewController;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -37,8 +31,7 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
     @FXML
     private Button resendTicketsButton;
 
-    Event DBEvent;
-    DatabaseInterface di = new DatabaseInterface();
+    PurchasedEvent pEvent;
     DashboardViewController dvc;
 
     /**
@@ -49,8 +42,12 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
         // TODO
     }
 
-    public void setEventData(DashboardViewController dvc) {
+    public void setEventData(PurchasedEvent pEvent, DashboardViewController dvc) {
+        this.pEvent = pEvent;
         this.dvc = dvc;
+        
+//        this.eventNameLabel.setText(pEvent.getEventName());
+//        this.eventDateLabel.setText(pEvent.getEventDate());
     }
 
 }

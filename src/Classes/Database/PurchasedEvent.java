@@ -1,6 +1,8 @@
 package Classes.Database;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /** 
  * @Course: SDEV 350 ~ Java Programming II
@@ -16,8 +18,7 @@ public class PurchasedEvent {
 
     private String eventName;
     private Date eventDate;
-    private String eventSeat;
-    private String eventRow;
+    private List<Seat> seats = new ArrayList<>();
 
     
     public void setEventName(String eventName) {
@@ -26,11 +27,8 @@ public class PurchasedEvent {
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
-    public void setEventSeat(String eventSeat) {
-        this.eventSeat = eventSeat;
-    }
-    public void setEventRow(String eventRow) {
-        this.eventRow = eventRow;
+    public List<Seat> getSeats() {
+        return this.seats;
     }
     
     public String getEventName() {
@@ -39,11 +37,9 @@ public class PurchasedEvent {
     public Date getEventDate() {
         return this.eventDate;
     }
-    public String getEventSeat() {
-        return this.eventSeat;
-    }
-    public String getEventRow() {
-        return this.eventRow;
+    
+    public void addSeat(Seat seat) {
+        this.seats.add(seat);
     }
     
 } //End Subclass PurchasedEvent

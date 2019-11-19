@@ -13,6 +13,7 @@ import Views.LandingView.LandingViewController;
 import Views.PurchasedTicketsView.PurchasedTicketsViewController;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +43,7 @@ public class DashboardViewController implements Initializable {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(User user) throws SQLException {
         this.user = user;
         
         //load LandingView here because it needs a user
@@ -71,7 +72,7 @@ public class DashboardViewController implements Initializable {
      *
      * @throws IOException
      */
-    public void loadLandingView() throws IOException {
+    public void loadLandingView() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/LandingView/LandingView.fxml"));
         AnchorPane landingViewPane = loader.load();
@@ -80,6 +81,9 @@ public class DashboardViewController implements Initializable {
         landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
+        PurchasedTicketsViewController ptvc = new PurchasedTicketsViewController();
+        ptvc.setDVC(this);
+        ptvc.getEventData();
         
     }
 

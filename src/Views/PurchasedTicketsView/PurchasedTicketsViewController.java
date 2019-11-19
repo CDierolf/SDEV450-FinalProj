@@ -7,10 +7,11 @@ package Views.PurchasedTicketsView;
 
 import Classes.Database.DatabaseInterface;
 import Classes.Database.PurchasedEvent;
+import Classes.Database.Seat;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import Views.LandingView.LandingViewController;
-import Views.TicketComponent.TicketComponentController;
+import Views.TicketComponent.PurchasedTicketsViewComponentController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -37,7 +38,7 @@ public class PurchasedTicketsViewController implements Initializable {
     private VBox root;
 
     DashboardViewController dvc;
-    List<TicketComponentController> tcElements = new ArrayList<>();
+    List<PurchasedTicketsViewComponentController> tcElements = new ArrayList<>();
     List<VBox> ticketComponents = new ArrayList<>();
     DatabaseInterface di = new DatabaseInterface();
     ArrayList<PurchasedEvent> eventData = new ArrayList<>();
@@ -47,16 +48,20 @@ public class PurchasedTicketsViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        getEventData();
+        try {
+            getEventData();
+        } catch (SQLException ex) {
+            Logger.getLogger(PurchasedTicketsViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     public void setDVC(DashboardViewController dvc) {
         this.dvc = dvc;
     }
 
-    
     // TODO Fix
     public void loadTicketComponents() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < eventData.size(); i++) {
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/Views/TicketComponent/PurchasedTicketViewComponent.fxml"));
@@ -65,7 +70,7 @@ public class PurchasedTicketsViewController implements Initializable {
                 ticketComponentPane.setId(Integer.toString(i));
 
                 ticketComponents.add(ticketComponentPane);
-                TicketComponentController tcCtrl = loader.getController();
+                PurchasedTicketsViewComponentController tcCtrl = loader.getController();
                 tcElements.add(tcCtrl);
 
             } catch (IOException ex) {
@@ -78,7 +83,8 @@ public class PurchasedTicketsViewController implements Initializable {
     private void loadEventDataToComponents() throws FileNotFoundException {
 
         for (int i = 0; i < ticketComponents.size(); i++) {
-            //tcElements.get(i).setEventData(events.get(i), PurchasedTicketsViewController.this, dvc);
+
+            tcElements.get(i).setEventData(eventData.get(i), dvc);
             //tcElements.get(i).loadImage(); now called inside TicketComponent
             displayEventComponents(ticketComponents.get(i), i);
         }
@@ -91,7 +97,7 @@ public class PurchasedTicketsViewController implements Initializable {
     }
 
     // This works. No changes needed. Use eventData List to pull users purchased events data including seat and row
-    private void getEventData() {
+    public void getEventData() throws SQLException {
         di.init();
         ArrayList<String> userValues = new ArrayList<String>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<String>();
@@ -107,22 +113,32 @@ public class PurchasedTicketsViewController implements Initializable {
         }
         try {
             if (rs.next()) {
-                
-                do {
-                    PurchasedEvent purchasedEvent = new PurchasedEvent();
-                    
-                    purchasedEvent.setEventName(rs.getString("EventName"));
-                    purchasedEvent.setEventDate(rs.getDate("StartDate"));
-                    purchasedEvent.setEventSeat(rs.getString("Seat"));
-                    purchasedEvent.setEventRow(rs.getString("Row"));
-                    this.eventData.add(purchasedEvent);
+                String currentEvent = rs.getString("EventName");
+                String nextEvent = "";
 
+                do {
+                    nextEvent = rs.getString("EventName");
+                    if (!currentEvent.equalsIgnoreCase(nextEvent)) {
+                        PurchasedEvent pEvent = new PurchasedEvent();
+                        Seat seat = new Seat();
+                        pEvent.setEventName(rs.getString("EventName"));
+                        pEvent.setEventDate(rs.getDate("StartDate"));
+                        seat.setSeat(rs.getString("Seat"));
+                        seat.setRow(rs.getString("Row"));
+                        pEvent.addSeat(seat);
+                        eventData.add(pEvent);
+                        currentEvent = nextEvent;
+                    }
                 } while (rs.next());
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
-        
-        System.out.println("NUMBER OF USERS EVENTS LOADED: " + this.eventData.size());
+
+        System.out.println(
+                "NUMBER OF USERS EVENTS LOADED: " + this.eventData.size());
+
+
+
     }
 }

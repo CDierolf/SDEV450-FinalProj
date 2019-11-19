@@ -180,12 +180,6 @@ public class TicketComponent implements Initializable {
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() throws IOException {
 
-        //        
-        //        String date = event.getEventDates().getEventStartData().getEventLocalDate();
-        //        String time = event.getEventDates().getEventStartData().getEventLocalTime();
-        //        System.out.println(event.getName() + " " + date + time);
-        //        System.out.println(event);
-        //
         // Load the SeatSelectionView
         dvc.loadSeatSelectionView(APIEvent);
         // Hide the FindEventsView
