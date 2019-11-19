@@ -46,14 +46,7 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("int");
         ResultSet rs = callableStatementRs(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        //Date desEndDateField = null;// initialize for value coming from DB
-        //Views.SeatMaps.Venue.Venue theVenue = new Views.SeatMaps.Venue.Venue(venueid);
-        /*
-        while (rs.next()) {
-            desEndDateField = rs.getDate("desEndDate");
-        }// END while (rs.next())
-        return desEndDateField;
-*/
+
         return rs;
     }
     /* getVenue passed a string event id */
@@ -82,14 +75,7 @@ public class VenueDAO extends DatabaseInterface  {
         Q1 = "{ call usp_getSeatsForEvent(?) }";   
         ResultSet rs = callableStatementRs(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        //Date desEndDateField = null;// initialize for value coming from DB
-        //Views.SeatMaps.Venue.Venue theVenue = new Views.SeatMaps.Venue.Venue(venueid);
-        /*
-        while (rs.next()) {
-            desEndDateField = rs.getDate("desEndDate");
-        }// END while (rs.next())
-        return desEndDateField;
-*/
+
         return rs;
     }
  

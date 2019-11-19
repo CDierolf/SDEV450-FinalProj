@@ -231,7 +231,7 @@ public class DatabaseInterface implements Debug {
                 } // other data types
             }
             rs = cs.executeQuery();
-
+            connection.commit();
             return rs;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -288,7 +288,7 @@ public class DatabaseInterface implements Debug {
                 } // other data types
             }
             cs.execute();
-
+            connection.commit();
             return;
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
@@ -342,6 +342,7 @@ public class DatabaseInterface implements Debug {
             cs.registerOutParameter(args.length+1, java.sql.Types.INTEGER);
             cs.execute();
             returnValue = cs.getInt(args.length+1);
+            connection.commit();
             close();
         } catch (Exception e) {
             //String module, String query, Boolean exit, String error
