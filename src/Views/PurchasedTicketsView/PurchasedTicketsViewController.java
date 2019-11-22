@@ -111,41 +111,32 @@ public class PurchasedTicketsViewController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            PurchasedEvent pEvent;
-            Seat seat = new Seat();
-            if (rs.next()) {
-                pEvent = new PurchasedEvent();
-                seat = new Seat();
-                pEvent.setEventName(rs.getString("EventName"));
-                pEvent.setEventDate(rs.getDate("StartDate"));
-                seat.setSeat(rs.getString("Seat"));
-                seat.setRow(rs.getString("Row"));
-                pEvent.addSeat(seat);
+        if (rs != null) {
+            try {
+                PurchasedEvent pEvent = null;
+                Seat seat;
+                String lastEvent = "";
+                String currentEvent = "";
+                while (rs.next()) {
+                    currentEvent = rs.getString("EventName");
+                    if (!currentEvent.equalsIgnoreCase(lastEvent)) {
+                        if (!lastEvent.equals("")) {
+                            eventData.add(pEvent);
+                        }
+                        pEvent = new PurchasedEvent();
+                        pEvent.setEventName(rs.getString("EventName"));
+                        pEvent.setEventDate(rs.getDate("StartDate"));
+                        lastEvent = currentEvent;
+                    }
+                    seat = new Seat();
+                    seat.setSeat(rs.getString("Seat"));
+                    seat.setRow(rs.getString("Row"));
+                    pEvent.addSeat(seat);
+                }
                 eventData.add(pEvent);
-                String currentEvent = rs.getString("EventName");
-                String nextEvent = "";
-                
-                do {
-                    
-                    nextEvent = rs.getString("EventName");
-                    pEvent = new PurchasedEvent();
-                    pEvent.setEventName(rs.getString("EventName"));
-                    pEvent.setEventDate(rs.getDate("StartDate"));
-                    do {
-
-                        seat = new Seat();
-                        seat.setSeat(rs.getString("Seat"));
-                        seat.setRow(rs.getString("Row"));
-                        pEvent.addSeat(seat);
-                        eventData.add(pEvent);
-                        currentEvent = nextEvent;
-                    } while (!currentEvent.equalsIgnoreCase(nextEvent));
-                } while (rs.next());
-                //eventData.add(pEvent);
+            } catch (SQLException e) {
+                System.out.println(e);
             }
-        } catch (SQLException e) {
-            System.out.println(e);
         }
 
         System.out.println(
