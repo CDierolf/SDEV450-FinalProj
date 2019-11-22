@@ -23,6 +23,7 @@ import javafx.stage.StageStyle;
 import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Parent;
@@ -74,7 +75,7 @@ public class LoginViewController implements Initializable {
         }
     }
 
-    public void openDashboard() throws IOException, NoSuchAlgorithmException {
+    public void openDashboard() throws IOException, NoSuchAlgorithmException, SQLException {
 
         loginUser();
         //this.setUser(user); // sets the user object on the screen
