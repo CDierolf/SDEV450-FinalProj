@@ -80,7 +80,6 @@ public class SeatSelectionViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("In seat selection view");
 
     }
 
@@ -109,11 +108,6 @@ public class SeatSelectionViewController implements Initializable {
 
     // Load event data details and show the venue seating.
     public void loadVenue(Events event) {
-        System.out.println("Running loadEvent() method.");
-        System.out.println(this.event);
-        System.out.println(event.getName());
-        System.out.println(event.getEventDates().getEventStartData().getEventLocalDate());
-        System.out.println(event.getEventDates().getEventStartData().getEventLocalTime());
 
         Venue ven = new Venue(event, this);
         venuePane.getChildren().add(ven);
