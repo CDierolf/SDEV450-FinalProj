@@ -79,6 +79,7 @@ public class TicketComponent implements Initializable {
         this.actionButton.setText("View Tickets");
         loadImage();
     }
+    
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
         purchased = false; //this event has no purchases from user

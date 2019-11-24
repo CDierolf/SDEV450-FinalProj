@@ -6,7 +6,6 @@
 package Views.DashboardView;
 import Classes.Database.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Email.SendEmail;
 import Views.FindEventsView.FindEventsViewController;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import Views.LandingView.LandingViewController;
@@ -18,8 +17,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javax.mail.MessagingException;
 
 /**
  * FXML Controller class
@@ -36,6 +35,8 @@ public class DashboardViewController implements Initializable {
     private AnchorPane dynamicViewPane;
     @FXML
     private AnchorPane seatSelectionViewPane;
+    @FXML
+    private AnchorPane purchasedTicketsViewPane;
 
     private User user;
 
@@ -61,12 +62,6 @@ public class DashboardViewController implements Initializable {
         //setUser(new User());
     }
 
-    public void sendmail() throws MessagingException {
-        System.out.println("Sending email...");
-        SendEmail sendEmail = new SendEmail("chidi117@gmail.com", "Test", "Hello");
-        sendEmail.sendMail();
-    }
-
     /**
      * Load LandingView
      *
@@ -81,10 +76,24 @@ public class DashboardViewController implements Initializable {
         landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-        PurchasedTicketsViewController ptvc = new PurchasedTicketsViewController();
-        ptvc.setDVC(this);
-        ptvc.getEventData();
+
         
+    }
+    
+    public void loadPurchasedTicketsView() throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Views/PurchasedTicketsView/PurchasedTicketsView.fxml"));
+        this.purchasedTicketsViewPane = loader.load();
+        
+        
+        PurchasedTicketsViewController pTicketsViewController = new PurchasedTicketsViewController();
+        pTicketsViewController = loader.getController();
+        pTicketsViewController.setDashboardController(this);
+        dynamicViewPane.getChildren().clear();
+        dynamicViewPane.getChildren().add(purchasedTicketsViewPane);
+    }
+    public void unloadPurchasedTicketsView() {
+        dynamicViewPane.getChildren().remove(purchasedTicketsViewPane);
     }
 
     // Load the FindEventsView into the dynamicViewPane

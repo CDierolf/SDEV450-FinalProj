@@ -25,7 +25,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -49,8 +48,6 @@ public class FindEventsViewController implements Initializable {
     @FXML
     private TextField searchTextField;
     @FXML
-    private Button searchButton;
-    @FXML
     private TextField postalCodeTextField;
     @FXML
     private Button previousPageButton;
@@ -62,6 +59,7 @@ public class FindEventsViewController implements Initializable {
     private Label postalCodeWarningLabel;
     @FXML
     private Label noEventsLabel;
+    
 
     List<TicketMasterEvent.Embedded.Events> events = new ArrayList<>();
     List<TicketComponentController> tcElements = new ArrayList<>();

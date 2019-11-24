@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
  *
  * @author pis7ftw
  */
-public class PurchasedTicketsViewComponentController extends TicketComponent implements Initializable {
+public class PurchasedTicketsViewComponentController implements Initializable {
 
     @FXML
     private Label eventNameLabel;
@@ -41,13 +41,14 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-
-    public void setEventData(PurchasedEvent pEvent, DashboardViewController dvc) {
-        this.pEvent = pEvent;
+    
+    public void setEventData(PurchasedEvent event, DashboardViewController dvc) {
+        this.pEvent = event;
         this.dvc = dvc;
-        
-//        this.eventNameLabel.setText(pEvent.getEventName());
-//        this.eventDateLabel.setText(pEvent.getEventDate());
+        this.eventNameLabel.setText(pEvent.getEventName());
+        this.eventDateLabel.setText(pEvent.getEventDate().toString());
     }
+
+    
 
 }
