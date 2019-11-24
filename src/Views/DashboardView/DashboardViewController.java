@@ -6,21 +6,26 @@
 package Views.DashboardView;
 import Classes.Objects.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.Objects.PurchasedEvent;
 import Views.FindEventsView.FindEventsViewController;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import Views.LandingView.LandingViewController;
+import Views.PurchasedTicketsDetailsView.PurchasedTicketsDetailsViewController;
 import Views.PurchasedTicketsView.PurchasedTicketsViewController;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -113,6 +118,25 @@ public class DashboardViewController implements Initializable {
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(eventsViewPane);
         
+    }
+    
+    public void openDetailsView(PurchasedEvent pEvent) throws IOException, NoSuchAlgorithmException, SQLException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Views/PurchasedTicketsDetailsView/PurchasedTicketsDetailsView.fxml"));
+        //Parent root = (Parent)fxmlLoader.load();
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        // set the user to the dashboard view controller to maintain state
+        PurchasedTicketsDetailsViewController controller = fxmlLoader.<PurchasedTicketsDetailsViewController>getController();
+        controller.setEventData(pEvent);
+        controller.setUser(this.user);
+        Stage stage = new Stage();
+
+        stage.setTitle(pEvent.getEventName() + " Details");
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        stage.show();
     }
 
     // Unloads the SeatSelectionView from the dynamicViewPane

@@ -10,7 +10,6 @@ package Classes.Database;
 //Imports
 
 import Classes.Utilities.Debug;
-import static Classes.Utilities.Debug.logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

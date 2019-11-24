@@ -11,6 +11,7 @@ package Views.TicketComponent;
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Objects.Event;
+import Classes.Objects.PurchasedEvent;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
@@ -50,9 +51,11 @@ public class TicketComponent implements Initializable {
     private VBox imageVBox;
 
     private Events APIEvent; // Event stored for UI interaction
+    private PurchasedEvent pEvent;
     private Event DBEvent; //Event from database
     private DashboardViewController dvc; // To update Dashboard view
     private boolean purchased;
+
     /**
      * Initializes the controller class.
      */
@@ -79,7 +82,6 @@ public class TicketComponent implements Initializable {
         this.actionButton.setText("View Tickets");
         loadImage();
     }
-    
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
         purchased = false; //this event has no purchases from user
@@ -147,7 +149,7 @@ public class TicketComponent implements Initializable {
         t.setDaemon(true);
         t.start();
     }
-    
+
     // For purchasedticketsviewcomponentcontroller image by pEvent url
     public void loadImage(String url) {
         final Task<Void> task = new Task<Void>() {
@@ -167,7 +169,7 @@ public class TicketComponent implements Initializable {
         t.setDaemon(true);
         t.start();
     }
-    
+
     public void getImage(String url) {
         if (url != null) {
             eventImageView.setImage(new Image(url));
@@ -207,9 +209,11 @@ public class TicketComponent implements Initializable {
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() throws IOException {
 
-        // Load the SeatSelectionView
-        dvc.loadSeatSelectionView(APIEvent);
         
+        // TODO Call dvc.openDetailsView(PurchasedEvent pEvent) to load
+        // the details view
+        //dvc.loadSea(APIEvent);
+
         // Hide the FindEventsView
         dvc.toggleEventViewVisiblity(false);
     }
