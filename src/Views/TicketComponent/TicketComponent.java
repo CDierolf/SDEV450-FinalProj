@@ -212,8 +212,7 @@ public class TicketComponent implements Initializable {
         
         // TODO Call dvc.openDetailsView(PurchasedEvent pEvent) to load
         // the details view
-        //dvc.loadSea(APIEvent);
-
+        dvc.loadSeatSelectionView(APIEvent);
         // Hide the FindEventsView
         dvc.toggleEventViewVisiblity(false);
     }
