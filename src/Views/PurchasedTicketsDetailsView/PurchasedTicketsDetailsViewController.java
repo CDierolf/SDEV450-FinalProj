@@ -44,7 +44,12 @@ public class PurchasedTicketsDetailsViewController implements Initializable {
     private Button resendTicketsButton;
     @FXML
     private Button closeButton;
-    @FXML private ImageView eventImageView;
+    @FXML
+    private Label venueNameLabel;
+    @FXML
+    private Label venueCityStateLabel;
+    @FXML
+    private ImageView eventImageView;
 
     PurchasedEvent pEvent;
     User user;
@@ -62,21 +67,23 @@ public class PurchasedTicketsDetailsViewController implements Initializable {
         this.pEvent = pEvent;
         this.eventNameLabel.setText(pEvent.getEventName());
         this.eventDateTimeLabel.setText(pEvent.getEventDate().toString());
-        this.eventPriceLabel.setText("$100.00");
+        this.eventPriceLabel.setText("$" + String.format("%.2f", pEvent.getEventPrice()));
+        this.venueNameLabel.setText(pEvent.getVenue().getVenueName());
+        this.venueCityStateLabel.setText(String.format("%s, %s", pEvent.getVenue().getVenueCity(),
+                pEvent.getVenue().getVenueState()));
         this.eventSeatsLabel.setText(setSeatLabel());
-        
+
         // TODO USE URL FROM pEVENT
-        loadImage("https://s1.ticketm.net/dam/a/ac8/aedc8214-7ae1-4f2b-84b3-cec13763bac8_1051221_TABLET_LANDSCAPE_LARGE_16_9.jpg");
+        loadImage(pEvent.getEventImageUrl());
 
     }
-    
+
     public void setUser(User user) {
         this.user = user;
     }
 
     private String setSeatLabel() {
 
-        
         for (int i = 0; i < pEvent.getSeats().size(); i++) {
             String seat = pEvent.getSeats().get(i).getSeat();
             String row = pEvent.getSeats().get(i).getRow();
@@ -92,16 +99,16 @@ public class PurchasedTicketsDetailsViewController implements Initializable {
         stage.close();
 
     }
-    
+
     public void resendTicket() {
         String message = Messages.purchasedEventMessage(pEvent.getEventName(), seats, this.eventPriceLabel.getText(), user.getUsername());
-            try {
-                SendEmail newEmail = new SendEmail("chidi117@gmail.com", "Ticket Purchase", message, pEvent.getEventName());
-            } catch (MessagingException ex) {
-                Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            SendEmail newEmail = new SendEmail("chidi117@gmail.com", "Ticket Purchase", message, pEvent.getEventName());
+        } catch (MessagingException ex) {
+            Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     // For purchasedticketsviewcomponentcontroller image by pEvent url
     public void loadImage(String url) {
         final Task<Void> task = new Task<Void>() {
@@ -121,12 +128,11 @@ public class PurchasedTicketsDetailsViewController implements Initializable {
         t.setDaemon(true);
         t.start();
     }
-    
+
     public void getImage(String url) {
         if (url != null) {
             this.eventImageView.setImage(new Image(url));
         }
     }
-    
-    
+
 }

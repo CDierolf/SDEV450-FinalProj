@@ -18,8 +18,10 @@ public class PurchasedEvent {
     private String eventName;
     private Date eventDate;
     private Date eventTime;
-    private String eventPrice;
+    private Double eventPrice;
+    private String eventImageUrl;
     private List<Seat> seats = new ArrayList<>();
+    private Venue venue = new Venue();
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
@@ -32,29 +34,49 @@ public class PurchasedEvent {
     public void addSeat(Seat seat) {
         this.seats.add(seat);
     }
-    
+
     public void setEventTime(Date eventTime) {
         this.eventTime = eventTime;
     }
 
-    public void setEventPrice(String eventPrice) {
+    public void setEventPrice(Double eventPrice) {
         this.eventPrice = eventPrice;
     }
+
+    public void setEventImageUrl(String eventImageUrl) {
+        this.eventImageUrl = eventImageUrl;
+    }
+
     public List<Seat> getSeats() {
         return this.seats;
     }
-    
-    public String getEventPrice() {
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
+    }
+
+    public Venue getVenue() {
+        return this.venue;
+    }
+
+    public Double getEventPrice() {
         return this.eventPrice;
     }
+
     public Date getEventTime() {
         return this.eventTime;
     }
+
     public String getEventName() {
         return this.eventName;
     }
+
     public Date getEventDate() {
         return this.eventDate;
+    }
+
+    public String getEventImageUrl() {
+        return this.eventImageUrl;
     }
 
 } //End Subclass PurchasedEvent

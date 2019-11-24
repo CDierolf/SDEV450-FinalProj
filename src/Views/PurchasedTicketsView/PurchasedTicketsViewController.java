@@ -9,6 +9,7 @@ import Classes.Database.DatabaseInterface;
 import Classes.Database.PurchasedEvent;
 import Classes.Database.Seat;
 import Classes.Database.User;
+import Classes.Database.Venue;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.PurchasedTicketsViewComponentController;
 import java.io.FileNotFoundException;
@@ -121,8 +122,16 @@ public class PurchasedTicketsViewController implements Initializable {
                             eventData.add(pEvent);
                         }
                         pEvent = new PurchasedEvent();
+                        Venue venue = new Venue();
                         pEvent.setEventName(rs.getString("EventName"));
                         pEvent.setEventDate(rs.getDate("StartDate"));
+                        pEvent.setEventTime(rs.getTime("StartTime"));
+                        pEvent.setEventPrice(rs.getDouble("TotalPrice"));
+                        pEvent.setEventImageUrl(rs.getString("image"));
+                        venue.setVenueCity(rs.getString("venueCity"));
+                        venue.setVenueState(rs.getString("venueState"));
+                        venue.setVenueName(rs.getString("venueName"));
+                        pEvent.setVenue(venue);
                         lastEvent = currentEvent;
                     }
                     seat = new Seat();

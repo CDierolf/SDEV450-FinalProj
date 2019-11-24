@@ -17,9 +17,9 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -38,7 +38,7 @@ public class DashboardViewController implements Initializable {
     @FXML
     private AnchorPane seatSelectionViewPane;
     @FXML
-    private AnchorPane purchasedTicketsViewPane;
+    private StackPane purchasedTicketsViewPane;
     @FXML private Button logoutButton;
 
     private User user;

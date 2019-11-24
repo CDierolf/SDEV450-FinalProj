@@ -41,9 +41,13 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
     @FXML
     private Label eventDateLabel;
     @FXML
+    private Label eventPrice;
+    @FXML
     private Button viewDetailsButton;
     @FXML
     private Button resendTicketsButton;
+    @FXML
+    private Label venueLabel;
 
     PurchasedEvent pEvent;
     DashboardViewController dvc;
@@ -58,22 +62,26 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+
     public void setEventData(PurchasedEvent event, DashboardViewController dvc) {
         this.pEvent = event;
         this.dvc = dvc;
         this.eventNameLabel.setText(pEvent.getEventName());
-        this.eventDateLabel.setText(pEvent.getEventDate().toString());
+        this.eventDateLabel.setText(pEvent.getEventDate().toString() + " " + pEvent.getEventTime().toString());
+        this.eventPrice.setText("$" + String.format("%.2f", pEvent.getEventPrice()));
+        this.venueLabel.setText(pEvent.getVenue().getVenueName());
+
         setSeatsString();
-        
+
         // TODO GET URL FROM pEVENT
-        loadImage("https://s1.ticketm.net/dam/a/ac8/aedc8214-7ae1-4f2b-84b3-cec13763bac8_1051221_TABLET_LANDSCAPE_LARGE_16_9.jpg");
+        loadImage(pEvent.getEventImageUrl());
     }
+
     public void setUser(User user) {
         this.user = user;
-        
+
     }
-    
+
     public void openDetailsView() throws IOException, NoSuchAlgorithmException, SQLException {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -92,9 +100,9 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
 
         stage.show();
     }
+
     private String setSeatsString() {
 
-        
         for (int i = 0; i < pEvent.getSeats().size(); i++) {
             String seat = pEvent.getSeats().get(i).getSeat();
             String row = pEvent.getSeats().get(i).getRow();
@@ -104,17 +112,15 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
         return seats;
 
     }
-    
+
     public void resendTicket() {
         // Replace seats and price
         String message = Messages.purchasedEventMessage(pEvent.getEventName(), seats, price, user.getUsername());
-            try {
-                SendEmail newEmail = new SendEmail("chidi117@gmail.com", "Ticket Purchase", message, pEvent.getEventName());
-            } catch (MessagingException ex) {
-                Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            SendEmail newEmail = new SendEmail("chidi117@gmail.com", "Ticket Purchase", message, pEvent.getEventName());
+        } catch (MessagingException ex) {
+            Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
-    
 
 }
