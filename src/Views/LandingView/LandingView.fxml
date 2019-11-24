@@ -2,53 +2,55 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.LandingView.LandingViewController">
+<AnchorPane prefHeight="813.0" prefWidth="1190.0" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.LandingView.LandingViewController">
    <children>
-      <VBox fx:id="outerVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-         <children>
-            <VBox fx:id="topVBox" prefHeight="200.0" prefWidth="100.0">
+      <ScrollPane prefHeight="803.0" prefWidth="1190.0" styleClass="root" stylesheets="@../CSS/DashboardViewCSS.css">
+         <content>
+            <Pane prefHeight="824.0" prefWidth="1190.0" styleClass="root" stylesheets="@../CSS/DashboardViewCSS.css">
                <children>
-                  <Label fx:id="topLabel" text="Your upcoming events" />
-                  <HBox fx:id="topHBox1" prefHeight="100.0" prefWidth="200.0">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></HBox>
-                  <HBox fx:id="topHBox2" prefHeight="100.0" prefWidth="200.0">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></HBox>
+                  <VBox fx:id="outerVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="813.0" prefWidth="1190.0" stylesheets="@../CSS/DashboardViewCSS.css">
+                     <children>
+                        <VBox fx:id="topVBox" prefHeight="200.0" prefWidth="100.0" spacing="5.0" stylesheets="@../CSS/DashboardViewCSS.css">
+                           <children>
+                              <Label fx:id="topLabel" text="Your upcoming events" />
+                              <HBox fx:id="topHBox1" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="topHBox2" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="botVBox" prefHeight="329.0" prefWidth="1190.0" spacing="5.0">
+                           <children>
+                              <Label fx:id="botLabel" text="Other events in your area" />
+                              <HBox fx:id="botHBox1" prefHeight="92.0" prefWidth="1190.0" spacing="10.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="botHBox2" prefHeight="91.0" prefWidth="1190.0" spacing="10.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox fx:id="botVBox" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label fx:id="botLabel" text="Other events in your area" />
-                  <HBox fx:id="botHBox1" prefHeight="100.0" prefWidth="200.0">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></HBox>
-                  <HBox fx:id="botHBox2" prefHeight="100.0" prefWidth="200.0">
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin></HBox>
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+            </Pane>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
