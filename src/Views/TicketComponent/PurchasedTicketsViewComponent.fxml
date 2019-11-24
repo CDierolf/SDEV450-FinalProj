@@ -24,8 +24,8 @@
       </VBox>
       <VBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="357.0" spacing="10.0">
          <children>
-            <Button id="shiny-orange" fx:id="viewDetailsButton" mnemonicParsing="false" prefHeight="38.0" prefWidth="132.0" text="View Details" />
-            <Button id="shiny-orange" fx:id="resendTicketsButton" mnemonicParsing="false" prefHeight="24.0" prefWidth="130.0" text="Resend Tickets" />
+            <Button id="shiny-orange" fx:id="viewDetailsButton" mnemonicParsing="false" onAction="#openDetailsView" prefHeight="38.0" prefWidth="132.0" text="View Details" />
+            <Button id="shiny-orange" fx:id="resendTicketsButton" mnemonicParsing="false" onAction="#resendTicket" prefHeight="24.0" prefWidth="130.0" text="Resend Tickets" />
          </children>
       </VBox>
    </children>

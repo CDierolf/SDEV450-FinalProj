@@ -32,6 +32,21 @@ public class Messages {
         
         return message;
     }
+    public static String purchasedEventMessage(String event, String seats, String price, String recipient) {
+        String message = "Dear " + recipient + "\n\n";
+        message += "This email is a confirmation of your ticket purchase for:\n\n";
+        message += event + "\n\n";
+        message += "This email will service as your ticket for the event. \n";
+        message += "If you inadvertently delete this email, simply log back into"
+                + "the app, click \"View Purchased Events\" and click \"Resend Ticket\"";
+        message += "\n\nEvent: " + event + "\n";
+        message += "Total Ticket Price: $" + price + "\n\n";
+        message += "Seats Purchased:\n";
+        message += seats + "\n\n";
+        message += "\n\nThank you, and enjoy the show!\nTicketAmateur";
+        
+        return message;
+    }
     
     public static String accountCreationMessage(String recipient, String username, String password) {
         String message = "Dear " + recipient + "\n\n";

@@ -8,6 +8,7 @@ package Views.PurchasedTicketsView;
 import Classes.Database.DatabaseInterface;
 import Classes.Database.PurchasedEvent;
 import Classes.Database.Seat;
+import Classes.Database.User;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.PurchasedTicketsViewComponentController;
 import java.io.FileNotFoundException;
@@ -23,15 +24,13 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
  *
- * @author pis7ftw
+ * @author Christopher Dierolf
  */
 public class PurchasedTicketsViewController implements Initializable {
 
@@ -43,6 +42,7 @@ public class PurchasedTicketsViewController implements Initializable {
     List<HBox> ticketComponents = new ArrayList<>();
     DatabaseInterface di = new DatabaseInterface();
     ArrayList<PurchasedEvent> eventData = new ArrayList<>();
+    User user;
 
     /**
      * Initializes the controller class.
@@ -51,14 +51,15 @@ public class PurchasedTicketsViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
-    public void setDashboardController(DashboardViewController dvc) throws SQLException, IOException {
+    public void setDashboardControllerAndUser(DashboardViewController dvc, User user) throws SQLException, IOException {
         this.dvc = dvc;
+        this.user = user;
         getEventData();
         loadTicketComponents();
         loadEventDataToComponents();
     }
+    
 
-    // TODO Fix
     public void loadTicketComponents() {
         for (int i = 0; i < eventData.size(); i++) {
                 try {
@@ -76,11 +77,11 @@ public class PurchasedTicketsViewController implements Initializable {
             }
     }
 
-    // TODO Fix
     private void loadEventDataToComponents() throws FileNotFoundException, IOException, SQLException {
 
         for (int i = 0; i < ticketComponents.size(); i++) {
             tcElements.get(i).setEventData(eventData.get(i), dvc);
+            tcElements.get(i).setUser(this.user);
             //tcElements.get(i).loadImage(); now called inside TicketComponent
             displayEventComponents(ticketComponents.get(i));
         }
@@ -93,7 +94,6 @@ public class PurchasedTicketsViewController implements Initializable {
 
     }
 
-    // This works. No changes needed. Use eventData List to pull users purchased events data including seat and row
     public void getEventData() throws SQLException {
         di.init();
         ArrayList<String> userValues = new ArrayList<>(); // just one param for this request
@@ -135,23 +135,6 @@ public class PurchasedTicketsViewController implements Initializable {
                 System.out.println(e);
             }
         }
-
-        System.out.println("FIRST EVENT: " + eventData.get(0).getEventName());
-        System.out.println("FIRST EVENT SEATS: " + eventData.get(0).getSeats().size());
-        System.out.println("Sec EVENT: " + eventData.get(1).getEventName());
-        System.out.println("SEc EVENT SEATS: " + eventData.get(1).getSeats().size());
-        System.out.println("Third EVENT: " + eventData.get(2).getEventName());
-        System.out.println("Third EVENT SEATS: " + eventData.get(2).getSeats().size());
-        System.out.println("Fourth EVENT: " + eventData.get(3).getEventName());
-        System.out.println("Fouth EVENT SEATS: " + eventData.get(3).getSeats().size());
-//        for (int i = 0; i < eventData.size(); i++) {
-//            System.out.println("EVENT: " + eventData.get(i).getEventName());
-//            System.out.println("EVENT DATE: " + eventData.get(i).getEventDate());
-//            for (int j = 0; j < eventData.get(i).getSeats().size(); j++) {
-//                System.out.print("SEAT: " + eventData.get(i).getSeats().get(j).getSeat());
-//                System.out.println(" ROW: " + eventData.get(i).getSeats().get(j).getRow());
-//            }
-//        }
 
     }
 }

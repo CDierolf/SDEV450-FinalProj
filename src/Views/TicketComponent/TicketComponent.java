@@ -147,6 +147,32 @@ public class TicketComponent implements Initializable {
         t.setDaemon(true);
         t.start();
     }
+    
+    // For purchasedticketsviewcomponentcontroller image by pEvent url
+    public void loadImage(String url) {
+        final Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // call getImages asynchronously
+                getImage(url);
+                return null;
+            }
+        };
+
+        task.setOnSucceeded((WorkerStateEvent event1) -> {
+            Void result = task.getValue();
+        });
+
+        Thread t = new Thread(task);
+        t.setDaemon(true);
+        t.start();
+    }
+    
+    public void getImage(String url) {
+        if (url != null) {
+            eventImageView.setImage(new Image(url));
+        }
+    }
 
     public void getImage(Events event) throws FileNotFoundException {
         if (event.getEventImage() != null) {

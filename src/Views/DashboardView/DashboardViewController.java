@@ -88,7 +88,7 @@ public class DashboardViewController implements Initializable {
         
         PurchasedTicketsViewController pTicketsViewController = new PurchasedTicketsViewController();
         pTicketsViewController = loader.getController();
-        pTicketsViewController.setDashboardController(this);
+        pTicketsViewController.setDashboardControllerAndUser(this, this.user);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(purchasedTicketsViewPane);
     }
