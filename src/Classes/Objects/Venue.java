@@ -1,4 +1,4 @@
-package Classes.Database;
+package Classes.Objects;
 
 /** 
  * @Course: SDEV 350 ~ Java Programming II

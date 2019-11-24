@@ -6,11 +6,11 @@
 package Views.PurchasedTicketsView;
 
 import Classes.Database.DatabaseInterface;
-import Classes.Database.PurchasedEvent;
-import Classes.Database.PurchasedEventSorter;
-import Classes.Database.Seat;
-import Classes.Database.User;
-import Classes.Database.Venue;
+import Classes.Objects.PurchasedEvent;
+import Classes.Objects.PurchasedEventSorter;
+import Classes.Objects.Seat;
+import Classes.Objects.User;
+import Classes.Objects.Venue;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.PurchasedTicketsViewComponentController;
 import java.io.FileNotFoundException;

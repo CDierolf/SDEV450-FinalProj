@@ -11,7 +11,7 @@ package Views.LandingView;
 import Views.TicketComponent.HTicketComponentController;
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
-import Classes.Database.Event;
+import Classes.Objects.Event;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Views.DashboardView.DashboardViewController;
@@ -26,13 +26,11 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.event.*;
-import javafx.geometry.Insets;
 //Begin Subclass LandingViewController
 
 public class LandingViewController implements Initializable {

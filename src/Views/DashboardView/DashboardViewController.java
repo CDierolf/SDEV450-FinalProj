@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Views.DashboardView;
-import Classes.Database.User;
+import Classes.Objects.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Views.FindEventsView.FindEventsViewController;
 import Views.SeatSelectionView.SeatSelectionViewController;

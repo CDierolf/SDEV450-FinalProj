@@ -1,4 +1,4 @@
-package Classes.Database;
+package Classes.Objects;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -15,6 +15,7 @@ import Classes.Database.dao.EventDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Classes.APIs.TicketMaster.*;
+import Classes.Database.DatabaseInterface;
 import javafx.scene.image.Image;
 
 //Begin Subclass Event

@@ -1,4 +1,4 @@
-package Classes.Database;
+package Classes.Objects;
 
 import java.util.ArrayList;
 import java.util.Collections;

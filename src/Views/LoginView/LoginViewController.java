@@ -6,7 +6,7 @@
 package Views.LoginView;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent;
-import Classes.Database.User;
+import Classes.Objects.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

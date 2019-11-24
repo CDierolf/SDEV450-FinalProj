@@ -11,7 +11,7 @@ package Classes.Database.dao;
 //Imports
 
 import Classes.Database.DatabaseInterface;
-import Classes.Database.User;
+import Classes.Objects.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

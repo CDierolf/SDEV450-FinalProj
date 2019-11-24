@@ -5,8 +5,8 @@
  */
 package Views.PurchasedTicketsDetailsView;
 
-import Classes.Database.PurchasedEvent;
-import Classes.Database.User;
+import Classes.Objects.PurchasedEvent;
+import Classes.Objects.User;
 import Classes.Email.Messages;
 import Classes.Email.SendEmail;
 import Views.PurchasingView.PurchasingViewController;

@@ -7,7 +7,7 @@ package Views.SeatSelectionView;
 
 import Classes.Utilities.Alerts;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Database.User;
+import Classes.Objects.User;
 import Views.DashboardView.DashboardViewController;
 import Views.PurchasingView.PurchasingViewController;
 import Views.SeatMaps.Venue.Seat;

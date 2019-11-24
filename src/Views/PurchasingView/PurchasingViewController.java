@@ -6,7 +6,7 @@
 package Views.PurchasingView;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Database.User;
+import Classes.Objects.User;
 import Classes.Email.Messages;
 import Classes.Email.SendEmail;
 import Classes.Utilities.Alerts;

@@ -10,7 +10,7 @@ package Views.TicketComponent;
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Database.Event;
+import Classes.Objects.Event;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
@@ -209,6 +209,7 @@ public class TicketComponent implements Initializable {
 
         // Load the SeatSelectionView
         dvc.loadSeatSelectionView(APIEvent);
+        
         // Hide the FindEventsView
         dvc.toggleEventViewVisiblity(false);
     }
