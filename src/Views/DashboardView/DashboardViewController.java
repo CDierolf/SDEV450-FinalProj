@@ -17,8 +17,9 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -37,6 +38,7 @@ public class DashboardViewController implements Initializable {
     private AnchorPane seatSelectionViewPane;
     @FXML
     private AnchorPane purchasedTicketsViewPane;
+    @FXML private Button logoutButton;
 
     private User user;
 
@@ -141,5 +143,10 @@ public class DashboardViewController implements Initializable {
     // The events the user searched for are readily available for continued browsing.
     public void toggleEventViewVisiblity(boolean isVisible) {
         dynamicViewPane.getChildren().get(0).setVisible(isVisible);
+    }
+    
+    public void logout() {
+        Stage stage = (Stage) this.dynamicViewPane.getScene().getWindow();
+        stage.close();
     }
 }

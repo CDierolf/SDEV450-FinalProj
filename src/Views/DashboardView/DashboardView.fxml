@@ -31,7 +31,7 @@
                 <Button id="shiny-orange" mnemonicParsing="false" onAction="#loadPurchasedTicketsView" prefHeight="27.0" prefWidth="276.0" text="View Purchased Events" />
                 <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0">
                     <children>
-                        <Button id="dark-blue" mnemonicParsing="false" prefHeight="27.0" prefWidth="224.0" text="Logout" />
+                        <Button id="dark-blue" fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="224.0" text="Logout" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" />
