@@ -37,14 +37,14 @@
             <TextField fx:id="tfFName" promptText="First Name" GridPane.rowIndex="1" />
             <TextField fx:id="tfLName" promptText="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="tfAddress" prefHeight="25.0" prefWidth="215.0" promptText="Address" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-            <TextField fx:id="tfCreditCard" promptText="Credit Card Number" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+            <TextField fx:id="tfCity" prefHeight="25.0" prefWidth="247.0" promptText="City" GridPane.rowIndex="3" />
             <TextField fx:id="tfState" promptText="State" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="tfZip" promptText="Zip Code" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField fx:id="tfCity" prefHeight="25.0" prefWidth="247.0" promptText="City" GridPane.rowIndex="3" />
             <TextField fx:id="tfEmail" promptText="Email" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <TextField fx:id="tfCreditCard" promptText="Credit Card Number" GridPane.columnSpan="2" GridPane.rowIndex="6" />
             <TextField fx:id="tfExpiration" promptText="Expiration" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <TextField fx:id="tfCVV" promptText="CVV" GridPane.columnIndex="2" GridPane.rowIndex="7" />
             <TextField fx:id="tfCardName" promptText="Name on Card" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+            <TextField fx:id="tfCVV" promptText="CVV" GridPane.columnIndex="2" GridPane.rowIndex="7" />
             <Label prefHeight="34.0" prefWidth="226.0" text="Billing Information" textFill="WHITE" GridPane.columnSpan="3">
                <font>
                   <Font name="Arial" size="23.0" />
@@ -55,8 +55,8 @@
                   <Font name="Arial" size="23.0" />
                </font>
             </Label>
-            <Button fx:id="btnPurchase" id="shiny-orange" mnemonicParsing="false" onMouseClicked="#purchaseTickets" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Purchase Tickets" GridPane.rowIndex="9" />
-            <Button fx:id="btnBack" id="dark-blue" mnemonicParsing="false" onMouseClicked="#goBackToVenue" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Back to Venue" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Button id="shiny-orange" fx:id="btnPurchase" mnemonicParsing="false" onMouseClicked="#purchaseTickets" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Purchase Tickets" GridPane.rowIndex="9" />
+            <Button id="dark-blue" fx:id="btnBack" mnemonicParsing="false" onMouseClicked="#goBackToVenue" prefHeight="25.0" prefWidth="159.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Back to Venue" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>
       <Label fx:id="lblFName" layoutX="192.0" layoutY="62.0" opacity="0.6" styleClass="warningLabel" stylesheets="@../CSS/PurchasingView.css" text="Required Field" textFill="RED">

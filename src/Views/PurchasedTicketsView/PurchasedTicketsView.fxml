@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="813.0" prefWidth="1190.0" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.PurchasedTicketsView.PurchasedTicketsViewController">
+   <children>
+      <ScrollPane prefHeight="813.0" prefWidth="1190.0" stylesheets="@../CSS/DashboardViewCSS.css">
+         <content>
+            <Pane prefHeight="813.0" prefWidth="1190.0" stylesheets="@../CSS/DashboardViewCSS.css">
+               <children>
+                  <VBox fx:id="eventVBox" prefHeight="813.0" prefWidth="1190.0" styleClass="root" stylesheets="@../CSS/DashboardViewCSS.css" />
+               </children>
+            </Pane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

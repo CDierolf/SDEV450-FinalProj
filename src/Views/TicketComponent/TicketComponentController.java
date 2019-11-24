@@ -15,5 +15,4 @@ import javafx.fxml.Initializable;
  */
 public class TicketComponentController extends TicketComponent implements Initializable {
 
-    
 }

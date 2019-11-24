@@ -25,7 +25,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -49,8 +48,6 @@ public class FindEventsViewController implements Initializable {
     @FXML
     private TextField searchTextField;
     @FXML
-    private Button searchButton;
-    @FXML
     private TextField postalCodeTextField;
     @FXML
     private Button previousPageButton;
@@ -62,6 +59,7 @@ public class FindEventsViewController implements Initializable {
     private Label postalCodeWarningLabel;
     @FXML
     private Label noEventsLabel;
+    
 
     List<TicketMasterEvent.Embedded.Events> events = new ArrayList<>();
     List<TicketComponentController> tcElements = new ArrayList<>();
@@ -93,6 +91,7 @@ public class FindEventsViewController implements Initializable {
         this.currentPostalCode = this.postalCodeTextField.getText();
         this.noEventsLabel.setVisible(false);
         Object o = tma.findEvents(eventKeyword, pageNumber, postalCode);
+        
 
         if (o == null) {
             System.out.println("NULL");
@@ -154,7 +153,7 @@ public class FindEventsViewController implements Initializable {
 
         for (int i = 0; i < ticketComponents.size(); i++) {
             tcElements.get(i).setEventData(events.get(i), FindEventsViewController.this, dvc);
-            tcElements.get(i).loadImage();
+            //tcElements.get(i).loadImage(); now called inside TicketComponent
             displayEventComponents(ticketComponents.get(i), i);
         }
     }

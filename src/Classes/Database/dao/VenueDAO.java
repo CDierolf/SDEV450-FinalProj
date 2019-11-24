@@ -46,14 +46,7 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("int");
         ResultSet rs = callableStatementRs(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        //Date desEndDateField = null;// initialize for value coming from DB
-        //Views.SeatMaps.Venue.Venue theVenue = new Views.SeatMaps.Venue.Venue(venueid);
-        /*
-        while (rs.next()) {
-            desEndDateField = rs.getDate("desEndDate");
-        }// END while (rs.next())
-        return desEndDateField;
-*/
+
         return rs;
     }
     /* getVenue passed a string event id */
@@ -82,14 +75,7 @@ public class VenueDAO extends DatabaseInterface  {
         Q1 = "{ call usp_getSeatsForEvent(?) }";   
         ResultSet rs = callableStatementRs(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        //Date desEndDateField = null;// initialize for value coming from DB
-        //Views.SeatMaps.Venue.Venue theVenue = new Views.SeatMaps.Venue.Venue(venueid);
-        /*
-        while (rs.next()) {
-            desEndDateField = rs.getDate("desEndDate");
-        }// END while (rs.next())
-        return desEndDateField;
-*/
+
         return rs;
     }
  
@@ -141,11 +127,13 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string"); // pass as string and convert in database
         venueValues.add("info for event");
         dataTypes.add("string");
+        venueValues.add(event.getImageUrl());
+        dataTypes.add("string");
         init(); // set up the DB properties 
         // insert the event into the database
        // String Q1 = "{call usp_EventsInsert(?,?,?,?,?,?,?,?)}";
-        String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info])\n" +
-"		VALUES (?,?,?,?,?,?,?,?)";/**/
+        String Q1 = "INSERT INTO [dbo].[Events] (eventid, [eventname],  [startTime], [startDate], [timeTBA], [dateTBA],  [price], [info], [image])\n" +
+"		VALUES (?,?,?,?,?,?,?,?,?)";/**/
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         close();
@@ -157,7 +145,13 @@ public class VenueDAO extends DatabaseInterface  {
         dataTypes.add("string");
         venueValues.add(event.getVenueData().getVenues().get(0).getVenueName());
         dataTypes.add("string");
-        Q1 = "{ call [usp_EventsGenerateDummySalesNew](?,?) }";
+        venueValues.add(event.getVenueData().getVenues().get(0).getVenueCity());
+        dataTypes.add("string");
+        venueValues.add(event.getVenueData().getVenues().get(0).getVenueState());
+        dataTypes.add("string");
+
+        
+        Q1 = "{ call [usp_EventsGenerateDummySales_1116](?,?,?,?) }";
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));
         close();//close connection, statement, resultset

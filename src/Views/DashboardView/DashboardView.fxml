@@ -27,11 +27,12 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </StackPane>
-                <Button id="shiny-orange" fx:id="findEventsButton" mnemonicParsing="false" onAction="#loadFindEventsView" prefHeight="27.0" prefWidth="274.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
-                <Button id="shiny-orange" mnemonicParsing="false" onAction="#loadLandingView" prefHeight="27.0" prefWidth="276.0" text="View Purchased Events" />
+            <Button id="shiny-orange" fx:id="homeButton" mnemonicParsing="false" onAction="#loadLandingView" prefHeight="38.0" prefWidth="249.0" text="Home" />
+                <Button id="shiny-orange" fx:id="findEventsButton" mnemonicParsing="false" onAction="#loadFindEventsView" prefHeight="38.0" prefWidth="249.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
+                <Button id="shiny-orange" mnemonicParsing="false" onAction="#loadPurchasedTicketsView" prefHeight="38.0" prefWidth="249.0" text="View Purchased Events" />
                 <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0">
                     <children>
-                        <Button id="dark-blue" mnemonicParsing="false" prefHeight="27.0" prefWidth="224.0" text="Logout" />
+                        <Button id="dark-blue" fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="224.0" text="Logout" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" />

@@ -6,19 +6,21 @@
 package Views.DashboardView;
 import Classes.Database.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Email.SendEmail;
 import Views.FindEventsView.FindEventsViewController;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import Views.LandingView.LandingViewController;
+import Views.PurchasedTicketsView.PurchasedTicketsViewController;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javax.mail.MessagingException;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -35,6 +37,9 @@ public class DashboardViewController implements Initializable {
     private AnchorPane dynamicViewPane;
     @FXML
     private AnchorPane seatSelectionViewPane;
+    @FXML
+    private AnchorPane purchasedTicketsViewPane;
+    @FXML private Button logoutButton;
 
     private User user;
 
@@ -42,26 +47,22 @@ public class DashboardViewController implements Initializable {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(User user) throws SQLException {
         this.user = user;
+        
+        //load LandingView here because it needs a user
+        try {            
+            loadLandingView();                    
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            setUser(new User());
-            loadLandingView();                    
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
-
-    public void sendmail() throws MessagingException {
-        System.out.println("Sending email...");
-        SendEmail sendEmail = new SendEmail("chidi117@gmail.com", "Test", "Hello");
-        sendEmail.sendMail();
+        //setUser(new User());
     }
 
     /**
@@ -69,7 +70,7 @@ public class DashboardViewController implements Initializable {
      *
      * @throws IOException
      */
-    public void loadLandingView() throws IOException {
+    public void loadLandingView() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/LandingView/LandingView.fxml"));
         AnchorPane landingViewPane = loader.load();
@@ -78,7 +79,24 @@ public class DashboardViewController implements Initializable {
         landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-        landingViewController.loadMyEvents();
+
+        
+    }
+    
+    public void loadPurchasedTicketsView() throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/Views/PurchasedTicketsView/PurchasedTicketsView.fxml"));
+        this.purchasedTicketsViewPane = loader.load();
+        
+        
+        PurchasedTicketsViewController pTicketsViewController = new PurchasedTicketsViewController();
+        pTicketsViewController = loader.getController();
+        pTicketsViewController.setDashboardControllerAndUser(this, this.user);
+        dynamicViewPane.getChildren().clear();
+        dynamicViewPane.getChildren().add(purchasedTicketsViewPane);
+    }
+    public void unloadPurchasedTicketsView() {
+        dynamicViewPane.getChildren().remove(purchasedTicketsViewPane);
     }
 
     // Load the FindEventsView into the dynamicViewPane
@@ -126,5 +144,10 @@ public class DashboardViewController implements Initializable {
     // The events the user searched for are readily available for continued browsing.
     public void toggleEventViewVisiblity(boolean isVisible) {
         dynamicViewPane.getChildren().get(0).setVisible(isVisible);
+    }
+    
+    public void logout() {
+        Stage stage = (Stage) this.dynamicViewPane.getScene().getWindow();
+        stage.close();
     }
 }

@@ -25,6 +25,11 @@ and open the template in the editor.
     -fx-text-fill: #ffffff;
     -fx-font: 16px 'Arial';
 }
+#detailsLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-font: 18px 'Arial';
+}
+
 #shiny-orange {
     -fx-background-color: 
         linear-gradient(#ffd65b, #e68400),

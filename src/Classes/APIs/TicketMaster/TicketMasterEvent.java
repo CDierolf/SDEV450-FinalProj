@@ -25,7 +25,7 @@ public class TicketMasterEvent {
         return this._embedded;
     }
 
-    public class Embedded {
+    public static class Embedded {
 
         public List<Events> events = new ArrayList<>();
 

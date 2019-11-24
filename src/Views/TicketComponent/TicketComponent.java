@@ -10,7 +10,7 @@ package Views.TicketComponent;
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Utilities.Alerts;
+import Classes.Database.Event;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
@@ -21,7 +21,6 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -50,17 +49,40 @@ public class TicketComponent implements Initializable {
     @FXML
     private VBox imageVBox;
 
-    private Events event; // Event stored for UI interaction
+    private Events APIEvent; // Event stored for UI interaction
+    private Event DBEvent; //Event from database
     private DashboardViewController dvc; // To update Dashboard view
-
+    private boolean purchased;
     /**
      * Initializes the controller class.
      */
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
 
+    public void setEventData(Event DBEvent, DashboardViewController dvc) {
+        this.DBEvent = DBEvent;
+        purchased = true; //this event has purchases from user
+        this.eventLabel.setText(DBEvent.getEventName());
+        this.dateTimeLabel.setText(getEventDateTimeDetails(DBEvent)); //FIXME format date
+        if (DBEvent.getPrice() == 0) {
+            this.pricePerTicketLabel.setText("TBD");
+        } else {
+            String s = "$" + String.format("%.2f", DBEvent.getPrice());
+            this.pricePerTicketLabel.setText(s);
+        }
+        this.venueLocationLabel.setText(DBEvent.getVenueName());
+        this.venueCityStateLabel.setText((DBEvent.getVenueCity() + ", " + DBEvent.getVenueState()));
+
+        //change button label to indicate this is a purchased event
+        this.actionButton.setText("View Tickets");
+        loadImage();
+    }
+    
+
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
+        purchased = false; //this event has no purchases from user
 
         String city = event.getVenueData().getVenues().get(0).getVenueCity();
         String state = event.getVenueData().getVenues().get(0).getVenueState();
@@ -81,13 +103,23 @@ public class TicketComponent implements Initializable {
         this.venueCityStateLabel.setText(city + ", " + state);
 
         // Set event and dashboard variables
-        this.event = event;
+        this.APIEvent = event;
         this.dvc = dvc;
+
+        //load images
+        loadImage();
     }
 
     private String getEventDateTimeDetails(Events event) {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
+
+        return date + " " + time;
+    }
+
+    private String getEventDateTimeDetails(Event DBEvent) {
+        String date = DBEvent.getStartDate().toString();
+        String time = DBEvent.getStartTime().toString();
 
         return date + " " + time;
     }
@@ -98,7 +130,11 @@ public class TicketComponent implements Initializable {
             @Override
             protected Void call() throws Exception {
                 // call getImages asynchronously
-                getImage(event);
+                if (!purchased) {
+                    getImage(APIEvent);
+                } else {
+                    getImage(DBEvent);
+                }
                 return null;
             }
         };
@@ -111,6 +147,32 @@ public class TicketComponent implements Initializable {
         t.setDaemon(true);
         t.start();
     }
+    
+    // For purchasedticketsviewcomponentcontroller image by pEvent url
+    public void loadImage(String url) {
+        final Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // call getImages asynchronously
+                getImage(url);
+                return null;
+            }
+        };
+
+        task.setOnSucceeded((WorkerStateEvent event1) -> {
+            Void result = task.getValue();
+        });
+
+        Thread t = new Thread(task);
+        t.setDaemon(true);
+        t.start();
+    }
+    
+    public void getImage(String url) {
+        if (url != null) {
+            eventImageView.setImage(new Image(url));
+        }
+    }
 
     public void getImage(Events event) throws FileNotFoundException {
         if (event.getEventImage() != null) {
@@ -118,33 +180,35 @@ public class TicketComponent implements Initializable {
         }
     }
 
+    public void getImage(Event DBEvent) throws FileNotFoundException {
+        if (DBEvent.getImage() != null) {
+            eventImageView.setImage(DBEvent.getImage());
+        }
+    }
+
     public void buttonClicked() {
-        //if not purchased
-        try {
-            purchaseTickets();
-        } catch (IOException e) {
-            System.out.println((e.toString()));
+        if (!purchased) {
+            try {
+                purchaseTickets();
+            } catch (IOException e) {
+                System.out.println((e.toString()));
+            }
         }
 
-        //if purchased
-        try {
-            viewTicket();
-        } catch (IOException e) {
-            System.out.println(e.toString());
+        if (purchased) {
+            try {
+                viewTicket();
+            } catch (IOException e) {
+                System.out.println(e.toString());
+            }
         }
     }
 
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() throws IOException {
 
-        //        
-        //        String date = event.getEventDates().getEventStartData().getEventLocalDate();
-        //        String time = event.getEventDates().getEventStartData().getEventLocalTime();
-        //        System.out.println(event.getName() + " " + date + time);
-        //        System.out.println(event);
-        //
         // Load the SeatSelectionView
-        dvc.loadSeatSelectionView(event);
+        dvc.loadSeatSelectionView(APIEvent);
         // Hide the FindEventsView
         dvc.toggleEventViewVisiblity(false);
     }

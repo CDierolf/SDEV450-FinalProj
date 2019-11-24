@@ -8,19 +8,23 @@ package Classes.Database;
  * @Subclass Seat Description:
  */
 //Imports
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import org.json.JSONObject;
-
-//Begin Subclass Seat
 public class Seat {
-    long seatID;
-    int seat;
-    String row;
-    String section;
-    long venueID;
-    double cost;
+    private String row;
+    private String seat;
+    
+    public void setSeat(String seat) {
+        this.seat = seat;
+    }
+    public void setRow(String row) {
+        this.row = row;
+    }
+    
+    public String getSeat() {
+        return this.seat;
+    }
+    
+    public String getRow() {
+        return this.row;
+    }
 
 } //End Subclass Seat
