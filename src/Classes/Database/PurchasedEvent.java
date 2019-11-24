@@ -13,7 +13,7 @@ import java.util.List;
  */
 //Imports
 //Begin Subclass PurchasedEvent
-public class PurchasedEvent {
+public class PurchasedEvent implements Comparable<PurchasedEvent>{
 
     private String eventName;
     private Date eventDate;
@@ -77,6 +77,11 @@ public class PurchasedEvent {
 
     public String getEventImageUrl() {
         return this.eventImageUrl;
+    }
+
+    @Override
+    public int compareTo(PurchasedEvent o) {
+        return (this.getEventDate().compareTo(o.getEventDate()));
     }
 
 } //End Subclass PurchasedEvent

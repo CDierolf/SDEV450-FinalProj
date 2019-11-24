@@ -7,6 +7,7 @@ package Views.PurchasedTicketsView;
 
 import Classes.Database.DatabaseInterface;
 import Classes.Database.PurchasedEvent;
+import Classes.Database.PurchasedEventSorter;
 import Classes.Database.Seat;
 import Classes.Database.User;
 import Classes.Database.Venue;
@@ -144,6 +145,9 @@ public class PurchasedTicketsViewController implements Initializable {
                 System.out.println(e);
             }
         }
+        
+        PurchasedEventSorter pEventSorter = new PurchasedEventSorter(this.eventData);
+        this.eventData = pEventSorter.getSortedPurchasedEvents();
 
     }
 }
