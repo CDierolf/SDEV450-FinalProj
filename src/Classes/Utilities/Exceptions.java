@@ -18,5 +18,12 @@ public class Exceptions{
             super(message);
         }
     }
+    
+    public static class EventIdIsNullException extends RuntimeException {
+        public EventIdIsNullException() {}
+        public EventIdIsNullException(String message) {
+            super(message);
+        }
+    }
 
 } //End Subclass Exceptions

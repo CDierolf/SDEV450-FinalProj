@@ -1,5 +1,6 @@
 package Classes.APIs.TicketMaster;
 
+import Classes.Utilities.Exceptions;
 import Views.LoginView.LoginViewController;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -30,15 +31,59 @@ public class TicketMasterAPI {
 
     private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
     private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?";
-
-
+    
+    private String eventKeyword;
+    private String pageNumber;
+    private String postalCode;
+    private String eventId;
+    
+    public void setEventKeyword(String eventKeyword) {
+        this.eventKeyword = eventKeyword;
+    }
+    public void setPageNumber(String pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+    
+    public String getEventKeyword() {
+        return this.eventKeyword;
+    }
+    public String getEventPageNumber() {
+        return this.pageNumber;
+    }
+    public String getPostalCode() {
+        return this.postalCode;
+    }
+    public String getEventId() {
+        return this.eventId;
+    }
+    
+    public TicketMasterAPI(){}
+    
+    public TicketMasterAPI(String eventKeyword, String pageNumber, String postalCode) {
+        setEventKeyword(eventKeyword);
+        setPageNumber(pageNumber);
+        setPostalCode(postalCode);
+        
+        
+    }
+    public TicketMasterAPI(String eventId) {
+        if (!eventId.isEmpty() || eventId != null) {
+            setEventId(eventId);
+        } else {
+            throw new Exceptions.EventIdIsNullException("EventId cannot be null with this constructor.");
+        }
+    }
 
     public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber, postalCode);
 
         if (event.getEmbeddedEvents() == null) {
-            System.out.println("No events found.");
-            // No events were found :(
             return null;
         } else {
             return (event);
@@ -47,9 +92,8 @@ public class TicketMasterAPI {
 
     public TicketMasterEvent findEvents(String eventID) {
         TicketMasterEvent event = getTicketMasterJSONEventData(eventID);
+        
         if (event.getEmbeddedEvents() == null) {
-            System.out.println("No events found.");
-            // No events were found :(
             return null;
         } else {
             return (event);
