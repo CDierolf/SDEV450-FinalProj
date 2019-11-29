@@ -5,7 +5,7 @@
  */
 package Views.PurchasedTicketsView;
 
-import Classes.Database.DatabaseInterface;
+import Classes.Database.dao.PurchasedTicketsViewDAO;
 import Classes.Objects.PurchasedEvent;
 import Classes.Objects.PurchasedEventSorter;
 import Classes.Objects.Seat;
@@ -42,7 +42,7 @@ public class PurchasedTicketsViewController implements Initializable {
     DashboardViewController dvc;
     List<PurchasedTicketsViewComponentController> tcElements = new ArrayList<>();
     List<HBox> ticketComponents = new ArrayList<>();
-    DatabaseInterface di = new DatabaseInterface();
+
     ArrayList<PurchasedEvent> eventData = new ArrayList<>();
     User user;
 
@@ -97,19 +97,9 @@ public class PurchasedTicketsViewController implements Initializable {
     }
 
     public void getEventData() throws SQLException {
-        di.init();
-        ArrayList<String> userValues = new ArrayList<>(); // just one param for this request
-        ArrayList<String> dataTypes = new ArrayList<>();
-        String Q1 = "{ call [usp_getAllEventSeatsForUser](?) }";
-        userValues.add(Long.toString(dvc.getUser().getUserID()));
-        dataTypes.add("string");
-        ResultSet rs = null;
-        try {// execute the stored proc
-            rs = di.callableStatementRs(Q1, userValues.toArray(new String[userValues.size()]),
-                    dataTypes.toArray(new String[dataTypes.size()]));
-        } catch (SQLException ex) {
-            Logger.getLogger(PurchasedTicketsViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PurchasedTicketsViewDAO dao = new PurchasedTicketsViewDAO();
+        dao.init();
+        ResultSet rs = dao.getMyEvents(dvc.getUser().getUserID());
         if (rs != null) {
             try {
                 PurchasedEvent pEvent = null;

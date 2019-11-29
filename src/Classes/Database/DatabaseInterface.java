@@ -246,8 +246,7 @@ public class DatabaseInterface implements Debug {
      */
     public ResultSet callableStatementRs(String query, String[] args,
             String[] datatypes) throws SQLException {
-        if(connection == null)
-            connection = connectionPool.getConnection();
+
         CallableStatement cs = null;
 
         try {
@@ -294,6 +293,26 @@ public class DatabaseInterface implements Debug {
         return rs;
     }
 
+    public ResultSet callableStatementRs(String query) throws SQLException {
+
+        CallableStatement cs = null;
+
+        try {
+            if(connection == null)
+                connection = connectionPool.getConnection();
+
+
+            cs = connection.prepareCall(query);            
+            rs = cs.executeQuery();
+
+            return rs;
+        } catch (Exception e) {
+            //String module, String query, Boolean exit, String error
+            e.printStackTrace();
+            JDBCError("callableStatementRs", query, true, e.getMessage());
+        }
+        return rs;
+    }
        /**
      * execute a callable statement
      *
@@ -345,6 +364,35 @@ public class DatabaseInterface implements Debug {
             //String module, String query, Boolean exit, String error
             e.printStackTrace();
             JDBCError("callableStatement", query, true, e.getMessage()  + "Args:" + myToString(args) + "Datatypes:" + myToString(datatypes));
+        }
+        return;
+    }
+    
+      /**
+     * execute a callable statement
+     *
+     * @param query
+     * @param args
+     * @param datatypes (int or string or date, etc)
+     * @return nothing
+     */
+    public void callableStatement(String query) {
+        CallableStatement cs = null;
+
+        try {
+            if(connection == null)
+                connection = connectionPool.getConnection();
+
+
+            cs = connection.prepareCall(query);
+
+            
+            cs.execute();
+            return;
+        } catch (Exception e) {
+            //String module, String query, Boolean exit, String error
+            e.printStackTrace();
+            JDBCError("callableStatement", query, true, e.getMessage() );
         }
         return;
     }

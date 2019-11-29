@@ -15,7 +15,7 @@ import Classes.Database.dao.EventDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Classes.APIs.TicketMaster.*;
-import Classes.Database.DatabaseInterface;
+
 import javafx.scene.image.Image;
 
 //Begin Subclass Event
@@ -32,7 +32,6 @@ public class Event {
     private String venueCity;
     private String venueState;
 
-    DatabaseInterface di = new DatabaseInterface();
 
     /**
      * Create event object based on eventID

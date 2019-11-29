@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 
 import Classes.Database.DatabaseInterface;
+import Classes.Database.dao.LandingViewDAO;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
@@ -44,7 +45,7 @@ public class LandingViewController implements Initializable {
     List<TicketMasterEvent.Embedded.Events> nearEvents = new ArrayList<>();
     List<HBox> nearComponents = new ArrayList<>();
     TicketMasterAPI tma = new TicketMasterAPI();
-    DatabaseInterface di = new DatabaseInterface();
+    LandingViewDAO dao = new Classes.Database.dao.LandingViewDAO();
     @FXML
     private VBox outerVBox;
     @FXML
@@ -88,16 +89,9 @@ public class LandingViewController implements Initializable {
         //temporary event
         //Event event = new Event("1A0ZA_4GkecKxIM");
 
-        di.init();
+        dao.init();
 
-        String[] userValues = {Long.toString(userID)};
-        String[] dataTypes = {"string"};
-
-        String Q1 = "SELECT TOP 4 EventId FROM UsersEvents "
-                + "WHERE UserId = ? order by OrderDate desc";
-
-
-        ResultSet rs = di.preparedStatementRs(Q1,userValues,dataTypes);
+        ResultSet rs = dao.getMyEvents(userID);
         try {
             int i = 1;
             while (rs.next()) { //fill up purchasedEvents
@@ -111,7 +105,7 @@ public class LandingViewController implements Initializable {
             System.out.println(e);
             displayErrorTop();
         } finally {
-            di.close();
+            dao.close();
         }
 
         int n = purchasedEvents.size();
