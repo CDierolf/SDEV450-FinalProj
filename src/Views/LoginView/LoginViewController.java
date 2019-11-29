@@ -104,7 +104,7 @@ public class LoginViewController implements Initializable {
                     // Authenticate User
                     user = new User(this.userNameText.getText(),
                             this.passwordText.getText());
-                    int userid = user.loginUser();
+                    long userid = user.loginUser();
                     user.setUserID(userid);
                     // If Authenticated, display Dashbaord close LoginView
                     // If Not Authenticated, display error and return to screen

@@ -133,6 +133,8 @@ public class PurchasedTicketsViewController implements Initializable {
                 eventData.add(pEvent);
             } catch (SQLException e) {
                 System.out.println(e);
+            } finally {
+                dao.close();
             }
         }
         

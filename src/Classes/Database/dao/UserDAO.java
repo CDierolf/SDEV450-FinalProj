@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
  * @author Tom.Muck
  */
 public class UserDAO extends DatabaseInterface  {
-    public ResultSet getUser(int userid) throws SQLException {
+    public ResultSet getUser(long userid) throws SQLException {
         init();
         // get the user
         StringBuilder sb = new StringBuilder();
@@ -34,7 +34,7 @@ public class UserDAO extends DatabaseInterface  {
         
         init();
         setDebug(this.getDebug());
-        userValues.add(Integer.toString(userid));
+        userValues.add(Long.toString(userid));
         dataTypes.add("int");
         ResultSet rs = callableStatementRs(Q1, userValues.toArray(new String[userValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
@@ -48,7 +48,7 @@ public class UserDAO extends DatabaseInterface  {
         return rs;
     }
     
-    public int addUser(User user) throws NoSuchAlgorithmException {
+    public long addUser(User user) throws NoSuchAlgorithmException {
          init();
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
@@ -63,9 +63,9 @@ public class UserDAO extends DatabaseInterface  {
         dataTypes.add("string");
         // insert the event into the database
         String Q1 = "{call [usp_UsersInsert](?,?,?,?)}"; // sp not working, use insert statement
-        int userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]), 
+        long userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        userValues.add(Integer.toString(userid));
+        userValues.add(Long.toString(userid));
         dataTypes.add("int");
         /*Q1 = "INSERT INTO [dbo].[Users] ([username], [password], [email],[userID])\n" +
 "	VALUES ( ?,?,?,?)";*/
@@ -75,7 +75,7 @@ public class UserDAO extends DatabaseInterface  {
         return userid;
     }
     
-    public int addUser(String username, String password, String email) throws NoSuchAlgorithmException {
+    public long addUser(String username, String password, String email) throws NoSuchAlgorithmException {
         init();
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
@@ -89,14 +89,14 @@ public class UserDAO extends DatabaseInterface  {
         dataTypes.add("string");
         // insert the event into the database
         String Q1 = "{call [usp_UsersInsert](?,?,?,?)}";
-        int userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]), 
+        long userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         
         close();//close connection, statement, resultset
         return userid;
     }
     
-    public int loginUser(String username, String password) throws NoSuchAlgorithmException {
+    public long loginUser(String username, String password) throws NoSuchAlgorithmException {
         init();
         String Q1 = "{call usp_loginUser(?,?,?) }";
         ArrayList<String> userValues = new ArrayList<String>(); 
