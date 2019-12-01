@@ -11,8 +11,8 @@ import Classes.Objects.User;
 import Classes.Utilities.Enums.ViewEnum;
 import Views.DashboardView.DashboardViewController;
 import Views.PurchasingView.PurchasingViewController;
-import Views.SeatMaps.Venue.Seat;
-import Views.SeatMaps.Venue.Venue;
+import Views.SeatMaps.Venue.SeatMapSeat;
+import Views.SeatMaps.Venue.SeatMapVenue;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -39,7 +39,7 @@ import javafx.scene.layout.Pane;
  */
 public class SeatSelectionViewController implements Initializable {
 
-    // Venue FXML Objects
+    // SeatMapVenue FXML Objects
     @FXML
     private Pane venuePane;
     @FXML
@@ -60,7 +60,7 @@ public class SeatSelectionViewController implements Initializable {
     private DashboardViewController dvc;
 
     private Events event;
-    private ArrayList<Seat> selectedSeats;
+    private ArrayList<SeatMapSeat> selectedSeats;
     private ArrayList<Label> selectedSeatsLabels;
     private double total;
     private User user;
@@ -117,14 +117,14 @@ public class SeatSelectionViewController implements Initializable {
     // Load event data details and show the venue seating.
     public void loadVenue(Events event) {
 
-        Venue ven = new Venue(event, this);
+        SeatMapVenue ven = new SeatMapVenue(event, this);
         venuePane.getChildren().add(ven);
         venuePane.setVisible(true);
         //isVenueLoaded = true;
     }
 
     
-    // Loading Venue on separate thread
+    // Loading SeatMapVenue on separate thread
     private void loadVenueSeating(Events e) {
         Thread thread = new Thread(() -> {
             Runnable run = () -> {
@@ -164,8 +164,8 @@ private void loadEventData(Events e) throws ParseException {
         selectedSeatsLabels = new ArrayList<>();
     }
 
-    // Seat is selected
-    public void seatSelected(Seat seat) {
+    // SeatMapSeat is selected
+    public void seatSelected(SeatMapSeat seat) {
         Label seatLabel = new Label(seat.getDescription());
         selectedSeats.add(seat);
         selectedSeatsLabels.add(seatLabel);
@@ -174,8 +174,8 @@ private void loadEventData(Events e) throws ParseException {
         updateTotal(true);
     }
 
-    // Seat is unselected
-    public void seatUnselected(Seat seat) {
+    // SeatMapSeat is unselected
+    public void seatUnselected(SeatMapSeat seat) {
         Label labelToRemove = new Label();
         for (Label label : selectedSeatsLabels) {
             if (label.getText().equals(seat.getDescription())) {
@@ -204,7 +204,7 @@ private void loadEventData(Events e) throws ParseException {
     
     
     // Return currently selected seats
-    public ArrayList<Seat> getSelectedSeats() {
+    public ArrayList<SeatMapSeat> getSelectedSeats() {
         return selectedSeats;
     }
     
@@ -234,7 +234,7 @@ private void loadEventData(Events e) throws ParseException {
 
 
 
-    public void setSelectedSeats(ArrayList<Seat> selectedSeats) {
+    public void setSelectedSeats(ArrayList<SeatMapSeat> selectedSeats) {
         this.selectedSeats = selectedSeats;
     }
     

@@ -11,7 +11,7 @@ import Classes.Email.Messages;
 import Classes.Email.SendEmail;
 import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
-import Views.SeatMaps.Venue.Seat;
+import Views.SeatMaps.Venue.SeatMapSeat;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import java.net.URL;
 import java.sql.SQLException;
@@ -233,7 +233,7 @@ public class PurchasingViewController implements Initializable {
             dao.init();
             long userid = this.getDashboardController().getUser().getUserID();
 
-            ArrayList<Seat> seats = this.svc.getSelectedSeats();
+            ArrayList<SeatMapSeat> seats = this.svc.getSelectedSeats();
             int[] selectedSeatIds = new int[seats.size()];
             for(int i=0; i<seats.size(); i++) { // put the seat ids into an array
                 selectedSeatIds[i] = seats.get(i).getSeatid();
