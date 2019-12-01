@@ -11,10 +11,8 @@ package Classes.Objects;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.sql.*;
-import Classes.Database.dao.EventDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Classes.APIs.TicketMaster.*;
 
 import javafx.scene.image.Image;
 

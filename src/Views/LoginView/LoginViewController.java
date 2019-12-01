@@ -5,7 +5,6 @@
  */
 package Views.LoginView;
 
-import Classes.APIs.TicketMaster.TicketMasterEvent;
 import Classes.Objects.User;
 import java.io.IOException;
 import java.net.URL;
@@ -19,15 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.Parent;
-import jdk.nashorn.internal.runtime.Context;
 
 public class LoginViewController implements Initializable {
 

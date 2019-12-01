@@ -1,6 +1,5 @@
 package Views.TicketComponent;
 
-import Classes.Objects.Event;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I

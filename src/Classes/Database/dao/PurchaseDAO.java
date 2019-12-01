@@ -13,7 +13,6 @@ package Classes.Database.dao;
 import Classes.Database.DatabaseInterface;
 import Classes.Objects.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

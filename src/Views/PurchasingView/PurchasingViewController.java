@@ -13,7 +13,6 @@ import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import Views.SeatMaps.Venue.Seat;
 import Views.SeatSelectionView.SeatSelectionViewController;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
