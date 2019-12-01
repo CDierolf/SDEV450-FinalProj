@@ -108,6 +108,8 @@ public class TicketComponent implements Initializable {
             seatPrice = String.format("%.2f", pricePerTicketValue);
         } else {
             seatPrice = event.getPrice();
+            this.actionButton.setDisable(true);
+            this.actionButton.setText("Not Available Yet");
         }
         this.pricePerTicketLabel.setText("$" + seatPrice);
 
