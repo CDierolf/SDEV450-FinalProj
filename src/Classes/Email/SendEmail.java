@@ -1,5 +1,7 @@
 package Classes.Email;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -23,30 +25,44 @@ import javax.mail.internet.MimeMessage;
 //Begin Subclass SendEmail
 public class SendEmail {
 
-    private final String uName = "ticketamateur@gmail.com";
-    private final String pWord = "6yhbv12@";
+    private String uName = "";
+    private String pWord = "";
 
     private String recipient;
     private String subject;
     private String message;
     private String event;
 
-    public SendEmail() {
+    public SendEmail() throws IOException {
+        init();
     }
 
-    public SendEmail(String recipient, String subject, String message) throws MessagingException {
+    public SendEmail(String recipient, String subject, String message) throws MessagingException, IOException {
+        init();
         this.recipient = recipient;
         this.subject = subject;
         this.message = message;
         sendMail();
     }
 
-    public SendEmail(String recipient, String subject, String message, String event) throws MessagingException {
+    public SendEmail(String recipient, String subject, String message, String event) throws MessagingException, IOException {
+        init();
         this.recipient = recipient;
         this.subject = subject;
         this.message = message;
         this.event = event;
         sendMail();
+    }
+    
+    private void init() throws IOException {
+        Properties props = new Properties();
+        InputStream input = null;
+        
+        input =  getClass().getClassLoader().getResourceAsStream("resources/TicketManager.properties");
+        
+        props.load(input);
+        this.uName = props.getProperty("sendEmailAddress");
+        this.pWord = props.getProperty("sendEmailPassword");
     }
 
     private String getMessage() {
