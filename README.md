@@ -2,9 +2,9 @@
 
 The Ticket Amature application is a desktop event finding application that utilizies the TicketMaster API to locate events across the U.S. and locally.
 It is the class project of four individuals enrolled at Champlain College:
-Christopher Dierolf
-Tom Much
-Neil Hart
+Christopher Dierolf,
+Tom Much,
+Neil Hart, and
 Stephen Greybeal
 
 ## Getting Started
