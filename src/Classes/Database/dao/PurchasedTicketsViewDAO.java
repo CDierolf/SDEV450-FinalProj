@@ -8,21 +8,21 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** 
+/**
  * @Course: SDEV 250 ~ Java Programming I
  * @Author Name: Tom Muck
  * @Assignment Name: Classes.Database.dao
  * @Date: Nov 12, 2019
- * @Subclass LandingViewDAO Description: 
+ * @Subclass LandingViewDAO Description:
  */
 //Imports
-
 //Begin Subclass LandingViewDAO
-public class PurchasedTicketsViewDAO  extends DatabaseInterface  {
+public class PurchasedTicketsViewDAO extends DatabaseInterface {
+
     public ResultSet getMyEvents(long userID) {
         ArrayList<String> userValues = new ArrayList<>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<>();
-        String Q1 = "{ call [usp_getAllEventSeatsForUser](?) }";
+        String Q1 = "{ call [usp_getFutureEventSeatsForUser](?) }";
         userValues.add(Long.toString(userID));
         dataTypes.add("string");
         ResultSet rs = null;
@@ -34,5 +34,5 @@ public class PurchasedTicketsViewDAO  extends DatabaseInterface  {
         }
         return rs;
     }
-    
+
 } //End Subclass LandingViewDAO

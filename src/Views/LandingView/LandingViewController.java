@@ -89,7 +89,6 @@ public class LandingViewController implements Initializable {
      *
      * @param userID
      */
-    
     public void getEventData() throws SQLException {
         PurchasedTicketsViewDAO dao = new PurchasedTicketsViewDAO();
         dao.init();
@@ -100,7 +99,8 @@ public class LandingViewController implements Initializable {
                 Seat seat = new Seat();
                 String lastEvent = "";
                 String currentEvent = "";
-                while (rs.next()) {
+                // get # of events based on ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY
+                while (rs.next() && (purchasedEvents.size() < (ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2))) {
                     currentEvent = rs.getString("EventName");
                     if (!currentEvent.equalsIgnoreCase(lastEvent)) {
                         if (!lastEvent.equals("")) {
@@ -131,11 +131,8 @@ public class LandingViewController implements Initializable {
                 dao.close();
             }
         }
-        
-        PurchasedEventSorter pEventSorter = new PurchasedEventSorter(this.purchasedEvents);
-        this.purchasedEvents = pEventSorter.getSortedPurchasedEvents();
-
     }
+
     private void loadMyEvents(long userID) throws SQLException {
 
         getEventData();
@@ -180,7 +177,7 @@ public class LandingViewController implements Initializable {
         // Get a list of events from the API using a specific zip code for now - 37201
         nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
         int n = nearEvents.size();
-        if(n==0){
+        if (n == 0) {
             displayErrorBot();
             return;
         }
