@@ -12,6 +12,7 @@ package Views.TicketComponent;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Objects.Event;
 import Classes.Objects.PurchasedEvent;
+import Classes.Utilities.Alerts;
 import Classes.Utilities.Enums.ViewEnum;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
@@ -58,6 +59,7 @@ public class TicketComponent implements Initializable {
     private DashboardViewController dvc; // To update Dashboard view
     private boolean purchased;
     private ViewEnum view;
+    private String seatPrice = "";
 
     /**
      * Initializes the controller class.
@@ -66,11 +68,10 @@ public class TicketComponent implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-    
+
     public void setView(ViewEnum view) {
         this.view = view;
     }
-    
 
     public void setEventData(PurchasedEvent pEvent, DashboardViewController dvc) {
         this.pEvent = pEvent;
@@ -102,14 +103,11 @@ public class TicketComponent implements Initializable {
         this.eventLabel.setText(event.getName());
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
 
-        String seatPrice;
         if (!"TBD".equals(event.getPrice())) {
             double pricePerTicketValue = Double.valueOf(event.getPrice());
             seatPrice = String.format("%.2f", pricePerTicketValue);
         } else {
             seatPrice = event.getPrice();
-            this.actionButton.setDisable(true);
-            this.actionButton.setText("Not Available Yet");
         }
         this.pricePerTicketLabel.setText("$" + seatPrice);
 
@@ -127,13 +125,6 @@ public class TicketComponent implements Initializable {
     private String getEventDateTimeDetails(Events event) {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
-
-        return date + " " + time;
-    }
-
-    private String getEventDateTimeDetails(Event DBEvent) {
-        String date = DBEvent.getStartDate().toString();
-        String time = DBEvent.getStartTime().toString();
 
         return date + " " + time;
     }
@@ -213,11 +204,14 @@ public class TicketComponent implements Initializable {
     // Event handler for "Puchase Tickets" button
     public void purchaseTickets() throws IOException, NoSuchAlgorithmException, SQLException {
 
-        
-        dvc.loadSeatSelectionView(APIEvent, this.view);
-        // Hide the FindEventsView
-        dvc.toggleEventViewVisiblity(false);
-        dvc.unloadLandingView();
+        if (seatPrice == "TBD") {
+            Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();  
+        } else {
+            dvc.loadSeatSelectionView(APIEvent, this.view);
+            // Hide the FindEventsView
+            dvc.toggleEventViewVisiblity(false);
+            dvc.unloadLandingView();
+        }
     }
 
     public void viewTicket() throws IOException, NoSuchAlgorithmException, SQLException {

@@ -114,7 +114,7 @@ public class VenueDAO extends DatabaseInterface  {
         venueValues.add("0");// datetba
         dataTypes.add("bit");
         if(event.getPrice()=="TBD"){            
-            Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();   
+           // Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();   
             venueValues.add("0");
             return;
         } else {
