@@ -31,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Tooltip;
 
 //Begin Subclass TicketComponent
 public class TicketComponent implements Initializable {
@@ -78,6 +79,9 @@ public class TicketComponent implements Initializable {
         this.dvc = dvc;
         this.purchased = true;
         this.eventLabel.setText(pEvent.getEventName());
+        //add tooltip for overflowing event names
+        Tooltip.install(eventLabel, new Tooltip(pEvent.getEventName()));
+
         this.dateTimeLabel.setText(String.format("%s %s", pEvent.getEventDate(), pEvent.getEventTime())); //FIXME format date
         if (pEvent.getEventPrice() == 0) {
             this.pricePerTicketLabel.setText("TBD");
@@ -101,6 +105,9 @@ public class TicketComponent implements Initializable {
         String state = event.getVenueData().getVenues().get(0).getVenueState();
 
         this.eventLabel.setText(event.getName());
+        //add tooltip for overflowing event names
+        Tooltip.install(eventLabel, new Tooltip(event.getName()));
+
         this.dateTimeLabel.setText(getEventDateTimeDetails(event));
 
         if (!"TBD".equals(event.getPrice())) {
@@ -205,7 +212,7 @@ public class TicketComponent implements Initializable {
     public void purchaseTickets() throws IOException, NoSuchAlgorithmException, SQLException {
 
         if (seatPrice == "TBD") {
-            Alerts.genericAlert("Price error","Price error","Price is not set for this show yet. Try again at a later date.").showAndWait();  
+            Alerts.genericAlert("Price error", "Price error", "Price is not set for this show yet. Try again at a later date.").showAndWait();
         } else {
             dvc.loadSeatSelectionView(APIEvent, this.view);
             // Hide the FindEventsView

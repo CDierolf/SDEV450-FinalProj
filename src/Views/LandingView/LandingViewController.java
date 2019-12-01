@@ -22,7 +22,6 @@ import javafx.scene.layout.HBox;
 import Classes.Database.dao.LandingViewDAO;
 import Classes.Database.dao.PurchasedTicketsViewDAO;
 import Classes.Objects.PurchasedEvent;
-import Classes.Objects.PurchasedEventSorter;
 import Classes.Objects.Seat;
 import Classes.Objects.Venue;
 import Classes.Utilities.Enums.ViewEnum;
@@ -174,8 +173,12 @@ public class LandingViewController implements Initializable {
      * @param userName
      */
     private void loadNearEvents() {
-        // Get a list of events from the API using a specific zip code for now - 37201
-        nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
+        try {
+            // Get a list of events from the API using a specific zip code for now - 37201
+            nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
+        } catch (IOException ex) {
+            Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         int n = nearEvents.size();
         if (n == 0) {
             displayErrorBot();
