@@ -7,6 +7,7 @@ package Views.DashboardView;
 import Classes.Objects.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Objects.PurchasedEvent;
+import Classes.Utilities.Enums.ViewEnum;
 import Views.FindEventsView.FindEventsViewController;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import Views.LandingView.LandingViewController;
@@ -43,6 +44,8 @@ public class DashboardViewController implements Initializable {
     @FXML
     private AnchorPane seatSelectionViewPane;
     @FXML
+    private AnchorPane landingViewPane;
+    @FXML
     private StackPane purchasedTicketsViewPane;
     @FXML private Button logoutButton;
 
@@ -78,14 +81,16 @@ public class DashboardViewController implements Initializable {
     public void loadLandingView() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/LandingView/LandingView.fxml"));
-        AnchorPane landingViewPane = loader.load();
+        this.landingViewPane = loader.load();
 
         LandingViewController landingViewController = loader.getController();
         landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-
-        
+    }
+    
+    public void unloadLandingView() {
+        dynamicViewPane.getChildren().remove(this.landingViewPane);
     }
     
     public void loadPurchasedTicketsView() throws IOException, SQLException {
@@ -149,7 +154,7 @@ public class DashboardViewController implements Initializable {
     // Load the SeatSelectionView into dynamicViewPane, 
     // pass the selected event data into its controller
     // along with a reference to this DashboardViewController
-    public void loadSeatSelectionView(Events e) throws IOException {
+    public void loadSeatSelectionView(Events e, ViewEnum view) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/SeatSelectionView/SeatSelectionView.fxml"));
         this.seatSelectionViewPane = loader.load();
@@ -158,6 +163,7 @@ public class DashboardViewController implements Initializable {
         seatSelectionViewController.setDashboardController(this);
         //seatSelectionViewController.setAlert(a);
         seatSelectionViewController.setEventData(e);
+        seatSelectionViewController.setView(view);
         toggleEventViewVisiblity(true);
 
         dynamicViewPane.getChildren().add(seatSelectionViewPane);

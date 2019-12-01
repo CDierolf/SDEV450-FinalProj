@@ -11,7 +11,6 @@ package Views.LandingView;
 import Views.TicketComponent.HTicketComponentController;
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
-import Classes.Objects.Event;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Views.DashboardView.DashboardViewController;
@@ -20,9 +19,13 @@ import java.util.List;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-
-import Classes.Database.DatabaseInterface;
 import Classes.Database.dao.LandingViewDAO;
+import Classes.Database.dao.PurchasedTicketsViewDAO;
+import Classes.Objects.PurchasedEvent;
+import Classes.Objects.PurchasedEventSorter;
+import Classes.Objects.Seat;
+import Classes.Objects.Venue;
+import Classes.Utilities.Enums.ViewEnum;
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.Level;
@@ -40,12 +43,13 @@ public class LandingViewController implements Initializable {
     private final int ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY = 2;
 
     DashboardViewController dvc;
-    List<Event> purchasedEvents = new ArrayList<>();
+    List<PurchasedEvent> purchasedEvents = new ArrayList<>();
     List<HBox> purchasedComponents = new ArrayList<>();
     List<TicketMasterEvent.Embedded.Events> nearEvents = new ArrayList<>();
     List<HBox> nearComponents = new ArrayList<>();
     TicketMasterAPI tma = new TicketMasterAPI();
     LandingViewDAO dao = new Classes.Database.dao.LandingViewDAO();
+    PurchasedTicketsViewDAO pEventDao = new PurchasedTicketsViewDAO();
     @FXML
     private VBox outerVBox;
     @FXML
@@ -75,7 +79,7 @@ public class LandingViewController implements Initializable {
      *
      * @param dvc
      */
-    public void setDashboardController(DashboardViewController dvc) {
+    public void setDashboardController(DashboardViewController dvc) throws SQLException {
         this.dvc = dvc;
         loadMyEvents(dvc.getUser().getUserID());
         loadNearEvents();
@@ -85,28 +89,56 @@ public class LandingViewController implements Initializable {
      *
      * @param userID
      */
-    private void loadMyEvents(long userID) {
-        //temporary event
-        //Event event = new Event("1A0ZA_4GkecKxIM");
-
+    
+    public void getEventData() throws SQLException {
+        PurchasedTicketsViewDAO dao = new PurchasedTicketsViewDAO();
         dao.init();
-
-        ResultSet rs = dao.getMyEvents(userID);
-        try {
-            int i = 1;
-            while (rs.next()) { //fill up purchasedEvents
-                if (i > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
-                    break;
+        ResultSet rs = dao.getMyEvents(dvc.getUser().getUserID());
+        if (rs != null) {
+            try {
+                PurchasedEvent pEvent = null;
+                Seat seat = new Seat();
+                String lastEvent = "";
+                String currentEvent = "";
+                while (rs.next()) {
+                    currentEvent = rs.getString("EventName");
+                    if (!currentEvent.equalsIgnoreCase(lastEvent)) {
+                        if (!lastEvent.equals("")) {
+                            purchasedEvents.add(pEvent);
+                        }
+                        pEvent = new PurchasedEvent();
+                        Venue venue = new Venue();
+                        pEvent.setEventName(rs.getString("EventName"));
+                        pEvent.setEventDate(rs.getDate("StartDate"));
+                        pEvent.setEventTime(rs.getTime("StartTime"));
+                        pEvent.setEventPrice(rs.getDouble("TotalPrice"));
+                        pEvent.setEventImageUrl(rs.getString("image"));
+                        venue.setVenueCity(rs.getString("venueCity"));
+                        venue.setVenueState(rs.getString("venueState"));
+                        venue.setVenueName(rs.getString("venueName"));
+                        pEvent.setVenue(venue);
+                        lastEvent = currentEvent;
+                    }
+                    seat = new Seat();
+                    seat.setSeat(rs.getString("Seat"));
+                    seat.setRow(rs.getString("Row"));
+                    pEvent.addSeat(seat);
                 }
-                purchasedEvents.add(new Event(rs.getString("EventId")));
-                i++;
+                purchasedEvents.add(pEvent);
+            } catch (SQLException e) {
+                System.out.println(e);
+            } finally {
+                dao.close();
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-            displayErrorTop();
-        } finally {
-            dao.close();
         }
+        
+        PurchasedEventSorter pEventSorter = new PurchasedEventSorter(this.purchasedEvents);
+        this.purchasedEvents = pEventSorter.getSortedPurchasedEvents();
+
+    }
+    private void loadMyEvents(long userID) throws SQLException {
+
+        getEventData();
 
         int n = purchasedEvents.size();
         //display error if there are no events
@@ -168,6 +200,7 @@ public class LandingViewController implements Initializable {
                     newRow.getChildren().add(container);
                     HTicketComponentController temp = loader.getController();
                     temp.setEventData(nearEvents.get(j), null, dvc);
+                    temp.setView(ViewEnum.LANDING_VIEW);
                 } catch (IOException e) {
                     System.out.println(e);
                 }

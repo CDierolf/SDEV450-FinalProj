@@ -43,7 +43,7 @@ public class PurchasedTicketsViewController implements Initializable {
     List<PurchasedTicketsViewComponentController> tcElements = new ArrayList<>();
     List<HBox> ticketComponents = new ArrayList<>();
 
-    ArrayList<PurchasedEvent> eventData = new ArrayList<>();
+    List<PurchasedEvent> eventData = new ArrayList<>();
     User user;
 
     /**

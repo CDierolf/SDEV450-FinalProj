@@ -8,12 +8,14 @@ package Views.SeatSelectionView;
 import Classes.Utilities.Alerts;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
 import Classes.Objects.User;
+import Classes.Utilities.Enums.ViewEnum;
 import Views.DashboardView.DashboardViewController;
 import Views.PurchasingView.PurchasingViewController;
 import Views.SeatMaps.Venue.Seat;
 import Views.SeatMaps.Venue.Venue;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class SeatSelectionViewController implements Initializable {
     private ArrayList<Label> selectedSeatsLabels;
     private double total;
     private User user;
+    private ViewEnum view;
 
     public User getUser() {
         return user;
@@ -82,6 +85,7 @@ public class SeatSelectionViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
+    
 
     // Sets the event data for the View
     public void setEventData(Events e) {
@@ -94,6 +98,10 @@ public class SeatSelectionViewController implements Initializable {
         } catch (ParseException ex) {
             Logger.getLogger(SeatSelectionViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setView(ViewEnum view) {
+        this.view = view;
     }
 
     // Set venue callback
@@ -250,9 +258,15 @@ private void loadEventData(Events e) throws ParseException {
 
     // Calls the unloadSeatSelectionView() method in DashboardViewController instance
     // Sets the FindEventsView visibility to true;
-    public void goBackToFindEventsView() {
-        dvc.toggleEventViewVisiblity(true);
-        dvc.unloadSeatSelectionView();
+    public void goBackToPreviousView() throws IOException, SQLException {
+        
+        if (view == ViewEnum.FIND_EVENTS_VIEW) {
+            dvc.toggleEventViewVisiblity(true);
+            dvc.unloadSeatSelectionView();
+        } else if (view == ViewEnum.LANDING_VIEW) {
+            dvc.loadLandingView();
+            dvc.unloadSeatSelectionView();
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package Classes.Objects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /** 
  * @Course: SDEV 350 ~ Java Programming II
@@ -15,13 +16,13 @@ import java.util.Collections;
 //Begin Subclass PurchasedEventSorter
 public class PurchasedEventSorter {
     
-    private ArrayList<PurchasedEvent> purchasedEventsList = new ArrayList<>();
+    private List<PurchasedEvent> purchasedEventsList = new ArrayList<>();
     
-    public PurchasedEventSorter(ArrayList<PurchasedEvent> pEventList) {
+    public PurchasedEventSorter(List<PurchasedEvent> pEventList) {
         this.purchasedEventsList = pEventList;
     }
     
-    public ArrayList<PurchasedEvent> getSortedPurchasedEvents() {
+    public List<PurchasedEvent> getSortedPurchasedEvents() {
         Collections.sort(purchasedEventsList);
         return purchasedEventsList;
     }
