@@ -85,7 +85,7 @@ public class FindEventsViewController implements Initializable {
         this.dvc = dvc;
     }
 
-    private void loadEvents(String eventKeyword, String pageNumber, String postalCode) throws IOException, Exception {
+    private void loadEvents(String eventKeyword, String pageNumber, String postalCode) throws IOException {
 
         // Save the current keyword for pagination
         this.currentKeyword = this.searchTextField.getText();

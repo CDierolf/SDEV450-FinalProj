@@ -59,10 +59,8 @@ public class LandingViewController implements Initializable {
     private VBox botVBox;
     @FXML
     private Label botLabel;
-
     @FXML
     private HBox topHBox1;
-
     @FXML
     private HBox topHBox2;
 
@@ -132,10 +130,11 @@ public class LandingViewController implements Initializable {
         }
     }
 
+    // TODO Figure out why dummy ticket is loading when the user hasn't purchased events
+    // It is preventing the displayErrorTop() method from firing.
     private void loadMyEvents(long userID) throws SQLException {
 
         getEventData();
-
         int n = purchasedEvents.size();
         //display error if there are no events
         if (n == 0) {
@@ -165,7 +164,6 @@ public class LandingViewController implements Initializable {
             }
             topVBox.getChildren().add(newRow);
         }
-
     }
 
     /**
@@ -176,8 +174,10 @@ public class LandingViewController implements Initializable {
         try {
             // Get a list of events from the API using a specific zip code for now - 37201
             nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
+
         } catch (IOException ex) {
-            Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LandingViewController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         int n = nearEvents.size();
         if (n == 0) {
@@ -218,8 +218,10 @@ public class LandingViewController implements Initializable {
             public void handle(ActionEvent e) {
                 try {
                     dvc.loadFindEventsView();
+
                 } catch (IOException ex) {
-                    Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LandingViewController.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -234,8 +236,10 @@ public class LandingViewController implements Initializable {
             public void handle(ActionEvent e) {
                 try {
                     dvc.loadFindEventsView();
+
                 } catch (IOException ex) {
-                    Logger.getLogger(LandingViewController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LandingViewController.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
