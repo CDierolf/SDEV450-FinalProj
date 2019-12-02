@@ -10,6 +10,7 @@ import Classes.Objects.User;
 import Classes.Email.Messages;
 import Classes.Email.SendEmail;
 import Views.PurchasingView.PurchasingViewController;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -100,7 +101,7 @@ public class PurchasedTicketsDetailsViewController implements Initializable {
 
     }
 
-    public void resendTicket() {
+    public void resendTicket() throws IOException {
         String message = Messages.purchasedEventMessage(pEvent.getEventName(), seats, this.eventPriceLabel.getText(), user.getUsername());
         try {
             SendEmail newEmail = new SendEmail("chidi117@gmail.com", "Ticket Purchase", message, pEvent.getEventName());

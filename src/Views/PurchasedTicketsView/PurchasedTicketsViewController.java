@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -38,6 +39,8 @@ public class PurchasedTicketsViewController implements Initializable {
 
     @FXML
     private VBox eventVBox;
+    @FXML
+    private Label noEventsLabel;
 
     DashboardViewController dvc;
     List<PurchasedTicketsViewComponentController> tcElements = new ArrayList<>();
@@ -57,26 +60,30 @@ public class PurchasedTicketsViewController implements Initializable {
         this.dvc = dvc;
         this.user = user;
         getEventData();
-        loadTicketComponents();
-        loadEventDataToComponents();
-    }
-    
+        if (eventData.isEmpty()) {
+            this.noEventsLabel.setVisible(false);
+            loadTicketComponents();
+            loadEventDataToComponents();
+        } else {
+            this.noEventsLabel.setVisible(true);
+        }
+    } 
 
     public void loadTicketComponents() {
         for (int i = 0; i < eventData.size(); i++) {
-                try {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("/Views/TicketComponent/PurchasedTicketsViewComponent.fxml"));
-                    HBox ticketComponentPane = loader.load();
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/Views/TicketComponent/PurchasedTicketsViewComponent.fxml"));
+                HBox ticketComponentPane = loader.load();
 
-                    ticketComponents.add(ticketComponentPane);
-                    PurchasedTicketsViewComponentController tcCtrl = loader.getController();
-                    tcElements.add(tcCtrl);
+                ticketComponents.add(ticketComponentPane);
+                PurchasedTicketsViewComponentController tcCtrl = loader.getController();
+                tcElements.add(tcCtrl);
 
-                } catch (IOException ex) {
-                    Logger.getLogger(PurchasedTicketsViewComponentController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            } catch (IOException ex) {
+                Logger.getLogger(PurchasedTicketsViewComponentController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     }
 
     private void loadEventDataToComponents() throws FileNotFoundException, IOException, SQLException {
@@ -137,7 +144,7 @@ public class PurchasedTicketsViewController implements Initializable {
                 dao.close();
             }
         }
-        
+
         PurchasedEventSorter pEventSorter = new PurchasedEventSorter(this.eventData);
         this.eventData = pEventSorter.getSortedPurchasedEvents();
 

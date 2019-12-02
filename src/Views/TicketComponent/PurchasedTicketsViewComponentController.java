@@ -48,12 +48,13 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
     private Button resendTicketsButton;
     @FXML
     private Label venueLabel;
+    @FXML
+    private Label noEventsLabel;
 
     PurchasedEvent pEvent;
     DashboardViewController dvc;
     User user;
     String seats;
-    String price = "$100.00"; // TODO delete once price is in pEvent
 
     /**
      * Initializes the controller class.
@@ -64,17 +65,17 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
     }
 
     public void setEventData(PurchasedEvent event, DashboardViewController dvc) {
-        this.pEvent = event;
-        this.dvc = dvc;
-        this.eventNameLabel.setText(pEvent.getEventName());
-        this.eventDateLabel.setText(pEvent.getEventDate().toString() + " " + pEvent.getEventTime().toString());
-        this.eventPrice.setText("$" + String.format("%.2f", pEvent.getEventPrice()));
-        this.venueLabel.setText(pEvent.getVenue().getVenueName());
+            this.pEvent = event;
+            this.dvc = dvc;
+            this.eventNameLabel.setText(pEvent.getEventName());
+            this.eventDateLabel.setText(pEvent.getEventDate().toString() + " " + pEvent.getEventTime().toString());
+            this.eventPrice.setText("$" + String.format("%.2f", pEvent.getEventPrice()));
+            this.venueLabel.setText(pEvent.getVenue().getVenueName());
 
-        setSeatsString();
+            setSeatsString();
 
-        // TODO GET URL FROM pEVENT
-        loadImage(pEvent.getEventImageUrl());
+            // TODO GET URL FROM pEVENT
+            loadImage(pEvent.getEventImageUrl());
     }
 
     public void setUser(User user) {
@@ -113,14 +114,13 @@ public class PurchasedTicketsViewComponentController extends TicketComponent imp
 
     }
 
-    public void resendTicket() {
+    public void resendTicket() throws IOException {
         // Replace seats and price
-        String message = Messages.purchasedEventMessage(pEvent.getEventName(), seats, price, user.getUsername());
+        String message = Messages.purchasedEventMessage(pEvent.getEventName(), seats, String.format("$%.2f", pEvent.getEventPrice()), user.getUsername());
         try {
             SendEmail newEmail = new SendEmail("chidi117@gmail.com", "Ticket Purchase", message, pEvent.getEventName());
         } catch (MessagingException ex) {
             Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

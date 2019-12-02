@@ -13,6 +13,7 @@ import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import Views.SeatMaps.Venue.SeatMapSeat;
 import Views.SeatSelectionView.SeatSelectionViewController;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -223,7 +224,7 @@ public class PurchasingViewController implements Initializable {
     // Purchase Tickets
     // TODO - Add purchase finalizing to save seats to purchased seats for user
     //        and send email with purchase information
-    public void purchaseTickets() {
+    public void purchaseTickets() throws IOException {
         clearValidation();
         
         if (1 == 1) {

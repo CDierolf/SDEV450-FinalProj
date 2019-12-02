@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -9,7 +10,10 @@
    <children>
       <ScrollPane prefHeight="813.0" prefWidth="1190.0" stylesheets="@../CSS/DashboardViewCSS.css">
          <content>
-            <VBox fx:id="eventVBox" alignment="CENTER" prefHeight="813.0" prefWidth="1190.0" styleClass="root" stylesheets="@../CSS/DashboardViewCSS.css" />
+            <VBox fx:id="eventVBox" alignment="CENTER" prefHeight="813.0" prefWidth="1190.0" styleClass="root" stylesheets="@../CSS/DashboardViewCSS.css">
+               <children>
+                  <Label fx:id="noEventsLabel" text="You have not purchased any events yet!" />
+               </children></VBox>
          </content>
       </ScrollPane>
    </children>

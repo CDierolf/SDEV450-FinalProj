@@ -75,58 +75,62 @@ public class TicketComponent implements Initializable {
     }
 
     public void setEventData(PurchasedEvent pEvent, DashboardViewController dvc) {
-        this.pEvent = pEvent;
-        this.dvc = dvc;
-        this.purchased = true;
-        this.eventLabel.setText(pEvent.getEventName());
-        //add tooltip for overflowing event names
-        Tooltip.install(eventLabel, new Tooltip(pEvent.getEventName()));
+        if (pEvent != null) {
+            this.pEvent = pEvent;
+            this.dvc = dvc;
+            this.purchased = true;
+            this.eventLabel.setText(pEvent.getEventName());
+            //add tooltip for overflowing event names
+            Tooltip.install(eventLabel, new Tooltip(pEvent.getEventName()));
 
-        this.dateTimeLabel.setText(String.format("%s %s", pEvent.getEventDate(), pEvent.getEventTime())); //FIXME format date
-        if (pEvent.getEventPrice() == 0) {
-            this.pricePerTicketLabel.setText("TBD");
-        } else {
-            String s = "$" + String.format("%.2f", pEvent.getEventPrice());
-            this.pricePerTicketLabel.setText(s);
+            this.dateTimeLabel.setText(String.format("%s %s", pEvent.getEventDate(), pEvent.getEventTime())); //FIXME format date
+            if (pEvent.getEventPrice() == 0) {
+                this.pricePerTicketLabel.setText("TBD");
+            } else {
+                String s = "$" + String.format("%.2f", pEvent.getEventPrice());
+                this.pricePerTicketLabel.setText(s);
+            }
+            this.venueLocationLabel.setText(pEvent.getVenue().getVenueName());
+            this.venueCityStateLabel.setText((pEvent.getVenue().getVenueCity() + ", " + pEvent.getVenue().getVenueState()));
+
+            //change button label to indicate this is a purchased event
+            this.actionButton.setText("View Tickets");
+            loadImage(pEvent.getEventImageUrl());
         }
-        this.venueLocationLabel.setText(pEvent.getVenue().getVenueName());
-        this.venueCityStateLabel.setText((pEvent.getVenue().getVenueCity() + ", " + pEvent.getVenue().getVenueState()));
-
-        //change button label to indicate this is a purchased event
-        this.actionButton.setText("View Tickets");
-        loadImage(pEvent.getEventImageUrl());
     }
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
 
-        purchased = false; //this event has no purchases from user
+        if (event != null) {
+            purchased = false; //this event has no purchases from user
 
-        String city = event.getVenueData().getVenues().get(0).getVenueCity();
-        String state = event.getVenueData().getVenues().get(0).getVenueState();
+            String city = event.getVenueData().getVenues().get(0).getVenueCity();
+            String state = event.getVenueData().getVenues().get(0).getVenueState();
 
-        this.eventLabel.setText(event.getName());
-        //add tooltip for overflowing event names
-        Tooltip.install(eventLabel, new Tooltip(event.getName()));
+            this.eventLabel.setText(event.getName());
+            //add tooltip for overflowing event names
+            Tooltip.install(eventLabel, new Tooltip(event.getName()));
 
-        this.dateTimeLabel.setText(getEventDateTimeDetails(event));
+            this.dateTimeLabel.setText(getEventDateTimeDetails(event));
 
-        if (!"TBD".equals(event.getPrice())) {
-            double pricePerTicketValue = Double.valueOf(event.getPrice());
-            seatPrice = String.format("%.2f", pricePerTicketValue);
-        } else {
-            seatPrice = event.getPrice();
+            if (!"TBD".equals(event.getPrice())) {
+                double pricePerTicketValue = Double.valueOf(event.getPrice());
+                seatPrice = String.format("%.2f", pricePerTicketValue);
+            } else {
+                seatPrice = event.getPrice();
+            }
+            this.pricePerTicketLabel.setText("$" + seatPrice);
+
+            this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
+            this.venueCityStateLabel.setText(city + ", " + state);
+
+            // Set event and dashboard variables
+            this.APIEvent = event;
+            this.dvc = dvc;
+
+            //load images
+            loadImage();
         }
-        this.pricePerTicketLabel.setText("$" + seatPrice);
-
-        this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
-        this.venueCityStateLabel.setText(city + ", " + state);
-
-        // Set event and dashboard variables
-        this.APIEvent = event;
-        this.dvc = dvc;
-
-        //load images
-        loadImage();
     }
 
     private String getEventDateTimeDetails(Events event) {
