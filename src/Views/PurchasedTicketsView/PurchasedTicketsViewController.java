@@ -60,7 +60,7 @@ public class PurchasedTicketsViewController implements Initializable {
         this.dvc = dvc;
         this.user = user;
         getEventData();
-        if (eventData.isEmpty()) {
+        if (!eventData.isEmpty()) {
             this.noEventsLabel.setVisible(false);
             loadTicketComponents();
             loadEventDataToComponents();
@@ -97,7 +97,6 @@ public class PurchasedTicketsViewController implements Initializable {
     }
 
     private void displayEventComponents(HBox pane) throws IOException, SQLException {
-
         eventVBox.getChildren().add(pane);
         eventVBox.setSpacing(20);
 
