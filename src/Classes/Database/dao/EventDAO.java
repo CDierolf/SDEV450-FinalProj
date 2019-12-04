@@ -18,9 +18,18 @@ import java.util.ArrayList;
 
 
 public class EventDAO extends DatabaseInterface  {
+    /**
+     * 
+     * @param eventid
+     * @return
+     * @throws SQLException 
+     * Gets an event ResultSet given the eventid
+     */
     public ResultSet getEvent(String eventid) throws SQLException {
         init();
         // get the user
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         StringBuilder sb = new StringBuilder();
         ArrayList<String> eventValues = new ArrayList<String>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<String>(); 

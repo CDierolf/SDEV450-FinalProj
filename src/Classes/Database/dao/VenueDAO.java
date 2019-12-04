@@ -7,6 +7,7 @@ package Classes.Database.dao;
  * @Assignment Name: TicketManager
  * @Date: Nov 11, 2019
  * @Subclass VenueDAO Description: 
+ * venue object for seating for an event
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
@@ -28,6 +29,13 @@ public class VenueDAO extends DatabaseInterface  {
      * @return
      * @throws SQLException
      */
+    /**
+     * 
+     * @param venueid
+     * @return
+     * @throws SQLException 
+     * gets a venue given a venue id, not used in the app
+     */
     public ResultSet getVenue(int venueid) throws SQLException {
         
         // get the venue seat chart
@@ -45,26 +53,37 @@ public class VenueDAO extends DatabaseInterface  {
 
         return rs;
     }
-    /* getVenue passed a string event id */
+
     
+    /**
+     * 
+     * @param event
+     * @return
+     * @throws SQLException 
+     * gets a venue given an event -- returns a resultset with all seats and seat
+     * status (sold/unsold)
+     */
     public ResultSet getVenue(Events event) throws SQLException {    
        
         setDebug(this.getDebug());        
         // get the venue seat chart
         StringBuilder sb = new StringBuilder();
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         ArrayList<String> venueValues = new ArrayList<String>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<String>(); 
-        // we have to check the database to make sure the event exists, if not, 
+
         venueValues.add(event.getEventID());
         dataTypes.add("string");
-         // call a method to add some dummy sales
+
         init(); // set up the DB properties 
         String Q1 = "{call usp_EventExists(?,?) }";
+        // check to see if the event exists
         int exists = callableStatementReturnInt(Q1, venueValues.toArray(new String[venueValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
         close();
         if(exists==0) {
-            // call a method to create event in db and populate some fake seat sales for the event
+            // event doesn't exist, add it
             addEvent(event);            
         } 
        
@@ -75,6 +94,11 @@ public class VenueDAO extends DatabaseInterface  {
         return rs;
     }
  
+    /**
+     * 
+     * @param event 
+     * Adds the event to the database, given an event object
+     */
     public void addEvent(Events event) {
         ArrayList<String> venueValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
@@ -90,6 +114,8 @@ public class VenueDAO extends DatabaseInterface  {
         @price money = NULL,
         @info nvarchar(MAX) = NULL
         */
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         venueValues.add(event.getEventID());
         dataTypes.add("string");
         venueValues.add(event.getName());
@@ -146,7 +172,9 @@ public class VenueDAO extends DatabaseInterface  {
         venueValues.add(event.getVenueData().getVenues().get(0).getVenueState());
         dataTypes.add("string");
 
-        
+        // add some dummy sales if the event doesn't exist in the db.
+        // This is for the example app that shows
+        //  a partially filled venue for demonstration purposes
         Q1 = "{ call [usp_EventsGenerateDummySales_1116](?,?,?,?) }";
         preparedStatement(Q1, venueValues.toArray(new String[venueValues.size()]), 
         dataTypes.toArray(new String[dataTypes.size()]));

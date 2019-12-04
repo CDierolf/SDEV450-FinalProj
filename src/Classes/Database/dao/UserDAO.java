@@ -7,6 +7,7 @@ package Classes.Database.dao;
  * @Assignment Name: TicketManager
  * @Date: Nov 10, 2019
  * @Subclass UserDAO Description: 
+ * User information from the database
  */
 //Imports
 
@@ -24,10 +25,19 @@ import java.security.NoSuchAlgorithmException;
  * @author Tom.Muck
  */
 public class UserDAO extends DatabaseInterface  {
+    /**
+     * 
+     * @param userid
+     * @return
+     * @throws SQLException 
+     * gets a resultset with user properties given a user id
+     */
     public ResultSet getUser(long userid) throws SQLException {
         init();
         // get the user
         StringBuilder sb = new StringBuilder();
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         ArrayList<String> userValues = new ArrayList<String>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<String>(); 
         String Q1 = "{ call [usp_UsersSelect](?) }";
@@ -38,18 +48,20 @@ public class UserDAO extends DatabaseInterface  {
         dataTypes.add("int");
         ResultSet rs = callableStatementRs(Q1, userValues.toArray(new String[userValues.size()]), 
                 dataTypes.toArray(new String[dataTypes.size()]));
-        
-        /*
-        while (rs.next()) {
-            desEndDateField = rs.getDate("desEndDate");
-        }// END while (rs.next())
-        
-*/
+
         return rs;
     }
-    
+    /**
+     * 
+     * @param user
+     * @return long userid
+     * @throws NoSuchAlgorithmException 
+     * Adds a user to the database, given a user object
+     */
     public long addUser(User user) throws NoSuchAlgorithmException {
          init();
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
         
@@ -75,8 +87,19 @@ public class UserDAO extends DatabaseInterface  {
         return userid;
     }
     
+    /**
+     * 
+     * @param username
+     * @param password
+     * @param email
+     * @return long userid
+     * @throws NoSuchAlgorithmException 
+     * adds a user to the database, given a username/password and email
+     */
     public long addUser(String username, String password, String email) throws NoSuchAlgorithmException {
         init();
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
         PasswordUtilities pu = new PasswordUtilities();        
@@ -96,9 +119,19 @@ public class UserDAO extends DatabaseInterface  {
         return userid;
     }
     
+    /**
+     * 
+     * @param username
+     * @param password
+     * @return long userid
+     * @throws NoSuchAlgorithmException 
+     * Logs in the user given username/password
+     */
     public long loginUser(String username, String password) throws NoSuchAlgorithmException {
         init();
         String Q1 = "{call usp_loginUser(?,?,?) }";
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         ArrayList<String> userValues = new ArrayList<String>(); 
         ArrayList<String> dataTypes = new ArrayList<String>(); 
         
@@ -115,11 +148,5 @@ public class UserDAO extends DatabaseInterface  {
             return loggedin;
 
     }
-    
-    
-    
-    
-    
-    
     
 } //End Subclass UserDAO

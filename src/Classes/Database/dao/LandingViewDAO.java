@@ -8,13 +8,20 @@ import java.sql.ResultSet;
  * @Author Name: Tom Muck
  * @Assignment Name: Classes.Database.dao
  * @Date: Nov 12, 2019
- * @Subclass LandingViewDAO Description: 
+ * @Subclass LandingViewDAO Description: database methods for the landing view
  */
 //Imports
 
 //Begin Subclass LandingViewDAO
 public class LandingViewDAO  extends DatabaseInterface  {
+    /**
+     * 
+     * @param userID
+     * @return a ResultSet of all of the current user's events given a userid
+     */
     public ResultSet getMyEvents(long userID) {
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         String[] userValues = {Long.toString(userID)};
         String[] dataTypes = {"string"};
 

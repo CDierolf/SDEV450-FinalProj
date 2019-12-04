@@ -23,9 +23,19 @@ import java.util.ArrayList;
  * @author Tom.Muck
  */
 public class PurchaseDAO extends DatabaseInterface  {
+/**
+ * 
+ * @param user
+ * @param event
+ * @param seats
+ * @throws SQLException 
+ * method allows a user to purchase tickets, given user, event, and seats
+ */
     public void makePurchase(User user, Events event, int[] seats) throws SQLException {
         init();
-        // get the user
+        // purchase the tickets
+        // We need to set up the parameters for the stored proc into an arraylist
+        //  and put the corresponding data type into a corresponding arraylist
         StringBuilder sb = new StringBuilder();
         ArrayList<String> purchaseValues = new ArrayList<String>(); // just one param for this request
         ArrayList<String> dataTypes = new ArrayList<String>(); 
@@ -69,4 +79,4 @@ public class PurchaseDAO extends DatabaseInterface  {
     
     
     
-} //End Subclass UserDAO
+} //End Subclass PurchaseDAO
