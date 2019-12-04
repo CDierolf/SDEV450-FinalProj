@@ -13,6 +13,7 @@ import Views.SeatSelectionView.SeatSelectionViewController;
 import Views.LandingView.LandingViewController;
 import Views.PurchasedTicketsDetailsView.PurchasedTicketsDetailsViewController;
 import Views.PurchasedTicketsView.PurchasedTicketsViewController;
+import Views.MyAccountView.MyAccountViewController;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -48,6 +50,9 @@ public class DashboardViewController implements Initializable {
     @FXML
     private StackPane purchasedTicketsViewPane;
     @FXML private Button logoutButton;
+    
+    @FXML
+    private Button btnAccount;
 
     private User user;
 
@@ -174,6 +179,28 @@ public class DashboardViewController implements Initializable {
     // The events the user searched for are readily available for continued browsing.
     public void toggleEventViewVisiblity(boolean isVisible) {
         dynamicViewPane.getChildren().get(0).setVisible(isVisible);
+    }
+    
+    /**
+     * Open Account View window
+     * @throws IOException 
+     */
+    public void openAccountView() throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Views/MyAccountView/MyAccountView.fxml"));        
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        // set the user to the dashboard view controller to maintain state
+        MyAccountViewController controller = fxmlLoader.<MyAccountViewController>getController();
+        controller.setDashboardController(this);
+        Stage stage = new Stage();
+
+        stage.setTitle(this.user.getUsername()+" Account Details");
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
+        
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        
     }
     
     public void logout() {

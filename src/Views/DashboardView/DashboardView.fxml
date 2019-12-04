@@ -34,8 +34,9 @@
             <Button id="shiny-orange" fx:id="homeButton" mnemonicParsing="false" onAction="#loadLandingView" prefHeight="38.0" prefWidth="249.0" text="Home" />
                 <Button id="shiny-orange" fx:id="findEventsButton" mnemonicParsing="false" onAction="#loadFindEventsView" prefHeight="38.0" prefWidth="249.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
                 <Button id="shiny-orange" mnemonicParsing="false" onAction="#loadPurchasedTicketsView" prefHeight="38.0" prefWidth="249.0" text="View Purchased Events" />
-                <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0">
+                <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0" spacing="10.0">
                     <children>
+                  <Button id="dark-blue" fx:id="btnAccount" layoutX="12.0" layoutY="536.0" mnemonicParsing="false" onAction="#openAccountView" prefHeight="27.0" prefWidth="224.0" text="My Account" />
                         <Button id="dark-blue" fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="224.0" text="Logout" />
                     </children>
                     <padding>
