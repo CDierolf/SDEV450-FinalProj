@@ -2,10 +2,12 @@ package Classes.Database;
 
 
 /**
- * @Course: SDEV 250 ~ Java Programming I
+ * @Course: SDEV 450-81  Enterprise Java
  * @Author Name: Tom Muck
- * @Date: Jul 17, 2018
+ * @Date: November 2019
  * @Subclass DatabaseInterface Description:
+ * This class can be used on it's own, or it can be used as the base/superclass
+ * of a DAO class by extending it.
  */
 //Imports
 
@@ -46,7 +48,7 @@ public class DatabaseInterface implements Debug {
     }
 
     /**
-     *
+     * init method sets up the database connection using a properties file
      */
     public void init() {
         if(!connectionStringSet) {
@@ -63,7 +65,8 @@ public class DatabaseInterface implements Debug {
     }
 
     /**
-     *
+     *loadProperties method loads all database connection properties from 
+     * a properties file (TicketManager.properties) located in the resources folder
      */
     public void loadProperties() {
 
@@ -71,10 +74,11 @@ public class DatabaseInterface implements Debug {
         InputStream input = null;
 
         try {
+            // get the properties file as a stream
             input =  getClass().getClassLoader().getResourceAsStream("resources/TicketManager.properties");
-            // load a properties file
+            // load the properties file
             prop.load(input);
-            // get the property value and print it out
+            // get the property value and set class properties
             setDbIpaddress(prop.getProperty("dbIpaddress"));
             setDbUsername(prop.getProperty("dbUsername"));
             setDbPassword(prop.getProperty("dbPassword"));
@@ -95,7 +99,11 @@ public class DatabaseInterface implements Debug {
         }
     }
 
-    // might not use this!
+    /*
+    
+    Builds the SQL Server connection string using the properties loaded from the 
+    properties file
+    */
     private void buildConnectionString() {
         //loadProperties();
         connectionString = "jdbc:sqlserver://%s:%s;databaseName=%s;user=%s;password=%s";
@@ -107,7 +115,7 @@ public class DatabaseInterface implements Debug {
     /**
      * retrieve RS given a query
      * @param SQL
-     * @return 
+     * @return a ResultSet
      */
     public ResultSet retrieveRS(String SQL) {
         if(getDebug()) System.out.println(SQL);
@@ -120,12 +128,9 @@ public class DatabaseInterface implements Debug {
             return rs;
         } // Handle any errors that may have occurred.
         catch (Exception e) {
-            //e.printStackTrace();
             //String module, String query, Boolean exit, String error
             JDBCError("retrieveRS", SQL, true, e.getMessage());
-        } //finally {
-        //close();
-        //}
+        } 
         return rs;
     }
 
@@ -133,8 +138,8 @@ public class DatabaseInterface implements Debug {
      * execute a prepared statement
      *
      * @param query
-     * @param args
-     * @param datatypes (int or string)
+     * @param args (arguments to send to the prepared statement)
+     * @param datatypes (int or string, or other)
      */
     public void preparedStatement(String query, String[] args,
             String[] datatypes) {
@@ -145,7 +150,7 @@ public class DatabaseInterface implements Debug {
                 connection.setAutoCommit(false);
 
             ps = connection.prepareStatement(query);
-
+            // This section sets up parameters for the query from the arguments
             for (int i = 0; i < args.length; i++) {
                  if ("int".equalsIgnoreCase(datatypes[i])) {
                     ps.setInt(i+1, Integer.parseInt(args[i]));
@@ -199,7 +204,8 @@ public class DatabaseInterface implements Debug {
 
 
             ps = connection.prepareStatement(query);
-
+            // This section sets up parameters for the query from the arguments
+            
             for (int i = 0; i < args.length; i++) {
                  if ("int".equalsIgnoreCase(datatypes[i])) {
                     ps.setInt(i+1, Integer.parseInt(args[i]));
@@ -255,7 +261,7 @@ public class DatabaseInterface implements Debug {
 
 
             cs = connection.prepareCall(query);
-
+            // This section sets up parameters for the query from the arguments            
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
                     cs.setInt(i+1, Integer.parseInt(args[i]));
@@ -269,9 +275,6 @@ public class DatabaseInterface implements Debug {
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d");
                     cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
                 } else if ("time".equalsIgnoreCase(datatypes[i])) {
-                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
-                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
-
                     cs.setDate(i+1, Date.valueOf(args[i]));
                 } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
                     java.util.Date result;
@@ -331,7 +334,7 @@ public class DatabaseInterface implements Debug {
 
 
             cs = connection.prepareCall(query);
-
+            // This section sets up parameters for the query from the arguments            
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
                     cs.setInt(i+1, Integer.parseInt(args[i]));
@@ -344,10 +347,7 @@ public class DatabaseInterface implements Debug {
                 } else if ("date".equalsIgnoreCase(datatypes[i])) {
                     SimpleDateFormat d = new SimpleDateFormat("y-M-d");
                     cs.setDate(i+1, java.sql.Date.valueOf(args[i]));
-                } else if ("time".equalsIgnoreCase(datatypes[i])) {
-                    /*SimpleDateFormat d = new SimpleDateFormat("HH:mm:ss.S");
-                    cs.setDate(i+1, java.sql.Date.valueOf(args[i]));*/
-                    
+                } else if ("time".equalsIgnoreCase(datatypes[i])) {                  
                     cs.setDate(i+1, Date.valueOf(args[i]));
                 } else if ("datetime".equalsIgnoreCase(datatypes[i])) {
                     java.util.Date result;                    
@@ -382,11 +382,7 @@ public class DatabaseInterface implements Debug {
         try {
             if(connection == null)
                 connection = connectionPool.getConnection();
-
-
             cs = connection.prepareCall(query);
-
-            
             cs.execute();
             return;
         } catch (Exception e) {
@@ -412,7 +408,7 @@ public class DatabaseInterface implements Debug {
                 connection = connectionPool.getConnection();
 
             cs = connection.prepareCall(query);
-
+            // This section sets up parameters for the query from the arguments            
             for (int i = 0; i < args.length; i++) {
                 if ("int".equalsIgnoreCase(datatypes[i])) {
                     cs.setInt(i+1, Integer.parseInt(args[i]));
@@ -450,7 +446,7 @@ public class DatabaseInterface implements Debug {
     }
 
     /**
-     *
+     * closes resultset, statement, connection as necessary
      */
     public void close() {
         if (rs != null) {
@@ -473,7 +469,7 @@ public class DatabaseInterface implements Debug {
             } catch (Exception e) {
                 JDBCError("close", "", true, e.getMessage());
             }
-        }*/
+        } /**/
     }
 
     /**
@@ -670,15 +666,7 @@ public class DatabaseInterface implements Debug {
         logDebug(errorMessage + "\n" + query, "error");
 
         if (exit) { // Non recoverable error
-            /* TODO: implement methods below
-            notifyHelpDesk(errorMessage, " with $Error");
-            publishError("My error message is: $Error");
-            publishError("My SQl is: $Q");
-            publishError(" An internal process error has occurred.\n The FACTS Technical Help desk has been notified", 'Abort'
-            );
-            // Set the log flag to Errors found
-            updateLog("X", $glogID);
-             */
+
             close();
             System.exit(1);
         }
