@@ -98,6 +98,18 @@ public class PurchasingViewController implements Initializable {
     private User user;
     DashboardViewController dvc;
      Alerts alerts = new Alerts();
+     
+     //TODO
+     /*
+        Check and make sure validation is working. I was able to put in partial
+        data (credit card, invalid email format, half exp date) and it still worked.
+     
+        After purchasing the ticket and the popup is displayed, PurchasingView
+        is shown again with the same data and the user can click Buy again.
+        Maybe take the user back to FindEventsView.
+     
+     
+     */
 
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
