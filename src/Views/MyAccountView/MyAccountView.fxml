@@ -63,7 +63,7 @@
                   <Insets right="80.0" />
                </HBox.margin>
             </Button>
-            <Button id="dark-blue" fx:id="btnUpdate" layoutY="10.0" mnemonicParsing="false" styleClass="updateAccountTextButton" stylesheets="@../CSS/MyAccountViewCSS.css" text="Update">
+            <Button id="dark-blue" fx:id="btnUpdate" layoutY="10.0" mnemonicParsing="false" onAction="#update" styleClass="updateAccountTextButton" stylesheets="@../CSS/MyAccountViewCSS.css" text="Update">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

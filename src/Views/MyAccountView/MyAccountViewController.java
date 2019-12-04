@@ -114,6 +114,13 @@ public class MyAccountViewController extends Validation implements Initializable
     }
     
     public void openChangePasswordView(){
+        UserDAO udao = new UserDAO();
+        udao.init();
+        ResultSet rs;
+    }
+    
+    public void update(){
+        //TODO do validation stuff
         
     }
 
