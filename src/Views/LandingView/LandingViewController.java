@@ -68,7 +68,7 @@ public class LandingViewController implements Initializable {
     }
 
     /**
-     *
+     * Triggered from Dashboard View. Initializes and loads components
      * @param dvc
      */
     public void setDashboardController(DashboardViewController dvc) throws SQLException {
@@ -173,11 +173,13 @@ public class LandingViewController implements Initializable {
     private void loadNearEvents() {
         try {
             // Get a list of events from the API using a specific zip code for now - 37201
-            nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
+            nearEvents = tma.findEvents("", "1", "11111").getEmbeddedEvents().getEvents();
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(LandingViewController.class
                     .getName()).log(Level.SEVERE, null, ex);
+            displayErrorBot();
+            return;
         }
         int n = nearEvents.size();
         if (n == 0) {
@@ -210,9 +212,13 @@ public class LandingViewController implements Initializable {
         }
     }
 
+    /**
+     * Shows a message and button when there are no purchased events
+     */
     private void displayErrorTop() {
         Label l = new Label("You haven't purchased any events yet");
         Button b = new Button("Find some events");
+        //have to style manually
         b.setStyle("-fx-background-color: \n"
                 + "        linear-gradient(#ffd65b, #e68400),\n"
                 + "        linear-gradient(#ffef84, #f2ba44),\n"
@@ -240,9 +246,13 @@ public class LandingViewController implements Initializable {
         topVBox.getChildren().addAll(l, b);
     }
 
+    /**
+     * Shows a message and button when there are no nearby events
+     */
     private void displayErrorBot() {
         Label l = new Label("There are no upcoming events nearby");
         Button b = new Button("Find some events");
+        //have to style manually
         b.setStyle("-fx-background-color: \n"
                 + "        linear-gradient(#ffd65b, #e68400),\n"
                 + "        linear-gradient(#ffef84, #f2ba44),\n"
@@ -267,7 +277,7 @@ public class LandingViewController implements Initializable {
                 }
             }
         });
-        topVBox.getChildren().addAll(l, b);
+        botVBox.getChildren().addAll(l, b);
     }
 
 } //End Subclass LandingViewController
