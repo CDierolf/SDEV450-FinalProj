@@ -69,6 +69,7 @@ public class LandingViewController implements Initializable {
 
     /**
      * Triggered from Dashboard View. Initializes and loads components
+     *
      * @param dvc
      */
     public void setDashboardController(DashboardViewController dvc) throws SQLException {
@@ -144,6 +145,9 @@ public class LandingViewController implements Initializable {
         if (n > ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2) {
             n = ROWS_OF_PURCHASED_EVENTS_TO_DISPLAY * 2;
         }
+        /*the following for loops accomplish the following:
+        Displays 2 HTicketComponents per row up to n rows but backs out
+        if there is an odd number. j acts as purchasedEvents counter*/
         for (int i = 0; i < n; i += 2) {
             HBox newRow = new HBox();
             for (int j = i; j < i + 2; j++) {
@@ -173,7 +177,7 @@ public class LandingViewController implements Initializable {
     private void loadNearEvents() {
         try {
             // Get a list of events from the API using a specific zip code for now - 37201
-            nearEvents = tma.findEvents("", "1", "11111").getEmbeddedEvents().getEvents();
+            nearEvents = tma.findEvents("", "1", "37201").getEmbeddedEvents().getEvents();
 
         } catch (Exception ex) {
             Logger.getLogger(LandingViewController.class
