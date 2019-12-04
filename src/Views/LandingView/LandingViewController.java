@@ -34,7 +34,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.event.*;
-//Begin Subclass LandingViewController
 
 public class LandingViewController implements Initializable {
 
@@ -64,10 +63,6 @@ public class LandingViewController implements Initializable {
     @FXML
     private HBox topHBox2;
 
-    //@FXML
-    //private HBox botHBox1;
-    //@FXML
-    //private HBox botHBox2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
@@ -83,6 +78,7 @@ public class LandingViewController implements Initializable {
     }
 
     /**
+     * Fills purchasedEvents
      *
      * @param userID
      */
@@ -130,14 +126,18 @@ public class LandingViewController implements Initializable {
         }
     }
 
-    // TODO Figure out why dummy ticket is loading when the user hasn't purchased events
-    // It is preventing the displayErrorTop() method from firing.
+    /**
+     * Loads HTicketComponents for purchasedEvents
+     *
+     * @param userID
+     * @throws SQLException
+     */
     private void loadMyEvents(long userID) throws SQLException {
 
         getEventData();
         int n = purchasedEvents.size();
         //display error if there are no events
-        if (n == 0) {
+        if (purchasedEvents.get(0) == null) {
             displayErrorTop();
             return;
         }
@@ -213,6 +213,7 @@ public class LandingViewController implements Initializable {
     private void displayErrorTop() {
         Label l = new Label("You haven't purchased any events yet");
         Button b = new Button("Find some events");
+        b.setStyle("shiny-orange");
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -229,8 +230,9 @@ public class LandingViewController implements Initializable {
     }
 
     private void displayErrorBot() {
-        Label l = new Label("You haven't purchased any events yet");
+        Label l = new Label("There are no upcoming events nearby");
         Button b = new Button("Find some events");
+        b.setStyle("shiny-orange");
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
