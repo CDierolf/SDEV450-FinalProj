@@ -22,6 +22,7 @@
          <children>
             <VBox alignment="TOP_RIGHT" prefHeight="186.0" prefWidth="250.0" spacing="10.0">
                <children>
+                  <Label id="big-white" layoutX="130.0" layoutY="10.0" stylesheets="@../CSS/MyAccountViewCSS.css" text="Email:" textAlignment="RIGHT" />
                   <Label id="big-white" stylesheets="@../CSS/MyAccountViewCSS.css" text="First Name:" textAlignment="RIGHT" />
                   <Label id="big-white" stylesheets="@../CSS/MyAccountViewCSS.css" text="Last Name:" textAlignment="RIGHT" />
                   <Label id="big-white" stylesheets="@../CSS/MyAccountViewCSS.css" text="Address:" textAlignment="RIGHT" />
@@ -34,6 +35,7 @@
             </VBox>
             <FlowPane hgap="5.0" prefHeight="200.0" prefWidth="230.0" vgap="15.0">
                <children>
+                  <TextField fx:id="tfEmail" layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="230.0" stylesheets="@../CSS/MyAccountViewCSS.css" />
                   <TextField fx:id="tfFirstName" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="230.0" stylesheets="@../CSS/MyAccountViewCSS.css" />
                   <TextField fx:id="tfLastName" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="230.0" stylesheets="@../CSS/MyAccountViewCSS.css" />
                   <TextField fx:id="tfAddress1" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="230.0" stylesheets="@../CSS/MyAccountViewCSS.css" />

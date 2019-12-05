@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import Views.DashboardView.DashboardViewController;
 import java.sql.SQLException;
 import Classes.Database.dao.UserDAO;
+import Classes.Utilities.Alerts;
+import Classes.Utilities.Enums.FieldEnum;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +32,8 @@ import javafx.scene.control.TextFormatter;
 
 public class MyAccountViewController extends Validation implements Initializable {
 
+    @FXML
+    private TextField tfEmail;
     @FXML
     private TextField tfFirstName;
     @FXML
@@ -90,6 +94,7 @@ public class MyAccountViewController extends Validation implements Initializable
             /* SELECT [userID], [username], [password], [email], [firstname], 
             [lastname], [address1], [address2], [city], [state], [zipcode] */
             while (rs.next()) {
+                this.tfEmail.setText(rs.getString("email"));
                 this.tfFirstName.setText(rs.getString("firstname"));
                 this.tfLastName.setText(rs.getString("lastname"));
                 this.tfAddress1.setText(rs.getString("address1"));
@@ -108,20 +113,110 @@ public class MyAccountViewController extends Validation implements Initializable
             Logger.getLogger(MyAccountViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void openChangePasswordView(){
-        UserDAO udao = new UserDAO();
-        udao.init();
-        ResultSet rs;
+
+    public void openChangePasswordView() {
+
     }
-    
-    public void update(){
-        //TODO do validation stuff
-        
+
+    public void update() {
+        if (validateNoBlanks()) {
+            if (Validation.validateEmail(tfEmail.getText())) {
+
+                UserDAO udao = new UserDAO();
+                udao.init();
+                UserDAO.UserInfo info = udao.new UserInfo(dvc.getUser().getUserID(),
+                        tfEmail.getText(), tfFirstName.getText(), tfLastName.getText(),
+                        tfAddress1.getText(), tfAddress2.getText(), tfCity.getText(),
+                        cbState.getSelectionModel().getSelectedItem().toString(),
+                        tfZip.getText());
+                udao.updateUserDetails(info);
+
+                this.close();
+            } else {
+                Alerts.genericAlert("Invalid email", "Invalid email",
+                        "Your email address is invalid.\nPlease enter an email"
+                        + " address such as example@server.com").showAndWait();
+            }
+
+        }
     }
 
     public void close() {
         ((Stage) this.btnCancel.getScene().getWindow()).close();
+    }
+
+    private boolean validateNoBlanks() {
+
+        boolean emailBlank = Validation.validateForBlankInput(
+                tfEmail.getText(), "", false);
+        boolean firstNameBlank = Validation.validateForBlankInput(
+                tfFirstName.getText(), "", false);
+        boolean lastNameBlank = Validation.validateForBlankInput(
+                tfLastName.getText(), "", false);
+        boolean address1Blank = Validation.validateForBlankInput(
+                tfAddress1.getText(), "", false);
+        boolean cityBlank = Validation.validateForBlankInput(
+                tfCity.getText(), "", false);
+        String state = cbState.getSelectionModel().getSelectedItem().toString();
+        boolean stateBlank = !((state == null) || (state.isEmpty()));
+        boolean zipBlank = Validation.validateForBlankInput(
+                tfZip.getText(), "", false);
+
+        boolean validationArray[] = {emailBlank, firstNameBlank, lastNameBlank,
+            address1Blank, cityBlank, stateBlank, zipBlank};
+
+        boolean validForm = false;
+
+        for (boolean b : validationArray) {
+            if (!b) {
+                if (b == emailBlank) {
+                    Alerts.blankFieldAlert("email").showAndWait();
+                    tfEmail.requestFocus();
+                    validForm = false;
+                    break;
+                }
+                if (b == firstNameBlank) {
+                    Alerts.blankFieldAlert("first name").showAndWait();
+                    tfFirstName.requestFocus();
+                    validForm = false;
+                    break;
+                }
+                if (b == lastNameBlank) {
+                    Alerts.blankFieldAlert("last name").showAndWait();
+                    tfLastName.requestFocus();
+                    validForm = false;
+                    break;
+                }
+                if (b == address1Blank) {
+                    Alerts.blankFieldAlert("address 1").showAndWait();
+                    tfAddress1.requestFocus();
+                    validForm = false;
+                    break;
+                }
+                if (b == cityBlank) {
+                    Alerts.blankFieldAlert("city").showAndWait();
+                    tfCity.requestFocus();
+                    validForm = false;
+                    break;
+                }
+                if (b == stateBlank) {
+                    Alerts.blankFieldAlert("state").showAndWait();
+                    cbState.requestFocus();
+                    validForm = false;
+                    break;
+                }
+                if (b == zipBlank) {
+                    Alerts.blankFieldAlert("zip code").showAndWait();
+                    tfZip.requestFocus();
+                    validForm = false;
+                    break;
+                }
+
+            } else {
+                validForm = true;
+            }
+        }
+        return validForm;
     }
 
 } //End Subclass MyAccountViewController

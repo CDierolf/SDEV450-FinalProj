@@ -148,19 +148,20 @@ public class UserDAO extends DatabaseInterface {
     }
 
     /**
-     * Updates database with user details
-     * ignores userID, username, password, email
+     * Updates database with user details ignores userID, username, password,
+     * email
+     *
      * @param u
-     * @return 
+     * @return
      */
     public void updateUserDetails(UserInfo u) {
         init();
-        String Q1 = "{call [usp_UsersUpdate](?) }";
+        String Q1 = "{call [usp_UsersUpdate](?,?,?,?,?,?,?,?,?,?,?) }";
         ArrayList<String> userValues = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
 
         userValues.add(Long.toString(u.userID));
-        dataTypes.add("long");
+        dataTypes.add("int");
         userValues.add(null); //username
         userValues.add(null); //password
         userValues.add(null); //email
@@ -175,26 +176,27 @@ public class UserDAO extends DatabaseInterface {
         for (int i = 0; i < 10; i++) {
             dataTypes.add("string");
         }
-        
-        long userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]),
+
+        callableStatement(Q1, userValues.toArray(new String[userValues.size()]),
                 dataTypes.toArray(new String[dataTypes.size()]));
 
         close();//close connection, statement, resultset
 
     }
-    
+
     /**
      * Updates hashed password for user in database
-     * @param userID 
+     *
+     * @param userID
      */
-    public void changePassword(long userID, String password) throws NoSuchAlgorithmException{
+    public void changePassword(long userID, String password) throws NoSuchAlgorithmException {
         init();
         String Q1 = "{call [usp_UsersUpdate](?) }";
         ArrayList<String> userValues = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
 
         userValues.add(Long.toString(userID)); //userID
-        dataTypes.add("long");
+        dataTypes.add("int");
         userValues.add(null); //username
         PasswordUtilities pu = new PasswordUtilities();
         userValues.add(pu.getHashedPassword(password));
@@ -210,16 +212,16 @@ public class UserDAO extends DatabaseInterface {
         for (int i = 0; i < 10; i++) {
             dataTypes.add("string");
         }
-        
-        long userid = callableStatementReturnInt(Q1, userValues.toArray(new String[userValues.size()]),
+
+        callableStatement(Q1, userValues.toArray(new String[userValues.size()]),
                 dataTypes.toArray(new String[dataTypes.size()]));
 
         close();//close connection, statement, resultset
-        
+
     }
 
     public class UserInfo {
-        
+
         /*
         @userID bigint,
         @username nvarchar(50) = NULL,
@@ -233,7 +235,6 @@ public class UserDAO extends DatabaseInterface {
         @state nvarchar(2) = NULL,
         @zipcode nvarchar(50) = NULL
          */
-
         private long userID;
         private String username;
         private String password;
@@ -246,6 +247,20 @@ public class UserDAO extends DatabaseInterface {
         private String state;
         private String zipcode;
 
+        public UserInfo(long userID, String email, String firstname,
+                String lastname, String address1, String address2, String city,
+                String state, String zipcode) {
+            
+            this.userID = userID;
+            this.email = email;
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.address1 = address1;
+            this.address2 = address2;
+            this.city = city;
+            this.state = state;
+            this.zipcode = zipcode;
+        }
 
         public long getUserID() {
             return userID;
@@ -335,7 +350,6 @@ public class UserDAO extends DatabaseInterface {
             this.zipcode = zipcode;
         }
 
-        
     }
 
 } //End Subclass UserDAO
