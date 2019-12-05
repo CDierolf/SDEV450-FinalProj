@@ -72,7 +72,8 @@ public class LoginViewController implements Initializable {
 
     public void openDashboard() throws IOException, NoSuchAlgorithmException, SQLException {
 
-        loginUser();
+        long userid = loginUser();
+        if (userid == 0) return;
         //this.setUser(user); // sets the user object on the screen
 
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -92,7 +93,7 @@ public class LoginViewController implements Initializable {
     }
 
     // Login user on separate thread
-    private void loginUser() {
+    private long loginUser() {
         //Thread thread = new Thread(() -> {
             //Runnable run = () -> {
                 try {
@@ -106,7 +107,9 @@ public class LoginViewController implements Initializable {
                     if (userid == 0) {
                         this.userNameText.setText("");
                         this.passwordText.setText("");
-                        return;
+                        return 0;
+                    } else {
+                        return userid;
                     }
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,6 +120,7 @@ public class LoginViewController implements Initializable {
 
         //thread.setDaemon(true);
         //thread.start();
+        return 0;
     }
 
     public void closeApp() throws IOException {
