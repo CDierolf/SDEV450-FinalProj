@@ -8,8 +8,6 @@ package Views.MyAccountView;
  * @Subclass MyAccountViewController Description:
  */
 //Imports
-import Classes.Utilities.Alerts;
-import Classes.Utilities.Enums.FieldEnum;
 import Classes.Utilities.Validation;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,9 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import Classes.Objects.User;
 import Views.DashboardView.DashboardViewController;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import Classes.Database.dao.UserDAO;
 import java.sql.ResultSet;
