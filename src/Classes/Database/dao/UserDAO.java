@@ -191,7 +191,7 @@ public class UserDAO extends DatabaseInterface {
      */
     public void changePassword(long userID, String password) throws NoSuchAlgorithmException {
         init();
-        String Q1 = "{call [usp_UsersUpdate](?) }";
+        String Q1 = "{call [usp_UsersUpdate](?,?,?,?,?,?,?,?,?,?,?) }";
         ArrayList<String> userValues = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
 

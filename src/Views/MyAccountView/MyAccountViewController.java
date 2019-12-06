@@ -18,16 +18,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 import Views.DashboardView.DashboardViewController;
+import Views.ChangePasswordView.ChangePasswordViewController;
 import java.sql.SQLException;
 import Classes.Database.dao.UserDAO;
 import Classes.Utilities.Alerts;
-import Classes.Utilities.Enums.FieldEnum;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TextFormatter;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 //Begin Subclass MyAccountViewController
 
 public class MyAccountViewController extends Validation implements Initializable {
@@ -114,10 +119,7 @@ public class MyAccountViewController extends Validation implements Initializable
         }
     }
 
-    public void openChangePasswordView() {
-
-    }
-
+   
     public void update() {
         if (validateNoBlanks()) {
             if (Validation.validateEmail(tfEmail.getText())) {
@@ -140,6 +142,29 @@ public class MyAccountViewController extends Validation implements Initializable
 
         }
     }
+    public void openChangePasswordView() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/Views/ChangePasswordView/ChangePasswordView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 450, 200);
+            // set the user to the dashboard view controller to maintain state
+            ChangePasswordViewController controller = fxmlLoader.<ChangePasswordViewController>getController();
+            controller.setDashboardController(this.dvc);
+            Stage stage = new Stage();
+            
+            stage.setTitle("Change Password");
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UNDECORATED);
+            
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+            this.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MyAccountViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 
     public void close() {
         ((Stage) this.btnCancel.getScene().getWindow()).close();
