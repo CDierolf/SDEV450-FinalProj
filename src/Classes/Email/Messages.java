@@ -1,6 +1,6 @@
 package Classes.Email;
 
-import Views.SeatMaps.Venue.Seat;
+import Views.SeatMaps.Venue.SeatMapSeat;
 import java.util.ArrayList;
 
 /** 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 //Begin Subclass Messages
 public class Messages {
     
-    public static String purchasedEventMessage(String event, ArrayList<Seat> seats, String price, String recipient) {
+    public static String purchasedEventMessage(String event, ArrayList<SeatMapSeat> seats, String price, String recipient) {
         String message = "Dear " + recipient + "\n\n";
         message += "This email is a confirmation of your ticket purchase for:\n\n";
         message += event + "\n\n";
@@ -25,7 +25,7 @@ public class Messages {
         message += "\n\nEvent: " + event + "\n";
         message += "Total Ticket Price: $" + price + "\n\n";
         message += "Seats Purchased:\n";
-        for (Seat seat : seats) {
+        for (SeatMapSeat seat : seats) {
             message += seat.getDescription() + "\n";
         }
         message += "\n\nThank you, and enjoy the show!\nTicketAmateur";

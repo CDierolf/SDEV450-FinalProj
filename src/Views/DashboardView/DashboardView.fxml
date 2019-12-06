@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -7,9 +11,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="831.0" prefWidth="1461.0" styleClass="mainFxmlClass" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.DashboardView.DashboardViewController">
+<AnchorPane id="AnchorPane" prefHeight="831.0" prefWidth="1461.0" styleClass="mainFxmlClass" stylesheets="@../CSS/DashboardViewCSS.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.DashboardView.DashboardViewController">
     <children>
-        <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="816.0" prefWidth="271.0" spacing="10.0" styleClass="sizeMenu" stylesheets="@../CSS/DashboardViewCSS.css">
+        <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="816.0" prefWidth="250.0" spacing="10.0" styleClass="sizeMenu" stylesheets="@../CSS/DashboardViewCSS.css">
             <children>
                 <StackPane prefHeight="94.0" prefWidth="271.0">
                     <children>
@@ -30,8 +34,9 @@
             <Button id="shiny-orange" fx:id="homeButton" mnemonicParsing="false" onAction="#loadLandingView" prefHeight="38.0" prefWidth="249.0" text="Home" />
                 <Button id="shiny-orange" fx:id="findEventsButton" mnemonicParsing="false" onAction="#loadFindEventsView" prefHeight="38.0" prefWidth="249.0" stylesheets="@../CSS/DashboardViewCSS.css" text="Find Events" />
                 <Button id="shiny-orange" mnemonicParsing="false" onAction="#loadPurchasedTicketsView" prefHeight="38.0" prefWidth="249.0" text="View Purchased Events" />
-                <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0">
+                <VBox alignment="BOTTOM_CENTER" prefHeight="608.0" prefWidth="262.0" spacing="10.0">
                     <children>
+                  <Button id="dark-blue" fx:id="btnAccount" layoutX="12.0" layoutY="536.0" mnemonicParsing="false" onAction="#openAccountView" prefHeight="27.0" prefWidth="224.0" text="My Account" />
                         <Button id="dark-blue" fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="224.0" text="Logout" />
                     </children>
                     <padding>

@@ -1,4 +1,4 @@
-package Classes.Database;
+package Classes.Objects;
 
 import Classes.Utilities.Alerts;
 import Classes.Utilities.Validation;
@@ -83,22 +83,24 @@ public class User extends Validation {
                 this.getPassword(),
                 this.getEmail()
         ));
+        dao.close();
     }
 
-    public int loginUser() throws NoSuchAlgorithmException {
+    public long loginUser() throws NoSuchAlgorithmException {
         Classes.Database.dao.UserDAO dao = new Classes.Database.dao.UserDAO();
-        int userID = dao.loginUser(
+        long myuserID = dao.loginUser(
                 this.getUsername(),
                 this.getPassword()
         );
-        if (userID == 0) {
+        if (myuserID == 0) {
             Alerts.genericAlert("User login failed", "User login failed", "User login failed").showAndWait();
         } else {
             this.setLoggedin(true);
-            this.setUserID(userID);
-            System.out.println("User logged in: " + this.username + ", ID: " + this.userID);
+            this.setUserID(myuserID);
+            System.out.println("User logged in: " + this.username + ", ID: " + this.getUserID());
         }
-        return userID;
+        dao.close();
+        return this.getUserID();
     }
 
     public long getUserID() {

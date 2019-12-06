@@ -6,12 +6,12 @@
 package Views.PurchasingView;
 
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Database.User;
+import Classes.Objects.User;
 import Classes.Email.Messages;
 import Classes.Email.SendEmail;
 import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
-import Views.SeatMaps.Venue.Seat;
+import Views.SeatMaps.Venue.SeatMapSeat;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import java.io.IOException;
 import java.net.URL;
@@ -98,6 +98,18 @@ public class PurchasingViewController implements Initializable {
     private User user;
     DashboardViewController dvc;
      Alerts alerts = new Alerts();
+     
+     //TODO
+     /*
+        Check and make sure validation is working. I was able to put in partial
+        data (credit card, invalid email format, half exp date) and it still worked.
+     
+        After purchasing the ticket and the popup is displayed, PurchasingView
+        is shown again with the same data and the user can click Buy again.
+        Maybe take the user back to FindEventsView.
+     
+     
+     */
 
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
@@ -224,7 +236,7 @@ public class PurchasingViewController implements Initializable {
     // Purchase Tickets
     // TODO - Add purchase finalizing to save seats to purchased seats for user
     //        and send email with purchase information
-    public void purchaseTickets() {
+    public void purchaseTickets() throws IOException {
         clearValidation();
         
         if (1 == 1) {
@@ -234,7 +246,7 @@ public class PurchasingViewController implements Initializable {
             dao.init();
             long userid = this.getDashboardController().getUser().getUserID();
 
-            ArrayList<Seat> seats = this.svc.getSelectedSeats();
+            ArrayList<SeatMapSeat> seats = this.svc.getSelectedSeats();
             int[] selectedSeatIds = new int[seats.size()];
             for(int i=0; i<seats.size(); i++) { // put the seat ids into an array
                 selectedSeatIds[i] = seats.get(i).getSeatid();

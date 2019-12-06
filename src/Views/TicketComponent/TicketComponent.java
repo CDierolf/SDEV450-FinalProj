@@ -10,12 +10,17 @@ package Views.TicketComponent;
  */
 //Imports
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
-import Classes.Database.Event;
+import Classes.Objects.Event;
+import Classes.Objects.PurchasedEvent;
+import Classes.Utilities.Alerts;
+import Classes.Utilities.Enums.ViewEnum;
 import Views.DashboardView.DashboardViewController;
 import Views.FindEventsView.FindEventsViewController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -26,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Tooltip;
 
 //Begin Subclass TicketComponent
 public class TicketComponent implements Initializable {
@@ -50,9 +56,12 @@ public class TicketComponent implements Initializable {
     private VBox imageVBox;
 
     private Events APIEvent; // Event stored for UI interaction
-    private Event DBEvent; //Event from database
+    private PurchasedEvent pEvent;
     private DashboardViewController dvc; // To update Dashboard view
     private boolean purchased;
+    private ViewEnum view;
+    private String seatPrice = "";
+
     /**
      * Initializes the controller class.
      */
@@ -61,65 +70,72 @@ public class TicketComponent implements Initializable {
 
     }
 
-    public void setEventData(Event DBEvent, DashboardViewController dvc) {
-        this.DBEvent = DBEvent;
-        purchased = true; //this event has purchases from user
-        this.eventLabel.setText(DBEvent.getEventName());
-        this.dateTimeLabel.setText(getEventDateTimeDetails(DBEvent)); //FIXME format date
-        if (DBEvent.getPrice() == 0) {
-            this.pricePerTicketLabel.setText("TBD");
-        } else {
-            String s = "$" + String.format("%.2f", DBEvent.getPrice());
-            this.pricePerTicketLabel.setText(s);
-        }
-        this.venueLocationLabel.setText(DBEvent.getVenueName());
-        this.venueCityStateLabel.setText((DBEvent.getVenueCity() + ", " + DBEvent.getVenueState()));
-
-        //change button label to indicate this is a purchased event
-        this.actionButton.setText("View Tickets");
-        loadImage();
+    public void setView(ViewEnum view) {
+        this.view = view;
     }
-    
+
+    public void setEventData(PurchasedEvent pEvent, DashboardViewController dvc) {
+        if (pEvent != null) {
+            this.pEvent = pEvent;
+            this.dvc = dvc;
+            this.purchased = true;
+            this.eventLabel.setText(pEvent.getEventName());
+            //add tooltip for overflowing event names
+            Tooltip.install(eventLabel, new Tooltip(pEvent.getEventName()));
+
+            this.dateTimeLabel.setText(String.format("%s %s", pEvent.getEventDate(), pEvent.getEventTime())); //FIXME format date
+            if (pEvent.getEventPrice() == 0) {
+                this.pricePerTicketLabel.setText("TBD");
+            } else {
+                String s = "$" + String.format("%.2f", pEvent.getEventPrice());
+                this.pricePerTicketLabel.setText(s);
+            }
+            this.venueLocationLabel.setText(pEvent.getVenue().getVenueName());
+            this.venueCityStateLabel.setText((pEvent.getVenue().getVenueCity() + ", " + pEvent.getVenue().getVenueState()));
+
+            //change button label to indicate this is a purchased event
+            this.actionButton.setText("View Tickets");
+            loadImage(pEvent.getEventImageUrl());
+        }
+    }
 
     public void setEventData(Events event, FindEventsViewController fevc, DashboardViewController dvc) {
-        purchased = false; //this event has no purchases from user
 
-        String city = event.getVenueData().getVenues().get(0).getVenueCity();
-        String state = event.getVenueData().getVenues().get(0).getVenueState();
+        if (event != null) {
+            purchased = false; //this event has no purchases from user
 
-        this.eventLabel.setText(event.getName());
-        this.dateTimeLabel.setText(getEventDateTimeDetails(event));
+            String city = event.getVenueData().getVenues().get(0).getVenueCity();
+            String state = event.getVenueData().getVenues().get(0).getVenueState();
 
-        String seatPrice;
-        if (!"TBD".equals(event.getPrice())) {
-            double pricePerTicketValue = Double.valueOf(event.getPrice());
-            seatPrice = String.format("%.2f", pricePerTicketValue);
-        } else {
-            seatPrice = event.getPrice();
+            this.eventLabel.setText(event.getName());
+            //add tooltip for overflowing event names
+            Tooltip.install(eventLabel, new Tooltip(event.getName()));
+
+            this.dateTimeLabel.setText(getEventDateTimeDetails(event));
+
+            if (!"TBD".equals(event.getPrice())) {
+                double pricePerTicketValue = Double.valueOf(event.getPrice());
+                seatPrice = String.format("%.2f", pricePerTicketValue);
+            } else {
+                seatPrice = event.getPrice();
+            }
+            this.pricePerTicketLabel.setText("$" + seatPrice);
+
+            this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
+            this.venueCityStateLabel.setText(city + ", " + state);
+
+            // Set event and dashboard variables
+            this.APIEvent = event;
+            this.dvc = dvc;
+
+            //load images
+            loadImage();
         }
-        this.pricePerTicketLabel.setText("$" + seatPrice);
-
-        this.venueLocationLabel.setText(event.getVenueData().getVenues().get(0).getVenueName());
-        this.venueCityStateLabel.setText(city + ", " + state);
-
-        // Set event and dashboard variables
-        this.APIEvent = event;
-        this.dvc = dvc;
-
-        //load images
-        loadImage();
     }
 
     private String getEventDateTimeDetails(Events event) {
         String date = event.getEventDates().getEventStartData().getEventLocalDate();
         String time = event.getEventDates().getEventStartData().getEventLocalTime();
-
-        return date + " " + time;
-    }
-
-    private String getEventDateTimeDetails(Event DBEvent) {
-        String date = DBEvent.getStartDate().toString();
-        String time = DBEvent.getStartTime().toString();
 
         return date + " " + time;
     }
@@ -130,11 +146,8 @@ public class TicketComponent implements Initializable {
             @Override
             protected Void call() throws Exception {
                 // call getImages asynchronously
-                if (!purchased) {
-                    getImage(APIEvent);
-                } else {
-                    getImage(DBEvent);
-                }
+                getImage(APIEvent);
+
                 return null;
             }
         };
@@ -147,7 +160,7 @@ public class TicketComponent implements Initializable {
         t.setDaemon(true);
         t.start();
     }
-    
+
     // For purchasedticketsviewcomponentcontroller image by pEvent url
     public void loadImage(String url) {
         final Task<Void> task = new Task<Void>() {
@@ -167,7 +180,7 @@ public class TicketComponent implements Initializable {
         t.setDaemon(true);
         t.start();
     }
-    
+
     public void getImage(String url) {
         if (url != null) {
             eventImageView.setImage(new Image(url));
@@ -180,13 +193,8 @@ public class TicketComponent implements Initializable {
         }
     }
 
-    public void getImage(Event DBEvent) throws FileNotFoundException {
-        if (DBEvent.getImage() != null) {
-            eventImageView.setImage(DBEvent.getImage());
-        }
-    }
-
-    public void buttonClicked() {
+    public void buttonClicked() throws NoSuchAlgorithmException, SQLException {
+        System.out.println(purchased);
         if (!purchased) {
             try {
                 purchaseTickets();
@@ -205,16 +213,21 @@ public class TicketComponent implements Initializable {
     }
 
     // Event handler for "Puchase Tickets" button
-    public void purchaseTickets() throws IOException {
+    public void purchaseTickets() throws IOException, NoSuchAlgorithmException, SQLException {
 
-        // Load the SeatSelectionView
-        dvc.loadSeatSelectionView(APIEvent);
-        // Hide the FindEventsView
-        dvc.toggleEventViewVisiblity(false);
+        if (seatPrice == "TBD") {
+            Alerts.genericAlert("Price error", "Price error", "Price is not set for this show yet. Try again at a later date.").showAndWait();
+        } else {
+            dvc.loadSeatSelectionView(APIEvent, this.view);
+            // Hide the FindEventsView
+            dvc.toggleEventViewVisiblity(false);
+            dvc.unloadLandingView();
+        }
     }
 
-    public void viewTicket() throws IOException {
-        //TODO add logic to show ticket for this event
+    public void viewTicket() throws IOException, NoSuchAlgorithmException, SQLException {
+
+        dvc.openDetailsView(pEvent);
     }
 
 }

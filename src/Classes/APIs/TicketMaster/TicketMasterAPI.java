@@ -1,9 +1,11 @@
 package Classes.APIs.TicketMaster;
 
+import Classes.Utilities.Exceptions;
 import Views.LoginView.LoginViewController;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -12,6 +14,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
@@ -28,28 +31,84 @@ import org.json.JSONObject;
 //Begin Subclass TicketMasterAPI
 public class TicketMasterAPI {
 
-    private final String API_KEY = "2uhGCartHuAyB1iNQZe2vfeVAFtaXlSm";
-    private final String API_BASE_URL = "https://app.ticketmaster.com/discovery/v2/events?";
+    private String API_KEY = "";
+    private String API_BASE_URL = "";
+    
+    private String eventKeyword;
+    private String pageNumber;
+    private String postalCode;
+    private String eventId;
+    
+    public void setEventKeyword(String eventKeyword) {
+        this.eventKeyword = eventKeyword;
+    }
+    public void setPageNumber(String pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+    
+    public String getEventKeyword() {
+        return this.eventKeyword;
+    }
+    public String getEventPageNumber() {
+        return this.pageNumber;
+    }
+    public String getPostalCode() {
+        return this.postalCode;
+    }
+    public String getEventId() {
+        return this.eventId;
+    }
+    
+    public TicketMasterAPI(){}
+    
+    public TicketMasterAPI(String eventKeyword, String pageNumber, String postalCode) {
+        setEventKeyword(eventKeyword);
+        setPageNumber(pageNumber);
+        setPostalCode(postalCode);
+        
+        
+    }
+    public TicketMasterAPI(String eventId) {
+        if (!eventId.isEmpty()) {
+            setEventId(eventId);
+        } else {
+            throw new Exceptions.EventIdIsNullException("EventId cannot be null with this constructor.");
+        }
+    }
+    
+    private void init() throws IOException {
+        Properties props = new Properties();
+        InputStream input = null;
+        
+        input =  getClass().getClassLoader().getResourceAsStream("resources/TicketManager.properties");
+        
+        props.load(input);
+        this.API_KEY = props.getProperty("apiKey");
+        this.API_BASE_URL = props.getProperty("apiBaseUrl");
+    }
 
-
-
-    public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) {
+    public TicketMasterEvent findEvents(String eventKeyword, String pageNumber, String postalCode) throws IOException {
+        init();
         TicketMasterEvent event = getTicketMasterJSONEventData(eventKeyword, pageNumber, postalCode);
 
         if (event.getEmbeddedEvents() == null) {
-            System.out.println("No events found.");
-            // No events were found :(
             return null;
         } else {
             return (event);
         }
     }
 
-    public TicketMasterEvent findEvents(String eventID) {
+    public TicketMasterEvent findEvents(String eventID) throws IOException {
+        init();
         TicketMasterEvent event = getTicketMasterJSONEventData(eventID);
+        
         if (event.getEmbeddedEvents() == null) {
-            System.out.println("No events found.");
-            // No events were found :(
             return null;
         } else {
             return (event);

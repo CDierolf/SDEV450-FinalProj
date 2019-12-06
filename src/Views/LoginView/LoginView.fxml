@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
@@ -8,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="root" stylesheets="@../CSS/LoginView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.LoginView.LoginViewController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" styleClass="root" stylesheets="@../CSS/LoginView.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.LoginView.LoginViewController">
    <children>
       <Text id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Amateur">
          <VBox.margin>
@@ -19,7 +24,7 @@
             <VBox alignment="CENTER_LEFT" prefHeight="127.0" prefWidth="221.0" spacing="20.0">
                <children>
                   <TextField fx:id="userNameText" promptText="Username" />
-                  <PasswordField fx:id="passwordText" promptText="Password" />
+                  <PasswordField fx:id="passwordText" onAction="#openDashboard" promptText="Password" />
                </children>
             </VBox>
          </children>

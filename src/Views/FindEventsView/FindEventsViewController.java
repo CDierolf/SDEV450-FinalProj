@@ -7,6 +7,7 @@ package Views.FindEventsView;
 
 import Classes.APIs.TicketMaster.TicketMasterAPI;
 import Classes.APIs.TicketMaster.TicketMasterEvent;
+import Classes.Utilities.Enums.ViewEnum;
 import Classes.Utilities.Validation;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.TicketComponentController;
@@ -84,7 +85,7 @@ public class FindEventsViewController implements Initializable {
         this.dvc = dvc;
     }
 
-    private void loadEvents(String eventKeyword, String pageNumber, String postalCode) throws IOException, Exception {
+    private void loadEvents(String eventKeyword, String pageNumber, String postalCode) throws IOException {
 
         // Save the current keyword for pagination
         this.currentKeyword = this.searchTextField.getText();
@@ -121,6 +122,7 @@ public class FindEventsViewController implements Initializable {
 
                     ticketComponents.add(ticketComponentPane);
                     TicketComponentController tcCtrl = loader.getController();
+                    
                     tcElements.add(tcCtrl);
 
                 } catch (IOException ex) {
@@ -153,6 +155,7 @@ public class FindEventsViewController implements Initializable {
 
         for (int i = 0; i < ticketComponents.size(); i++) {
             tcElements.get(i).setEventData(events.get(i), FindEventsViewController.this, dvc);
+            tcElements.get(i).setView(ViewEnum.FIND_EVENTS_VIEW);
             //tcElements.get(i).loadImage(); now called inside TicketComponent
             displayEventComponents(ticketComponents.get(i), i);
         }

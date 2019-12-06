@@ -1,6 +1,5 @@
 package Classes.Utilities;
 
-import java.util.Arrays;
 import java.util.List;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;

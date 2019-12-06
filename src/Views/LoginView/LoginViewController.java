@@ -5,8 +5,7 @@
  */
 package Views.LoginView;
 
-import Classes.APIs.TicketMaster.TicketMasterEvent;
-import Classes.Database.User;
+import Classes.Objects.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,15 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import Classes.Utilities.Alerts;
 import Views.DashboardView.DashboardViewController;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.Parent;
-import jdk.nashorn.internal.runtime.Context;
 
 public class LoginViewController implements Initializable {
 
@@ -77,7 +72,8 @@ public class LoginViewController implements Initializable {
 
     public void openDashboard() throws IOException, NoSuchAlgorithmException, SQLException {
 
-        loginUser();
+        long userid = loginUser();
+        if (userid == 0) return;
         //this.setUser(user); // sets the user object on the screen
 
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -97,21 +93,23 @@ public class LoginViewController implements Initializable {
     }
 
     // Login user on separate thread
-    private void loginUser() {
+    private long loginUser() {
         //Thread thread = new Thread(() -> {
             //Runnable run = () -> {
                 try {
                     // Authenticate User
                     user = new User(this.userNameText.getText(),
                             this.passwordText.getText());
-                    int userid = user.loginUser();
+                    long userid = user.loginUser();
                     user.setUserID(userid);
                     // If Authenticated, display Dashbaord close LoginView
                     // If Not Authenticated, display error and return to screen
                     if (userid == 0) {
                         this.userNameText.setText("");
                         this.passwordText.setText("");
-                        return;
+                        return 0;
+                    } else {
+                        return userid;
                     }
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,6 +120,7 @@ public class LoginViewController implements Initializable {
 
         //thread.setDaemon(true);
         //thread.start();
+        return 0;
     }
 
     public void closeApp() throws IOException {

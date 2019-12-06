@@ -1,4 +1,4 @@
-package Classes.Database;
+package Classes.Objects;
 
 /**
  * @Course: SDEV 250 ~ Java Programming I
@@ -11,10 +11,9 @@ package Classes.Database;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.sql.*;
-import Classes.Database.dao.EventDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Classes.APIs.TicketMaster.*;
+
 import javafx.scene.image.Image;
 
 //Begin Subclass Event
@@ -31,7 +30,6 @@ public class Event {
     private String venueCity;
     private String venueState;
 
-    DatabaseInterface di = new DatabaseInterface();
 
     /**
      * Create event object based on eventID

@@ -1,10 +1,8 @@
 package Classes.APIs.TicketMaster;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import javafx.scene.image.Image;
 

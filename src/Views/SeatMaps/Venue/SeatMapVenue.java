@@ -24,14 +24,14 @@ import javafx.scene.shape.Rectangle;
  */
 //Imports
 //Begin Subclass Venu1
-public class Venue extends BorderPane implements Debug {
+public class SeatMapVenue extends BorderPane implements Debug {
 
     public SeatSelectionViewController svc;
 
     /* get the venue from the event id.
     if the event does not exist in the database, add it and populate some sample sales 
      */
-    public Venue(Events event, SeatSelectionViewController seatVC) {
+    public SeatMapVenue(Events event, SeatSelectionViewController seatVC) {
         this.svc = seatVC;
         try {
             this.setStyle("-fx-background-color: #FFFFFF");
@@ -40,7 +40,7 @@ public class Venue extends BorderPane implements Debug {
 
             /* display seats for debugging*/
 //            while (rs.next()) {
-//                System.out.println("Row" + rs.getString("row") + " , Seat:" + rs.getString("seat")
+//                System.out.println("Row" + rs.getString("row") + " , SeatMapSeat:" + rs.getString("seat")
 //                        + ", Section:" + rs.getString("section") + "SOLD? " + rs.getInt("sold"));
 //            }
 
@@ -50,7 +50,7 @@ public class Venue extends BorderPane implements Debug {
 
             dao.close(); // close connection, statement, resultset
         } catch (SQLException ex) {
-            Logger.getLogger(Venue.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SeatMapVenue.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -81,12 +81,12 @@ public class Venue extends BorderPane implements Debug {
             }
 
 //            System.out.println("Row" + rs.getString("row")
-//                    + " , Seat:" + rs.getString("seat") + ", Section:" + rs.getString("section"));
+//                    + " , SeatMapSeat:" + rs.getString("seat") + ", Section:" + rs.getString("section"));
 
             seats.setAlignment(Pos.CENTER);
 
             seats.setSpacing(spacing);
-            Seat seat = new Seat(rs.getInt("seat"),
+            SeatMapSeat seat = new SeatMapSeat(rs.getInt("seat"),
                     rs.getInt("row"),
                     'G',
                     available, 
@@ -121,7 +121,7 @@ public class Venue extends BorderPane implements Debug {
         for (int i = 0; i < 3; i++) {
             HBox h = new HBox();
             for (int j = 0; j < 15; j++) {
-                Seat seat = new Seat(i + 1, j + 1, 'M', true, 0);
+                SeatMapSeat seat = new SeatMapSeat(i + 1, j + 1, 'M', true, 0);
                 h.getChildren().add(seat);
             }
             v.getChildren().add(h);

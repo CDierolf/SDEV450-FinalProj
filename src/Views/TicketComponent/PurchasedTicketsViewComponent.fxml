@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="912.0" styleClass="root" stylesheets="@../CSS/TicketComponentCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.PurchasedTicketsViewComponentController">
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="912.0" styleClass="root" stylesheets="@../CSS/TicketComponentCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.TicketComponent.PurchasedTicketsViewComponentController">
    <children>
       <ImageView fx:id="eventImageView" fitHeight="175.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" />
       <VBox prefHeight="175.0" prefWidth="598.0" spacing="20.0">
          <children>
             <Label id="dataLabel" fx:id="eventNameLabel" text="Label" />
             <Label id="dataLabel" fx:id="eventDateLabel" text="Label" />
-            <Label id="dataLabel" text="Label" />
-            <Label id="dataLabel" text="Label" />
+            <Label id="dataLabel" fx:id="eventPrice" text="Label" />
+            <Label id="dataLabel" fx:id="venueLabel" text="Label" />
 
          </children>
          <padding>
@@ -29,4 +29,7 @@
          </children>
       </VBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </HBox>

@@ -16,8 +16,8 @@ import javafx.scene.paint.Color;
  * @Subclass Seat Description: Represents the seats in venue view
  */
 
-//Begin Subclass Seat
-public class Seat extends Circle {
+//Begin Subclass SeatMapSeat
+public class SeatMapSeat extends Circle {
     
     private final int CIRCLE_RADIUS = 9;
     private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
@@ -50,7 +50,7 @@ public class Seat extends Circle {
     }
     
     // Constructor
-    public Seat(int seatNumber, int rowNumber, char section, boolean isAvailable, int seatid) {
+    public SeatMapSeat(int seatNumber, int rowNumber, char section, boolean isAvailable, int seatid) {
         this.seatNumber = seatNumber;
         this.rowNumber = rowNumber;
         this.section = section;
@@ -143,4 +143,4 @@ public class Seat extends Circle {
         return description;
     }
 
-} //End Subclass Seat
+} //End Subclass SeatMapSeat

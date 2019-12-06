@@ -4,14 +4,19 @@
  * and open the template in the editor.
  */
 package Views.DashboardView;
-import Classes.Database.User;
+import Classes.Objects.User;
 import Classes.APIs.TicketMaster.TicketMasterEvent.Embedded.Events;
+import Classes.Objects.PurchasedEvent;
+import Classes.Utilities.Enums.ViewEnum;
 import Views.FindEventsView.FindEventsViewController;
 import Views.SeatSelectionView.SeatSelectionViewController;
 import Views.LandingView.LandingViewController;
+import Views.PurchasedTicketsDetailsView.PurchasedTicketsDetailsViewController;
 import Views.PurchasedTicketsView.PurchasedTicketsViewController;
+import Views.MyAccountView.MyAccountViewController;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -20,7 +25,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -38,8 +46,13 @@ public class DashboardViewController implements Initializable {
     @FXML
     private AnchorPane seatSelectionViewPane;
     @FXML
-    private AnchorPane purchasedTicketsViewPane;
+    private AnchorPane landingViewPane;
+    @FXML
+    private StackPane purchasedTicketsViewPane;
     @FXML private Button logoutButton;
+    
+    @FXML
+    private Button btnAccount;
 
     private User user;
 
@@ -73,14 +86,16 @@ public class DashboardViewController implements Initializable {
     public void loadLandingView() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/LandingView/LandingView.fxml"));
-        AnchorPane landingViewPane = loader.load();
+        this.landingViewPane = loader.load();
 
         LandingViewController landingViewController = loader.getController();
         landingViewController.setDashboardController(this);
         dynamicViewPane.getChildren().clear();
         dynamicViewPane.getChildren().add(landingViewPane);
-
-        
+    }
+    
+    public void unloadLandingView() {
+        dynamicViewPane.getChildren().remove(this.landingViewPane);
     }
     
     public void loadPurchasedTicketsView() throws IOException, SQLException {
@@ -114,6 +129,25 @@ public class DashboardViewController implements Initializable {
         dynamicViewPane.getChildren().add(eventsViewPane);
         
     }
+    
+    public void openDetailsView(PurchasedEvent pEvent) throws IOException, NoSuchAlgorithmException, SQLException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Views/PurchasedTicketsDetailsView/PurchasedTicketsDetailsView.fxml"));
+        //Parent root = (Parent)fxmlLoader.load();
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        // set the user to the dashboard view controller to maintain state
+        PurchasedTicketsDetailsViewController controller = fxmlLoader.<PurchasedTicketsDetailsViewController>getController();
+        controller.setEventData(pEvent);
+        controller.setUser(this.user);
+        Stage stage = new Stage();
+
+        stage.setTitle(pEvent.getEventName() + " Details");
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
+
+        stage.show();
+    }
 
     // Unloads the SeatSelectionView from the dynamicViewPane
     // Does not hide it. Completely removes it. No reference to 
@@ -125,7 +159,7 @@ public class DashboardViewController implements Initializable {
     // Load the SeatSelectionView into dynamicViewPane, 
     // pass the selected event data into its controller
     // along with a reference to this DashboardViewController
-    public void loadSeatSelectionView(Events e) throws IOException {
+    public void loadSeatSelectionView(Events e, ViewEnum view) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/Views/SeatSelectionView/SeatSelectionView.fxml"));
         this.seatSelectionViewPane = loader.load();
@@ -134,6 +168,7 @@ public class DashboardViewController implements Initializable {
         seatSelectionViewController.setDashboardController(this);
         //seatSelectionViewController.setAlert(a);
         seatSelectionViewController.setEventData(e);
+        seatSelectionViewController.setView(view);
         toggleEventViewVisiblity(true);
 
         dynamicViewPane.getChildren().add(seatSelectionViewPane);
@@ -144,6 +179,28 @@ public class DashboardViewController implements Initializable {
     // The events the user searched for are readily available for continued browsing.
     public void toggleEventViewVisiblity(boolean isVisible) {
         dynamicViewPane.getChildren().get(0).setVisible(isVisible);
+    }
+    
+    /**
+     * Open Account View window
+     * @throws IOException 
+     */
+    public void openAccountView() throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Views/MyAccountView/MyAccountView.fxml"));        
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        // set the user to the dashboard view controller to maintain state
+        MyAccountViewController controller = fxmlLoader.<MyAccountViewController>getController();
+        controller.setDashboardController(this);
+        Stage stage = new Stage();
+
+        stage.setTitle(this.user.getUsername()+" Account Details");
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
+        
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        
     }
     
     public void logout() {

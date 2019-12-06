@@ -5,10 +5,12 @@
  */
 package Views.PurchasedTicketsView;
 
-import Classes.Database.DatabaseInterface;
-import Classes.Database.PurchasedEvent;
-import Classes.Database.Seat;
-import Classes.Database.User;
+import Classes.Database.dao.PurchasedTicketsViewDAO;
+import Classes.Objects.PurchasedEvent;
+import Classes.Objects.PurchasedEventSorter;
+import Classes.Objects.Seat;
+import Classes.Objects.User;
+import Classes.Objects.Venue;
 import Views.DashboardView.DashboardViewController;
 import Views.TicketComponent.PurchasedTicketsViewComponentController;
 import java.io.FileNotFoundException;
@@ -24,6 +26,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -36,12 +39,14 @@ public class PurchasedTicketsViewController implements Initializable {
 
     @FXML
     private VBox eventVBox;
+    @FXML
+    private Label noEventsLabel;
 
     DashboardViewController dvc;
     List<PurchasedTicketsViewComponentController> tcElements = new ArrayList<>();
     List<HBox> ticketComponents = new ArrayList<>();
-    DatabaseInterface di = new DatabaseInterface();
-    ArrayList<PurchasedEvent> eventData = new ArrayList<>();
+
+    List<PurchasedEvent> eventData = new ArrayList<>();
     User user;
 
     /**
@@ -55,26 +60,30 @@ public class PurchasedTicketsViewController implements Initializable {
         this.dvc = dvc;
         this.user = user;
         getEventData();
-        loadTicketComponents();
-        loadEventDataToComponents();
-    }
-    
+        if (!eventData.isEmpty()) {
+            this.noEventsLabel.setVisible(false);
+            loadTicketComponents();
+            loadEventDataToComponents();
+        } else {
+            this.noEventsLabel.setVisible(true);
+        }
+    } 
 
     public void loadTicketComponents() {
         for (int i = 0; i < eventData.size(); i++) {
-                try {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("/Views/TicketComponent/PurchasedTicketsViewComponent.fxml"));
-                    HBox ticketComponentPane = loader.load();
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/Views/TicketComponent/PurchasedTicketsViewComponent.fxml"));
+                HBox ticketComponentPane = loader.load();
 
-                    ticketComponents.add(ticketComponentPane);
-                    PurchasedTicketsViewComponentController tcCtrl = loader.getController();
-                    tcElements.add(tcCtrl);
+                ticketComponents.add(ticketComponentPane);
+                PurchasedTicketsViewComponentController tcCtrl = loader.getController();
+                tcElements.add(tcCtrl);
 
-                } catch (IOException ex) {
-                    Logger.getLogger(PurchasedTicketsViewComponentController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            } catch (IOException ex) {
+                Logger.getLogger(PurchasedTicketsViewComponentController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     }
 
     private void loadEventDataToComponents() throws FileNotFoundException, IOException, SQLException {
@@ -88,26 +97,15 @@ public class PurchasedTicketsViewController implements Initializable {
     }
 
     private void displayEventComponents(HBox pane) throws IOException, SQLException {
-
         eventVBox.getChildren().add(pane);
         eventVBox.setSpacing(20);
 
     }
 
     public void getEventData() throws SQLException {
-        di.init();
-        ArrayList<String> userValues = new ArrayList<>(); // just one param for this request
-        ArrayList<String> dataTypes = new ArrayList<>();
-        String Q1 = "{ call [usp_getAllEventSeatsForUser](?) }";
-        userValues.add(Long.toString(dvc.getUser().getUserID()));
-        dataTypes.add("string");
-        ResultSet rs = null;
-        try {// execute the stored proc
-            rs = di.callableStatementRs(Q1, userValues.toArray(new String[userValues.size()]),
-                    dataTypes.toArray(new String[dataTypes.size()]));
-        } catch (SQLException ex) {
-            Logger.getLogger(PurchasedTicketsViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PurchasedTicketsViewDAO dao = new PurchasedTicketsViewDAO();
+        dao.init();
+        ResultSet rs = dao.getMyEvents(dvc.getUser().getUserID());
         if (rs != null) {
             try {
                 PurchasedEvent pEvent = null;
@@ -121,8 +119,16 @@ public class PurchasedTicketsViewController implements Initializable {
                             eventData.add(pEvent);
                         }
                         pEvent = new PurchasedEvent();
+                        Venue venue = new Venue();
                         pEvent.setEventName(rs.getString("EventName"));
                         pEvent.setEventDate(rs.getDate("StartDate"));
+                        pEvent.setEventTime(rs.getTime("StartTime"));
+                        pEvent.setEventPrice(rs.getDouble("TotalPrice"));
+                        pEvent.setEventImageUrl(rs.getString("image"));
+                        venue.setVenueCity(rs.getString("venueCity"));
+                        venue.setVenueState(rs.getString("venueState"));
+                        venue.setVenueName(rs.getString("venueName"));
+                        pEvent.setVenue(venue);
                         lastEvent = currentEvent;
                     }
                     seat = new Seat();
@@ -133,8 +139,13 @@ public class PurchasedTicketsViewController implements Initializable {
                 eventData.add(pEvent);
             } catch (SQLException e) {
                 System.out.println(e);
+            } finally {
+                dao.close();
             }
         }
+
+        PurchasedEventSorter pEventSorter = new PurchasedEventSorter(this.eventData);
+        this.eventData = pEventSorter.getSortedPurchasedEvents();
 
     }
 }

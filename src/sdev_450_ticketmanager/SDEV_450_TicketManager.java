@@ -6,7 +6,7 @@
 
 package sdev_450_ticketmanager;
 
-import Views.SeatMaps.Venue.Venue;
+import Views.SeatMaps.Venue.SeatMapVenue;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

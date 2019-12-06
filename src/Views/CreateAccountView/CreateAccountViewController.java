@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import Classes.Database.User;
+import Classes.Objects.User;
 import Views.DashboardView.DashboardViewController;
 import java.security.NoSuchAlgorithmException;
 /**
