@@ -18,16 +18,16 @@ Ticket Amature utilizes JavaFX 11 and Java 8 with a MSSQL backend.
 1. Download or Clone the repository
 2. Utilize the provided MSSQL Server build script
 3. Create a resource file called "TicketManager.properties" in a folder called "resources" in the src file.
-4. Fill in the following data:
-   ..*dbIpaddress=
-   dbUsername=
-   dbPassword=
-   dbName=
-   dbPort=
-   sendEmailAddress=
-   sendEmailPassword=
-   apiKey=
-   apiBaseUrl=
+4. Fill in the following data:<br>
+   dbIpaddress=<br>
+   dbUsername=<br>
+   dbPassword=<br>
+   dbName=<br>
+   dbPort=<br>
+   sendEmailAddress=<br>
+   sendEmailPassword=<br>
+   apiKey=<br>
+   apiBaseUrl=<br>
 
 ### Prerequisites
 
