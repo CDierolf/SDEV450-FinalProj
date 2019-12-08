@@ -199,7 +199,7 @@ public class PurchasingViewController implements Initializable {
 
         // Valid expiration date
         if (tfExpiration.getText().length() > 0) {
-            Pattern p = Pattern.compile("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$");
+            Pattern p = Pattern.compile("^(0[1-9]|1[0-2])\\/?([0-9]{4}|[0-9]{2})$");
             Matcher m = p.matcher(tfExpiration.getText());
             if (!m.find()) {
                 lblExpiration.setText("Invalid Date");
