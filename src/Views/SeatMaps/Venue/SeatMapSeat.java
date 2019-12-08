@@ -8,22 +8,21 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 
-/** 
+/**
  * @Course: SDEV 350 ~ Java Programming II
  * @Author Name: Neil Hart
  * @Assignment Name: SDEV 450 - Final Project
  * @Date: Oct 6, 2019
  * @Subclass Seat Description: Represents the seats in venue view
  */
-
 //Begin Subclass SeatMapSeat
 public class SeatMapSeat extends Circle {
-    
+
     private final int CIRCLE_RADIUS = 9;
     private final Color COLOR_AVAILABLE = Color.DODGERBLUE;
     private final Color COLOR_UNAVAILABLE = Color.RED;
     private final Color COLOR_SELECTED = Color.LIME;
-    
+
     // Instance variables
     private final int seatNumber; // Final ivar - set in constructor
     private final int rowNumber; // Final ivar - set in constructor
@@ -32,9 +31,9 @@ public class SeatMapSeat extends Circle {
     private boolean isSelected;
     private int seatid;// seat id from database for purchasing ticket
     private SeatSelectionViewController svc;
-    
+
     private final Tooltip tt = new Tooltip("Select this seat");
-    
+
     // Getter methods
     // No setters should be required as set in constructor
     public int getSeatNumber() {
@@ -48,7 +47,7 @@ public class SeatMapSeat extends Circle {
     public boolean getIsAvailable() {
         return isAvailable;
     }
-    
+
     // Constructor
     public SeatMapSeat(int seatNumber, int rowNumber, char section, boolean isAvailable, int seatid) {
         this.seatNumber = seatNumber;
@@ -70,7 +69,7 @@ public class SeatMapSeat extends Circle {
     public void setSeatid(int seatid) {
         this.seatid = seatid;
     }
-    
+
     // Mouse Click Event Handler
     EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
@@ -84,18 +83,18 @@ public class SeatMapSeat extends Circle {
             }
             updateImage();
         }
-    };  
-    
+    };
+
     // Create circle representation of seat for Venue view
     private void setSeatImage() {
         setRadius(CIRCLE_RADIUS);
         // Color seat image based on availability
         updateImage();
     }
-    
+
     // Update circle image color based on availability.
     //
-     private void updateImage() {
+    private void updateImage() {
 
         if (isAvailable) {
             setFill(COLOR_AVAILABLE);
@@ -110,13 +109,13 @@ public class SeatMapSeat extends Circle {
             tt.setText("Seat unavailable");
         }
     }
-     
+
     // Set SeatSelectionViewController for callbacks
     public void setSeatSelectionViewController(SeatSelectionViewController seatVC) {
         svc = seatVC;
     }
-    
-    // Sell seat - change availability and display
+
+    // Seat selection
     public void selectSeat() {
         if (isAvailable) {
             if (!isSelected) {
@@ -127,16 +126,23 @@ public class SeatMapSeat extends Circle {
                 isSelected = false;
                 updateImage();
                 svc.seatUnselected(this);
-            }            
+            }
         }
     }
-    
+
+    // Sell seat
+    public void sellSeat() {
+        isSelected = false;
+        isAvailable = false;
+        updateImage();
+    }
+
     // Set seat as already sold
     public void seatUnavailable() {
         isAvailable = false;
         updateImage();
     }
-    
+
     // Return seat description
     public String getDescription() {
         String description = "Seat: " + seatNumber + " - Row: " + rowNumber + " - Section: " + section;

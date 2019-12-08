@@ -53,6 +53,8 @@ public class SeatSelectionViewController implements Initializable {
     @FXML
     private Label lblTotal;
     @FXML
+    private Button checkoutButton;
+    @FXML
     private Button backButton;
     @FXML
     private Pane purchasingPane;
@@ -85,7 +87,6 @@ public class SeatSelectionViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-    
 
     // Sets the event data for the View
     public void setEventData(Events e) {
@@ -99,7 +100,7 @@ public class SeatSelectionViewController implements Initializable {
             Logger.getLogger(SeatSelectionViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void setView(ViewEnum view) {
         this.view = view;
     }
@@ -123,7 +124,6 @@ public class SeatSelectionViewController implements Initializable {
         //isVenueLoaded = true;
     }
 
-    
     // Loading SeatMapVenue on separate thread
     private void loadVenueSeating(Events e) {
         Thread thread = new Thread(() -> {
@@ -137,9 +137,8 @@ public class SeatSelectionViewController implements Initializable {
         thread.start();
     }
 
-
 // Load in event data
-private void loadEventData(Events e) throws ParseException {
+    private void loadEventData(Events e) throws ParseException {
         lblEventName.setText(e.getName());
 
         String unformattedDate = e.getEventDates().getEventStartData().getEventLocalDate();
@@ -166,6 +165,12 @@ private void loadEventData(Events e) throws ParseException {
 
     // SeatMapSeat is selected
     public void seatSelected(SeatMapSeat seat) {
+        // Update checkout button
+        if (checkoutButton.isDisable()) {
+            checkoutButton.setDisable(false);
+        }
+
+        // Add seat to tracking arrays and update sidebar view
         Label seatLabel = new Label(seat.getDescription());
         selectedSeats.add(seat);
         selectedSeatsLabels.add(seatLabel);
@@ -186,6 +191,11 @@ private void loadEventData(Events e) throws ParseException {
         selectedSeatsLabels.remove(labelToRemove);
         selectedSeats.remove(seat);
 
+        // Update checkout button
+        if (selectedSeats.isEmpty()) {
+            checkoutButton.setDisable(true);
+        }
+
         updateTotal(false);
     }
 
@@ -201,13 +211,12 @@ private void loadEventData(Events e) throws ParseException {
         // Format total and display on label
         lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
-    
-    
+
     // Return currently selected seats
     public ArrayList<SeatMapSeat> getSelectedSeats() {
         return selectedSeats;
     }
-    
+
     // Return total of selected seats
     public String getPurchaseTotal() {
         return String.format("%.2f", total);
@@ -215,29 +224,45 @@ private void loadEventData(Events e) throws ParseException {
 
     // Load Purchasing View
     public void loadPurchasingView() throws IOException {
-        venuePane.setVisible(false);
-        purchasingPane.setDisable(false);
-        
-        // Load FXML
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/Views/PurchasingView/PurchasingView.fxml"));
-        purchasingPane.getChildren().add(loader.load());
-        
-        // Set Attributes
-        PurchasingViewController pvc = loader.getController();
-        pvc.setSeatSelectionViewController(this);
-        pvc.setupValidation();
-        pvc.setDashboardController(this.getDashboardController());
-        pvc.setEvent(this.getEvent()); // set the event to the purchase controller
-        pvc.setUser(this.getUser()); // set the current user to the purchase controller
+        if (selectedSeats.size() > 0) {
+            venuePane.setVisible(false);
+            purchasingPane.setDisable(false);
+
+            // Load FXML
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Views/PurchasingView/PurchasingView.fxml"));
+            purchasingPane.getChildren().add(loader.load());
+
+            // Set Attributes
+            PurchasingViewController pvc = loader.getController();
+            pvc.setSeatSelectionViewController(this);
+            pvc.setupValidation();
+            pvc.setDashboardController(this.getDashboardController());
+            pvc.setEvent(this.getEvent()); // set the event to the purchase controller
+            pvc.setUser(this.getUser()); // set the current user to the purchase controller
+        }
     }
-
-
 
     public void setSelectedSeats(ArrayList<SeatMapSeat> selectedSeats) {
         this.selectedSeats = selectedSeats;
     }
-    
+
+    // Selected Seats Purchased
+    public void selectedSeatsPurchased() {
+        // Change seat availability display
+        for (SeatMapSeat selectedSeat : selectedSeats) {
+            selectedSeat.sellSeat();
+        }
+        // Clear labels and total
+        lblTotal.setText("");
+        selectedSeats.clear();
+        selectedSeatsLabels.clear();
+        eventVBox.getChildren().clear();
+        
+        // Disable checkout button again
+        checkoutButton.setDisable(true);
+    }
+
     // Unload Purchasing View
     public void unloadPurchasingView() {
         purchasingPane.getChildren().clear();
@@ -245,21 +270,10 @@ private void loadEventData(Events e) throws ParseException {
         venuePane.setVisible(true);
     }
 
-    // TODO REFACTOR
-    private void unloadVenue() {
-        venuePane.setVisible(false); // Hide venue pane
-//        if (isVenueLoaded) {
-//            venueHBox.getChildren().remove(venueHBox.getChildren().size() - 1); // Remove venue
-//            isVenueLoaded = false;
-//        }
-        lblEventName.setText("");
-        lblEventDate.setText("");
-    }
-
     // Calls the unloadSeatSelectionView() method in DashboardViewController instance
     // Sets the FindEventsView visibility to true;
     public void goBackToPreviousView() throws IOException, SQLException {
-        
+
         if (view == ViewEnum.FIND_EVENTS_VIEW) {
             dvc.toggleEventViewVisiblity(true);
             dvc.unloadSeatSelectionView();

@@ -7,7 +7,7 @@
 }
 
 .warningLabel {
-    -fx-text-fill: red;
+    -fx-text-fill: white;
     -fx-font: 10px 'Arial';
     -fx-font-style: italic;
 }

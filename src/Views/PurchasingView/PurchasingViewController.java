@@ -90,33 +90,23 @@ public class PurchasingViewController implements Initializable {
     private Label lblCardName;
     @FXML
     private Label lblCVV;
-    @FXML 
+    @FXML
     private Button btnPurchase;
     private Button btnBack;
-    
+
     private Events event;
     private User user;
     DashboardViewController dvc;
-     Alerts alerts = new Alerts();
-     
-     //TODO
-     /*
-        Check and make sure validation is working. I was able to put in partial
-        data (credit card, invalid email format, half exp date) and it still worked.
-     
-        After purchasing the ticket and the popup is displayed, PurchasingView
-        is shown again with the same data and the user can click Buy again.
-        Maybe take the user back to FindEventsView.
-     
-     
-     */
+    Alerts alerts = new Alerts();
 
     public void setDashboardController(DashboardViewController dvc) {
         this.dvc = dvc;
     }
+
     public DashboardViewController getDashboardController() {
         return dvc;
     }
+
     public Events getEvent() {
         return event;
     }
@@ -132,7 +122,6 @@ public class PurchasingViewController implements Initializable {
     public void setUser(User user) {
         this.user = user;
     }
-    
 
     /**
      * Initializes the controller class.
@@ -207,7 +196,7 @@ public class PurchasingViewController implements Initializable {
                 validated = false;
             }
         }
-        
+
         // Valid expiration date
         if (tfExpiration.getText().length() > 0) {
             Pattern p = Pattern.compile("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$");
@@ -230,16 +219,25 @@ public class PurchasingViewController implements Initializable {
             }
         }
 
+        // Valid Credit Card Number
+        if (tfCreditCard.getText().length() > 0) {
+            Pattern p = Pattern.compile("^[0-9]{4}" + "-" + "[0-9]{4}" + "-" + "[0-9]{4}" + "-" + "[0-9]{4}");
+            Matcher m = p.matcher(tfCreditCard.getText());
+            if (!m.find() || tfCreditCard.getText().length() != 19) {
+                lblCreditCard.setText("Invalid Credit Card Number");
+                lblCreditCard.setVisible(true);
+                validated = false;
+            }
+        }
+
         return validated;
     }
 
     // Purchase Tickets
-    // TODO - Add purchase finalizing to save seats to purchased seats for user
-    //        and send email with purchase information
     public void purchaseTickets() throws IOException {
         clearValidation();
-        
-        if (1 == 1) {
+
+        if (validateFields()) {
             btnPurchase.setDisable(true);
             System.out.println("Purchasing tickets...");
             Classes.Database.dao.PurchaseDAO dao = new Classes.Database.dao.PurchaseDAO();
@@ -248,35 +246,36 @@ public class PurchasingViewController implements Initializable {
 
             ArrayList<SeatMapSeat> seats = this.svc.getSelectedSeats();
             int[] selectedSeatIds = new int[seats.size()];
-            for(int i=0; i<seats.size(); i++) { // put the seat ids into an array
+            for (int i = 0; i < seats.size(); i++) { // put the seat ids into an array
                 selectedSeatIds[i] = seats.get(i).getSeatid();
             }
             try {
                 dao.makePurchase(this.getDashboardController().getUser(),
                         this.getEvent(),
                         selectedSeatIds);
-                alerts.genericAlert("Tickets have been purchased", Integer.toString(selectedSeatIds.length) +
-                        " Tickets have been purchased",
-                        Integer.toString(selectedSeatIds.length) +
-                                " Tickets have been purchased").showAndWait();
+                alerts.genericAlert("Tickets have been purchased", Integer.toString(selectedSeatIds.length)
+                        + " Tickets have been purchased",
+                        Integer.toString(selectedSeatIds.length)
+                        + " Tickets have been purchased").showAndWait();
             } catch (SQLException ex) {
                 Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println("Purchasing tickets...userid:" + Long.toString(userid));
 
             String emailMessage = Messages.purchasedEventMessage(
-                    svc.getEvent().getName(), 
-                    svc.getSelectedSeats(), 
-                    svc.getPurchaseTotal(), 
+                    svc.getEvent().getName(),
+                    svc.getSelectedSeats(),
+                    svc.getPurchaseTotal(),
                     tfFName.getText());
             try {
                 SendEmail newEmail = new SendEmail(tfEmail.getText(), "Ticket Purchase", emailMessage, svc.getEvent().getName());
             } catch (MessagingException ex) {
                 Logger.getLogger(PurchasingViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            svc.unloadPurchasingView();
-                //this.getDashboardController().loadLandingView();// go back to landing
 
+            // Mark seat as purchased/unavailable and unload purchasing view
+            svc.selectedSeatsPurchased();
+            svc.unloadPurchasingView();
         }
     }
 
