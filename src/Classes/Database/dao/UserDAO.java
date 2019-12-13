@@ -164,7 +164,7 @@ public class UserDAO extends DatabaseInterface {
         dataTypes.add("int");
         userValues.add(null); //username
         userValues.add(null); //password
-        userValues.add(null); //email
+        userValues.add(u.email);
         userValues.add(u.firstname);
         userValues.add(u.lastname);
         userValues.add(u.address1);
