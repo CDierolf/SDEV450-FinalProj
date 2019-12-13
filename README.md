@@ -3,7 +3,7 @@
 The Ticket Amateur application is a desktop event finding application that utilizies the TicketMaster API to locate events across the U.S. and locally.
 It is the class project of four individuals enrolled at Champlain College:
 Christopher Dierolf,
-Tom Much,
+Tom Muck,
 Neil Hart, and
 Stephen Greybeal
 <br>
